@@ -1,1 +1,2 @@
-print("hallo babygirl")
+username = input ("Joris schatje")
+print("ik ben",username)
