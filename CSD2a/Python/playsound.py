@@ -2,8 +2,6 @@
 
 # fc.LeftRightCheck.run()
 
-
-
 import simpleaudio as sa
 
 filename = 'schreeuw.wav'
