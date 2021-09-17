@@ -1,7 +1,4 @@
+import numpy as np
 
-
-
-print("gelijk?")
-gelijk = input("")
-if (gelijk == "Joris"): 
-    print("ja")
+rand = np.random.rand(2)
+print("First array", rand)
