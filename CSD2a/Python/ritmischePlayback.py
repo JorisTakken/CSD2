@@ -41,6 +41,7 @@ print("Wil je dat zelf kiezen?")
 print("typ ja of nee!")
 print("------------------------")
 zelfKiezen = input("")
+
 if zelfKiezen == "ja":
     print("------------------------------")
     print("Kies uit:")
@@ -81,7 +82,7 @@ async def seq():
             await asyncio.sleep(BPM/i)
             
         if i == (hoeveelKeerSpelen + 1): 
-            play_obj.wait_done()
+            welkeSample.wait_done()
         i += 1
 
 asyncio.run(seq()) 
