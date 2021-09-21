@@ -1,12 +1,17 @@
+# importeer functies die ik nodig ga hebben voor de opdracht
 import asyncio 
 import time
 import simpleaudio as sa
 import keyboard
 import random
 
+
+# importeer samples en geef de samples namen
 kick = sa.WaveObject.from_wave_file("samples/kick.wav")
 schreeuw = sa.WaveObject.from_wave_file("samples/schreeuw.wav")
 
+
+# als eerst kies ik een sample die in de sequencer gaat.
 print("=================")
 print("kies een sample!")
 print("-----------------")
@@ -21,12 +26,14 @@ if welkeSampleInput == "schreeuw":
     welkeSample = schreeuw
 
 
+# kies nu hoeveel noten er in de sequenser zitten
 print("--------------------------------------")
 print("hoeveel keer wil je de sample spelen?")
 print("--------------------------------------")
 hoeveelKeerSpelen = input("")
 hoeveelKeerSpelen = int(hoeveelKeerSpelen)
 
+# kies een BPM
 print("---------------------")
 print("wat voor BPM kies je?")
 print("---------------------")
@@ -34,6 +41,7 @@ BPMinput = input("")
 BPMinput = int(BPMinput)
 BPM = 60 / BPMinput
 
+# dit is de input voor het kiezen tussen een random nootduur of nootduur die je zelf kiest
 sample = []
 print("------------------------")
 print("Hoelang duurt je noot?")
@@ -42,6 +50,9 @@ print("typ ja of nee!")
 print("------------------------")
 zelfKiezen = input("")
 
+# hier maakt python de keuze
+# bij JA zul je voor elke stap in de sequence een nootduur
+# bij NEE zal de nootduur random zijn
 if zelfKiezen == "ja":
     print("------------------------------")
     print("Kies uit:")
@@ -66,6 +77,10 @@ if zelfKiezen == "nee":
     while a < (1 + hoeveelKeerSpelen):
         sample.append(random.randint(1,5))
         a += 1
+
+# de loop waar de sequence zich afspeeld
+# de loop zal hoeveelKeerSpelen vaak loopen
+# elke loop zal ((BPM/sample) sample = duratie van de noot) zo lang vertraagd worden voor de volgende loop
 
 async def seq():
     i = 1
