@@ -50,27 +50,35 @@ for i in (duratieNoot):
 
 # hier convert je de 16e stappen weer naar tijds intervallen
 tijdStempels = []
-tijdVan1Zestiende = BPM
+tijdVan1Zestiende = BPM 
 for i in tijd16eNoten:
     tijdStempels.append(float(i * tijdVan1Zestiende))
 
-tijdBegin = time.time()
 
-print(tijdStempels)
 
 if tijdStempels:
     ts = tijdStempels.pop(0)
+stopTijd = tijdStempels[-1]
 
+tijdBegin = time.time()
+
+# tijdlijn met de heletijd + 0.001 time sleep
+# speeld sample de heletijd op de timestamps
 while True:       
+    # maak tijd 0 (hierbij komt de heletijd + 0.001)
     now = time.time() - tijdBegin
+    # als de timestamp zelfde = als de tijd, speel af!
     if (now >= ts):
-        print(ts)
         kick.play()
+        print(ts)
+        # als ie is gespeeld haal hem eruit
         if tijdStempels:
             ts = tijdStempels.pop(0)
-            
+        # als alle dingen uit array zijn stop maar!
+        else:
+            break
     time.sleep(0.001)
-time.sleep(tijd16eNoten[-1])
+time.sleep(stopTijd)
 
 
 

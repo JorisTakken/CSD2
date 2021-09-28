@@ -42,7 +42,7 @@ BPMinput = int(BPMinput)
 BPM = 60 / BPMinput
 
 # dit is de input voor het kiezen tussen een random nootduur of nootduur die je zelf kiest
-sample = []
+duratieNoot = []
 print("------------------------")
 print("Hoelang duurt je noot?")
 print("Wil je dat zelf kiezen?")
@@ -65,17 +65,17 @@ if zelfKiezen == "ja":
         keuze = int(keuze)
 
         if(keuze == 4):
-            sample.append(4)
+            duratieNoot.append(4)
         if(keuze == 2):
-            sample.append(2)
+            duratieNoot.append(2)
         if(keuze == 1):
-            sample.append(1)
+            duratieNoot.append(1)
         i += 1
 
 if zelfKiezen == "nee":
     a = 1
     while a < (1 + hoeveelKeerSpelen):
-        sample.append(random.randint(1,5))
+        duratieNoot.append(random.randint(1,5))
         a += 1
 
 # de loop waar de sequence zich afspeeld
@@ -85,7 +85,7 @@ if zelfKiezen == "nee":
 async def seq():
     i = 1
     while i < (1 + hoeveelKeerSpelen):
-        for i in sample:
+        for i in duratieNoot:
             asyncio.create_task(asyncio.sleep(1))
             
             if welkeSampleInput == "kick":
