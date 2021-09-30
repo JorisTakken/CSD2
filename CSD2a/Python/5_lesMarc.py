@@ -30,11 +30,11 @@ snare_event = {
 
 
 def event_maneger(event):
-    print(hat_event)
+    # print(hat_event)
     event['instrument'].play()
 
 event_maneger(hat_event)
-event_maneger(snare_event)
+# event_maneger(snare_event)
 
 while True:
     print("a")
