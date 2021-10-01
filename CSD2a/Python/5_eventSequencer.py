@@ -35,35 +35,68 @@ BPMAcht = BPMKwart /2              #= 1/8 noot
 # plekken van waar ze gaan bangen
 plekHat = [0,1,2,3,4,5,6,7]
 plekSnare = [2,6]
-plekKick= [0,2,4,6]
+plekKick = [0,2,4,6]
 
+# stampsKick = []
+# stampsHat = []
+# stampsSnare = []
 
 hat_event = {
+    "stampsMS" : [],
     "plek" : plekHat,
     "instrument" : hat,
 }
 
 snare_event = {
+    "stampsMS" : [],
     "plek" : plekSnare,
     "instrument" : snare,
 }
 
 kick_event = {
+    "stampsMS" : [],
     "plek" : plekKick,
     "instrument" : kick,
 }
 
 
 # maak met de arrays in de events de timestamps
-def timestamps(plek):
-    timeStamps = []
+def timestampsMaken(plek,stamps):
     for i in plek['plek']:
-        timeStamps.append(float(i * BPMAcht))
+        stamps["stampsMS"].append(float(i * BPMAcht))
     # print(timeStamps)
+
+
+
+def stempels(stempel):
+    stempel["stampsMS"]
+
+
+
 
 # maak een event waarmee je de sample speelt
 def geluidSpelen(speel):
     speel['instrument'].play() 
+
+
+
+
+
+
+
+
+
+
+
+
+# tijdBegin = time.time()
+
+# while True:       
+#     now = time.time() - tijdBegin
+#     if (now >= stampsSnare):
+#         print("ja")
+#     time.sleep(0.001)
+# time.sleep(stopTijd)
 
 
 
