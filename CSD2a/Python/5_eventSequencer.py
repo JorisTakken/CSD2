@@ -30,7 +30,7 @@ hoelangSeq = 8
 
 BPMinput = 120
 BPMKwart = (60.0 / BPMinput)      #= 1/4 noot  
-BPMAcht = BPMKwart /2              #= 1/8 noot  
+BPMAcht = BPMKwart / 2            #= 1/8 noot  
 
 # plekken van waar ze gaan bangen
 plekHat = [0,1,2,3,4,5,6,7]
