@@ -40,45 +40,22 @@ def event(instrument,stamps):
         "timestamps" : stamps    
     }
 
-
-
-
 # plekken van waar ze gaan bangen
 plekHat = [1,2,3,4,5,6,7,8]
 plekSnare = [3,7]
 plekKick = [1,3,5,7]
 
-
-print("------------------------")
-print("wil je een standaard drumpatroon of een random drumpartoon?")
-print("standaard = 1")
-print("random = 0")
-print("------------------------")
-standRand = int(input())
-
 allesBijElkaar = []
-if standRand == 1: 
+
 # maak een event array waarin alle waardes van instrumenten in zitten.
-    for i in plekKick:
-        allesBijElkaar.append(event('kick',BPMAcht * i))
+for i in plekKick:
+    allesBijElkaar.append(event('kick',BPMAcht * i))
 
-    for i in plekSnare:
-        allesBijElkaar.append(event('snare',BPMAcht * i))
+for i in plekSnare:
+    allesBijElkaar.append(event('snare',BPMAcht * i))
 
-    for i in plekHat:
-        allesBijElkaar.append(event('hat',BPMAcht * i))
-
-
-if standRand == 0:
-    for i in plekKick:
-        allesBijElkaar.append(event('kick',random.random()))
-
-    for i in plekSnare:
-        allesBijElkaar.append(event('snare',random.random()))
-
-    for i in plekHat:
-        allesBijElkaar.append(event('hat',random.random()))
-
+for i in plekHat:
+    allesBijElkaar.append(event('hat',BPMAcht * i))
 
 # een kopie van de array die ik later dan kan gebruiken om de array weer te vullen
 copie = allesBijElkaar.copy()
@@ -102,9 +79,6 @@ while True:
             if i["instrument"] == 'hat':
                 hat.play()
                 
-            
-           
-
             # elke keer als er een geluid is gespeeld moet er 1 geluid weg
             allesBijElkaar.remove(i)
 
