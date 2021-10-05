@@ -1,6 +1,7 @@
 import simpleaudio as sa
 import time
 import json
+import random
 
 hat = sa.WaveObject.from_wave_file("samples_drumstel/hat.wav") 
 snare = sa.WaveObject.from_wave_file("samples_drumstel/snare.wav")
@@ -30,12 +31,8 @@ BPMinput = 120
 BPMKwart = (60.0 / BPMinput)      #= 1/4 noot  
 BPMAcht = BPMKwart / 2            #= 1/8 noot  
 
-# plekken van waar ze gaan bangen
-plekHat = [1,2,3,4,5,6,7,8]
-plekSnare = [3,7]
-plekKick = [0,3,5,7]
-
 timestamps = []
+
 # maak een event
 def event(instrument,stamps):
     return{
@@ -44,49 +41,70 @@ def event(instrument,stamps):
     }
 
 
-# maak een event array waarin alle waardes van instrumenten in zitten.
+
+
+# plekken van waar ze gaan bangen
+plekHat = [1,2,3,4,5,6,7,8]
+plekSnare = [3,7]
+plekKick = [1,3,5,7]
+
+
+print("------------------------")
+print("wil je een standaard drumpatroon of een random drumpartoon?")
+print("standaard = 1")
+print("random = 0")
+print("------------------------")
+standRand = int(input())
+
 allesBijElkaar = []
-for i in plekKick:
-    allesBijElkaar.append(event('kick',BPMAcht * i))
+if standRand == 1: 
+# maak een event array waarin alle waardes van instrumenten in zitten.
+    for i in plekKick:
+        allesBijElkaar.append(event('kick',BPMAcht * i))
 
-for i in plekSnare:
-    allesBijElkaar.append(event('snare',BPMAcht * i))
+    for i in plekSnare:
+        allesBijElkaar.append(event('snare',BPMAcht * i))
 
-for i in plekHat:
-    allesBijElkaar.append(event('hat',BPMAcht * i))
-
-
-
-
+    for i in plekHat:
+        allesBijElkaar.append(event('hat',BPMAcht * i))
 
 
+if standRand == 0:
+    for i in plekKick:
+        allesBijElkaar.append(event('kick',random.random()))
+
+    for i in plekSnare:
+        allesBijElkaar.append(event('snare',random.random()))
+
+    for i in plekHat:
+        allesBijElkaar.append(event('hat',random.random()))
+
+
+# een kopie van de array die ik later dan kan gebruiken om de array weer te vullen
 copie = allesBijElkaar.copy()
-
-
-
-# we halen de eerste eruit anders klopt er niets van
-if allesBijElkaar:
-    weg = allesBijElkaar.pop(0)
 
 # maak een 0 tijd 
 tijdBegin = time.time()
 
 while True:
+
     # nu is de tijd die begint bij 0 oplopend
     nu = time.time() - tijdBegin
+
     for i in allesBijElkaar:
         # als het geluid van de kick matcht met de timestamp op dat moment speelt er een kick en zo voort
-        if (nu >= i['timestamps']):
+        if (nu >= i['timestamps']): 
+            print("-=-")
             if i["instrument"] == 'kick':
-                print("kick" , i['timestamps'])
                 kick.play()
             if i["instrument"] == 'snare':
-                print("snare" , i['timestamps'])
                 snare.play()
             if i["instrument"] == 'hat':
-                print("hat" , i['timestamps'])
                 hat.play()
                 
+            
+           
+
             # elke keer als er een geluid is gespeeld moet er 1 geluid weg
             allesBijElkaar.remove(i)
 
@@ -100,4 +118,5 @@ while True:
                 copie = allesBijElkaar.copy()  
 
     time.sleep(0.001)
+   
 
