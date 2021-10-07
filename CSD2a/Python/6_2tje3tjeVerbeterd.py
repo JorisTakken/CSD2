@@ -1,13 +1,3 @@
-# lijst vullen 
-
-# een functie die het op basis van 3tje in combi met 3tjes doent 
-# een functie die het met 3tjes doet 
-# een functie die het met 2tjes doet
-
-# hij hihat word random 2tjes en 3tjes
-# snare word in 3tjes met zelfde tijd als 2tje van kick
-# kick word 2tjes
-
 import simpleaudio as sa
 import time
 import json
@@ -32,6 +22,13 @@ def event_instrument(instrument,stamps):
         "timestamps" : stamps    
     }
 
+def event_stamps(welkBlok,plek,BPM):
+    return{
+        "instrument" : welkBlok,
+        "plek" : plek,
+        "BPM" : BPM    
+    }
+
 # arrays voor welke plekken er beschikbaar zijn in de groepen
 plekTweetje = [1,2]
 plekDrietje = [1,2,3]
@@ -39,88 +36,60 @@ plekVijftje = [1,2,3,4,5]
 plekAchtje = [1,2,3,4,5,6,7,8]
 
 # arrays voor de timestamps van de groepen 
-eenTweeArray = []
-eenDrieArray = []
-eenVijfArray = []
-eenAchtArray = []
-
-
+stempels = []
 
 def tweetje():
     for i in plekTweetje:
         rand = random.randint(1,100)
         # dus hij zal vaker op de 1 een beat geven dan op de 2
         if (rand <= 80):
-            eenTweeArray.append(i)
+            stempels.append(event_stamps("twee",i,BPMHalf))
 
 def drietje():
     for i in plekDrietje:
         rand1 = random.randint(1,100)
          # dus hij zal vaker op de 1 een beat geven dan op de 2
         if (rand1 <= 50):
-            eenDrieArray.append(i)
+            stempels.append(event_stamps("drie",i,BPMDrie))
 
 def vijfje():
     for i in plekVijftje:
         rand2 = random.randint(1,100)
         # dus hij zal vaker op de 1 een beat geven dan op de 2
         if (rand2 <= 70):
-            eenVijfArray.append(i)
+            stempels.append(event_stamps("vijf",i,BPMVijf))
 
 def achtje():
     for i in plekAchtje:
         rand3 = random.randint(1,100)
         # dus hij zal vaker op de 1 een beat geven dan op de 2
         if (rand3 <= 70):
-            eenAchtArray.append(i)
+            stempels.append(event_stamps("acht",i,BPMAcht))
 
 # de timestamps van alle instrumenten / lengtesworden in 1 lijst gestopt samen met de instrument Naam
 alleStamps = []
-
-def tweetjeStamps():
+ 
+def bijElkaar():
     tweetje()
-    eenTweeArray.sort()
-    for i in eenTweeArray:
-        # elke keer als er een timestamp is ingevult zal de plek voorheen verwijderd worden.
-        # anders zal de volgende array nog een keer de timestamps hebben als de vorige
-        alleStamps.append(event_instrument('kick',BPMHalf * i))
-        eenTweeArray.remove(i)
-    
-def drietjeStamps():
     drietje()
-    eenDrieArray.sort()
-    for i in eenDrieArray:
-        alleStamps.append(event_instrument('snare',BPMDrie * i))
-        eenDrieArray.remove(i)
-
-def vijfjeStamps():
     vijfje()
-    eenVijfArray.sort()
-    for i in eenVijfArray:
-        alleStamps.append(event_instrument('hat',BPMVijf * i))
-        eenVijfArray.remove(i)
-
-def achtjeStamps():
     achtje()
-    eenAchtArray.sort()
-    for i in eenAchtArray:
-        rand4 = random.randint(1,100)
-        # er is dus 50% kans dat de hoge bongo word aangeslagen
-        if (rand4 <= 50):
-            alleStamps.append(event_instrument('bongo1',BPMVijf * i))
-            eenAchtArray.remove(i)   
-        else:
-            alleStamps.append(event_instrument('bongo2',BPMVijf * i))
-            eenAchtArray.remove(i)   
+    # stempels['plek'].sort()
+    samples = ['kick','snare','hat','bongo1','bongo2']
+    for i in stempels:
+        alleStamps.append(event_instrument(samples[0],i['plek'] * i['BPM']))
+        alleStamps.append(event_instrument(samples[1],i['plek'] * i['BPM']))
+        alleStamps.append(event_instrument(samples[2],i['plek'] * i['BPM']))
+        alleStamps.append(event_instrument(samples[3],i['plek'] * i['BPM']))
+        alleStamps.append(event_instrument(samples[4],i['plek'] * i['BPM']))
 
 
-        
+
+bijElkaar()
+print(alleStamps)
     
 # roep de eerste timestamps aan, later worden deze verwijderd en vernieuwd
-tweetjeStamps()   
-drietjeStamps()
-vijfjeStamps()
-achtjeStamps()
+
 # maak een 0 tijd 
 tijdBegin = time.time()
 
@@ -148,10 +117,7 @@ while True:
             # elke keer als de lijst leeg is zal er een nieuwe begin tijd komen
             # de lijst zal ook elke keer weer gevult worden
             if alleStamps == []:
-                achtjeStamps()
-                tweetjeStamps()   
-                drietjeStamps()
-                vijfjeStamps()
+             
                 print("-=-=-=-=-=-=-=-=-=-=-=-=-")
                 tijdBegin = time.time()
                 nu = time.time() - tijdBegin
