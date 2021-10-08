@@ -1,17 +1,16 @@
 import simpleaudio as sa
 import time
-import json
 import random
 
 hat = sa.WaveObject.from_wave_file("samples_drumstel/hat.wav") 
-snare = sa.WaveObject.from_wave_file("samples_drumstel/snare.wav")
+z = sa.WaveObject.from_wave_file("samples_drumstel/snare.wav")
 kick = sa.WaveObject.from_wave_file("samples_drumstel/kick.wav")
 bongo1 = sa.WaveObject.from_wave_file("samples_drumstel/bongo1.wav")
 bongo2 = sa.WaveObject.from_wave_file("samples_drumstel/bongo2.wav")
 
 BPMinput = 120
-BPMHeel = (60.0 / BPMinput) *2   #= 1 hele noot  
-BPMHalf = BPMHeel / 2            #= 1/2 noot  
+BPMHeel = (60.0 / BPMinput) * 2   #= 1 hele noot  
+BPMTwee = BPMHeel / 2            #= 1/2 noot  
 BPMDrie = BPMHeel / 3            #= 1/3 noot  
 BPMVijf = BPMHeel / 5            #= 1/5 noot
 BPMAcht = BPMHeel / 8            #= 1/8 noot
@@ -22,11 +21,10 @@ def event_instrument(instrument,stamps):
         "timestamps" : stamps    
     }
 
-def event_stamps(welkBlok,plek,BPM):
+def event_stamps(welkBlok,plek):
     return{
-        "instrument" : welkBlok,
-        "plek" : plek,
-        "BPM" : BPM    
+        "welkBlok" : welkBlok,
+        "plek" : plek,   
     }
 
 # arrays voor welke plekken er beschikbaar zijn in de groepen
@@ -38,54 +36,55 @@ plekAchtje = [1,2,3,4,5,6,7,8]
 # arrays voor de timestamps van de groepen 
 stempels = []
 
-def tweetje():
+def randomD():
     for i in plekTweetje:
         rand = random.randint(1,100)
         # dus hij zal vaker op de 1 een beat geven dan op de 2
         if (rand <= 80):
             stempels.append(event_stamps("twee",i))
 
-def drietje():
     for i in plekDrietje:
         rand1 = random.randint(1,100)
-         # dus hij zal vaker op de 1 een beat geven dan op de 2
-        if (rand1 <= 50):
-            stempels.append(event_stamps("drie",i,BPMDrie))
-
-def vijfje():
+        # dus hij zal vaker op de 1 een beat geven dan op de 2
+        if (rand1 <= 80):
+            stempels.append(event_stamps("drie",i))
+        
     for i in plekVijftje:
         rand2 = random.randint(1,100)
         # dus hij zal vaker op de 1 een beat geven dan op de 2
-        if (rand2 <= 70):
-            stempels.append(event_stamps("vijf",i,BPMVijf))
+        if (rand2 <= 80):
+            stempels.append(event_stamps("vijf",i))
 
-def achtje():
     for i in plekAchtje:
         rand3 = random.randint(1,100)
         # dus hij zal vaker op de 1 een beat geven dan op de 2
-        if (rand3 <= 70):
-            stempels.append(event_stamps("acht",i,BPMAcht))
+        if (rand3 <= 80):
+            stempels.append(event_stamps("acht",i))
+
+
+
+
 
 # de timestamps van alle instrumenten / lengtesworden in 1 lijst gestopt samen met de instrument Naam
 alleStamps = []
- 
+
 def bijElkaar():
-    tweetje()
-    drietje()
-    vijfje()
-    achtje()
-    # stempels['plek'].sort()
+    randomD()
+    
     samples = ['kick','snare','hat','bongo1','bongo2']
     for i in stempels:
-        if i['instrument'] == "kick":
-            alleStamps.append(event_instrument(samples[0],i['twee']))
-        
+        if i['welkBlok'] == "twee":
+            alleStamps.append(event_instrument(samples[0],i['plek']*BPMTwee))
+        if i['welkBlok'] == "drie":
+            alleStamps.append(event_instrument(samples[1],i['plek']*BPMDrie))
+        if i['welkBlok'] == "vijf":
+            alleStamps.append(event_instrument(samples[2],i['plek']*BPMVijf))
 
+        # alleStamps.append(event_instrument(samples[3],i['plek']*BPMAcht))
+        # alleStamps.append(event_instrument(samples[4],i['plek']*BPMAcht))
 
 bijElkaar()
 print(alleStamps)
-    
-# roep de eerste timestamps aan, later worden deze verwijderd en vernieuwd
 
 # maak een 0 tijd 
 tijdBegin = time.time()
@@ -99,10 +98,10 @@ while True:
             print("-=-")
             if i["instrument"] == 'kick':
                 kick.play()
-            # if i["instrument"] == 'snare':
-            #     snare.play()
-            # if i["instrument"] == 'hat':
-            #     hat.play()
+            if i["instrument"] == 'snare':
+                snare.play()
+            if i["instrument"] == 'hat':
+                hat.play()
             # if i["instrument"] == 'bongo1':
             #     bongo1.play()
             # if i["instrument"] == 'bongo2':
@@ -114,10 +113,10 @@ while True:
             # elke keer als de lijst leeg is zal er een nieuwe begin tijd komen
             # de lijst zal ook elke keer weer gevult worden
             if alleStamps == []:
-             
                 print("-=-=-=-=-=-=-=-=-=-=-=-=-")
                 tijdBegin = time.time()
                 nu = time.time() - tijdBegin
+                 
                 
                 
                 

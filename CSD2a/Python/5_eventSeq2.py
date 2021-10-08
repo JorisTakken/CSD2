@@ -50,10 +50,8 @@ allesBijElkaar = []
 # maak een event array waarin alle waardes van instrumenten in zitten.
 for i in plekKick:
     allesBijElkaar.append(event('kick',BPMAcht * i))
-
 for i in plekSnare:
     allesBijElkaar.append(event('snare',BPMAcht * i))
-
 for i in plekHat:
     allesBijElkaar.append(event('hat',BPMAcht * i))
 
@@ -64,7 +62,6 @@ copie = allesBijElkaar.copy()
 tijdBegin = time.time()
 
 while True:
-
     # nu is de tijd die begint bij 0 oplopend
     nu = time.time() - tijdBegin
 
