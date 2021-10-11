@@ -2,14 +2,15 @@ import simpleaudio as sa
 import time
 import random
 
+
 hat = sa.WaveObject.from_wave_file("samples_drumstel/hat.wav") 
-z = sa.WaveObject.from_wave_file("samples_drumstel/snare.wav")
+snare = sa.WaveObject.from_wave_file("samples_drumstel/snare.wav")
 kick = sa.WaveObject.from_wave_file("samples_drumstel/kick.wav")
 bongo1 = sa.WaveObject.from_wave_file("samples_drumstel/bongo1.wav")
 bongo2 = sa.WaveObject.from_wave_file("samples_drumstel/bongo2.wav")
 
 BPMinput = 120
-BPMHeel = (60.0 / BPMinput) * 2   #= 1 hele noot  
+BPMHeel = (60.0 / BPMinput) * 2  #= 1 hele noot  
 BPMTwee = BPMHeel / 2            #= 1/2 noot  
 BPMDrie = BPMHeel / 3            #= 1/3 noot  
 BPMVijf = BPMHeel / 5            #= 1/5 noot
@@ -40,14 +41,24 @@ def randomD():
     for i in plekTweetje:
         rand = random.randint(1,100)
         # dus hij zal vaker op de 1 een beat geven dan op de 2
-        if (rand <= 80):
+        if (rand <= 50):
             stempels.append(event_stamps("twee",i))
 
     for i in plekDrietje:
-        rand1 = random.randint(1,100)
+        rand10 = random.randint(1,100)
+        rand11 = random.randint(1,100)
+        rand12 = random.randint(1,100)
         # dus hij zal vaker op de 1 een beat geven dan op de 2
-        if (rand1 <= 80):
-            stempels.append(event_stamps("drie",i))
+        if (rand10 <= 50):
+            stempels.append(event_stamps("drie",plekDrietje[0]))
+            print('1')
+        if (rand11 <= 25):
+            stempels.append(event_stamps("drie",plekDrietje[1]))
+            print('2')
+        if (rand12 <= 50):
+            stempels.append(event_stamps("drie",plekDrietje[2]))
+            print('3')
+        
         
     for i in plekVijftje:
         rand2 = random.randint(1,100)
@@ -61,30 +72,36 @@ def randomD():
         if (rand3 <= 80):
             stempels.append(event_stamps("acht",i))
 
-
-
-
-
 # de timestamps van alle instrumenten / lengtesworden in 1 lijst gestopt samen met de instrument Naam
 alleStamps = []
 
+# hierin worden de plekken van de timestamps geconverteerd naar MS
 def bijElkaar():
     randomD()
     
     samples = ['kick','snare','hat','bongo1','bongo2']
     for i in stempels:
+        rand4 = random.randint(1,100)
         if i['welkBlok'] == "twee":
             alleStamps.append(event_instrument(samples[0],i['plek']*BPMTwee))
         if i['welkBlok'] == "drie":
             alleStamps.append(event_instrument(samples[1],i['plek']*BPMDrie))
         if i['welkBlok'] == "vijf":
             alleStamps.append(event_instrument(samples[2],i['plek']*BPMVijf))
+        
+        if i['welkBlok'] == "acht":
+            if (rand4 <= 50):
+                alleStamps.append(event_instrument(samples[3],i['plek']*BPMAcht))
+            else:
+                alleStamps.append(event_instrument(samples[4],i['plek']*BPMAcht))
+        stempels.clear()
+        
 
-        # alleStamps.append(event_instrument(samples[3],i['plek']*BPMAcht))
-        # alleStamps.append(event_instrument(samples[4],i['plek']*BPMAcht))
+    # als ie alle timestamps heeft gemaakt mag de lijst gecleard worden voor een nieuwe reeks
+    
 
+# roep voor de eerste keer de functie aan
 bijElkaar()
-print(alleStamps)
 
 # maak een 0 tijd 
 tijdBegin = time.time()
@@ -95,17 +112,17 @@ while True:
     for i in alleStamps:
         # als het geluid van de kick matcht met de timestamp op dat moment speelt er een kick en zo voort
         if (nu >= i['timestamps']): 
-            print("-=-")
             if i["instrument"] == 'kick':
                 kick.play()
             if i["instrument"] == 'snare':
                 snare.play()
             if i["instrument"] == 'hat':
                 hat.play()
-            # if i["instrument"] == 'bongo1':
-            #     bongo1.play()
-            # if i["instrument"] == 'bongo2':
-            #     bongo2.play()
+
+            if i["instrument"] == 'bongo1':
+                bongo1.play()
+            if i["instrument"] == 'bongo2':
+                bongo2.play()
                 
             # elke keer als er een geluid is gespeeld moet er 1 geluid weg
             alleStamps.remove(i)
@@ -116,7 +133,7 @@ while True:
                 print("-=-=-=-=-=-=-=-=-=-=-=-=-")
                 tijdBegin = time.time()
                 nu = time.time() - tijdBegin
-                 
+                bijElkaar()
                 
                 
                 
