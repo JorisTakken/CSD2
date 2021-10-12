@@ -1,19 +1,7 @@
-
-
-
-
-
-# in deze is het totaal random wanneer de samples worden gespeeld.
-
-
-
-
-
-
-
 import simpleaudio as sa
 import time
 import random
+import wave
 
 hat = sa.WaveObject.from_wave_file("samples_drumstel/hat.wav") 
 snare = sa.WaveObject.from_wave_file("samples_drumstel/snare.wav")
@@ -21,7 +9,12 @@ kick = sa.WaveObject.from_wave_file("samples_drumstel/kick.wav")
 bongo1 = sa.WaveObject.from_wave_file("samples_drumstel/bongo1.wav")
 bongo2 = sa.WaveObject.from_wave_file("samples_drumstel/bongo2.wav")
 
-BPMinput = 120
+# kies een BPM
+print("---------------------")
+print("wat voor BPM kies je?")
+print("---------------------")
+BPMinput = float(input())
+
 BPMHeel = (60.0 / BPMinput) * 2  #= 1 hele noot  
 BPMTwee = BPMHeel / 2            #= 1/2 noot  
 BPMDrie = BPMHeel / 3            #= 1/3 noot  
@@ -113,18 +106,24 @@ while True:
     for i in alleStamps:
         # als het geluid van de kick matcht met de timestamp op dat moment speelt er een kick en zo voort
         if (nu >= i['timestamps']): 
-            print("-=-")
             if i["instrument"] == 'kick':
                 kick.play()
+                print("                                                     ʕ•ᴥ•ʔ")
             if i["instrument"] == 'snare':
                 snare.play()
+                print("                         (▀̿Ĺ̯▀̿ ̿)")
             if i["instrument"] == 'hat':
                 hat.play()
+                print("(͡• ͜ʖ ͡•)")
+
 
             if i["instrument"] == 'bongo1':
                 bongo1.play()
+                print("         (；☉_☉)")
             if i["instrument"] == 'bongo2':
                 bongo2.play()
+                print("                                     (☉_☉ ；)")
+
                 
             # elke keer als er een geluid is gespeeld moet er 1 geluid weg
             alleStamps.remove(i)
@@ -132,7 +131,9 @@ while True:
             # elke keer als de lijst leeg is zal er een nieuwe begin tijd komen
             # de lijst zal ook elke keer weer gevult worden
             if alleStamps == []:
-                print("-=-=-=-=-=-=-=-=-=-=-=-=-")
+                print(" ")
+                print("༼ ºل͟º ༼ ºل͟º ༼ ºل͟º ༽ ºل͟º ༽ ºل͟º ༽   ༼ ºل͟º ༼ ºل͟º ༼ ºل͟º ༽ ºل͟º ༽ ºل͟º ༽")
+                print(" ")
                 tijdBegin = time.time()
                 nu = time.time() - tijdBegin
                 bijElkaar()
