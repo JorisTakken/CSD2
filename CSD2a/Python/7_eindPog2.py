@@ -30,6 +30,12 @@ print("wat voor BPM kies je?")
 print("---------------------")
 BPMinput = float(input())
 
+# hoevaak wil je de loop afspelen
+print("---------------------")
+print("hoevaak wil je de loop afspelen")
+print("---------------------")
+hoevaakLoop = float(input())
+
 BPMHeel = (60.0 / BPMinput) * 2  #= 1 hele noot  
 BPMTwee = BPMHeel / 2            #= 1/2 noot  
 BPMDrie = BPMHeel / 3            #= 1/3 noot  
@@ -106,8 +112,6 @@ def randomD():
 # de timestamps van alle instrumenten / lengtesworden in 1 lijst gestopt samen met de instrument Naam
 alleStamps = []
 
-
-
 # hierin worden de plekken van de timestamps geconverteerd naar MS
 def bijElkaar():
     randomD()
@@ -133,52 +137,82 @@ def bijElkaar():
 # roep voor de eerste keer de functie aan
 bijElkaar()
 
+# maak een copie van de stempels waar ze op gespeeld moeten worden zodat we ze later weer kunnen afspelen.
+# Ik maak er 2 voor het afspelen van steeds de zelfde en voor het einde (wil je hem nog eemn keer horen, dan word de 2e copie gebruikt
+copieVstampels = alleStamps.copy()
+copieVanstampels = alleStamps.copy()
+
 # maak een 0 tijd 
 tijdBegin = time.time()
 
 while True:
-    # nu is de tijd die begint bij 0 oplopend
-    nu = time.time() - tijdBegin
-    for i in alleStamps:
-        # als het geluid van de kick matcht met de timestamp op dat moment speelt er een kick en zo voort
-        if (nu >= i['timestamps']): 
-            if i["instrument"] == 'kick':
-                kick.play()
-                print("                      |          ʕ•ᴥ•ʔ")
-            if i["instrument"] == 'snare':
-                snare.play()
-                print("                      |                    (▀̿Ĺ̯▀̿ ̿)")
-            if i["instrument"] == 'hat':
-                hat.play()
-                print("                      |                             (͡• ͜ʖ ͡•)")
+
+    a = 0
+    while a < hoevaakLoop: 
+        # nu is de tijd die begint bij 0 oplopend
+        nu = time.time() - tijdBegin
+        for i in alleStamps:
+            # als het geluid van de kick matcht met de timestamp op dat moment speelt er een kick en zo voort
+            if (nu >= i['timestamps']): 
+                if i["instrument"] == 'kick':
+                    kick.play()
+                    print("                      |          ʕ•ᴥ•ʔ")
+                if i["instrument"] == 'snare':
+                    snare.play()
+                    print("                      |                    (▀̿Ĺ̯▀̿ ̿)")
+                if i["instrument"] == 'hat':
+                    hat.play()
+                    print("                      |                             (͡• ͜ʖ ͡•)")
 
 
-            if i["instrument"] == 'bongo1':
-                bongo1.play()
-                print("         (；☉_☉)")
-            if i["instrument"] == 'bongo2':
-                bongo2.play()
-                print("(☉_☉ ；)")
+                if i["instrument"] == 'bongo1':
+                    bongo1.play()
+                    print("         (；☉_☉)")
+                if i["instrument"] == 'bongo2':
+                    bongo2.play()
+                    print("(☉_☉ ；)")
+
+                    
+                # elke keer als er een geluid is gespeeld moet er 1 geluid weg
+                alleStamps.remove(i)
+
+                # elke keer als de lijst leeg is zal er een nieuwe begin tijd komen
+                # de lijst zal ook elke keer weer gevult worden
+                if alleStamps == []:
+                    print("--------------------------------------------------------------------------")
+                    print("")
+                    print("༼ ºل͟º ༼ ºل͟º ༼ ºل͟º ༽ ºل͟º ༽ ºل͟º ༽   ༼ ºل͟º ༼ ºل͟º ༼ ºل͟º ༽ ºل͟º ༽ ºل͟º ༽")
+                    print("--------------------------------------------------------------------------")
+                    tijdBegin = time.time()
+                    nu = time.time() - tijdBegin
+                    if a == hoevaakLoop: 
+                        print("----")
+                    else:
+                        alleStamps = copieVstampels  
+                        copieVstampels = alleStamps.copy()
+
+                    
+                    a += 1
+                    if a == hoevaakLoop:
+                        nu = 0 
+                        print("----------------------------------")
+                        print("nog een keer de zelfde luisten of een nieuwe?")
+                        print("opnieuw == 0")
+                        print("een andere == 1")
+                        print("----------------------------------")
+                        opnieuw = input(int())
+
+                        if opnieuw == 0:
+                            alleStamps = copieVanstampels  
+                            copieVanstampels = alleStamps.copy()
+                        if opnieuw == 1:
+                            print("een andere")
+                        
+
+
+
 
                 
-            # elke keer als er een geluid is gespeeld moet er 1 geluid weg
-            alleStamps.remove(i)
-
-            # elke keer als de lijst leeg is zal er een nieuwe begin tijd komen
-            # de lijst zal ook elke keer weer gevult worden
-            if alleStamps == []:
-                print("--------------------------------------------------------------------------")
-                print("")
-                print("༼ ºل͟º ༼ ºل͟º ༼ ºل͟º ༽ ºل͟º ༽ ºل͟º ༽   ༼ ºل͟º ༼ ºل͟º ༼ ºل͟º ༽ ºل͟º ༽ ºل͟º ༽")
-                print("--------------------------------------------------------------------------")
-                tijdBegin = time.time()
-                nu = time.time() - tijdBegin
-                bijElkaar()
-
-
-
-
                 
                 
-                
-                
+        

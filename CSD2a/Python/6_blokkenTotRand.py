@@ -1,7 +1,6 @@
 import simpleaudio as sa
 import time
 import random
-import wave
 
 hat = sa.WaveObject.from_wave_file("samples_drumstel/hat.wav") 
 snare = sa.WaveObject.from_wave_file("samples_drumstel/snare.wav")
