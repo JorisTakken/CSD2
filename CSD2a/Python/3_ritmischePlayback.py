@@ -1,8 +1,7 @@
 # importeer functies die ik nodig ga hebben voor de opdracht
 import asyncio 
 import time
-import simpleaudio as sa
-import keyboard
+import simpleaudio as sa 
 import random
 
 

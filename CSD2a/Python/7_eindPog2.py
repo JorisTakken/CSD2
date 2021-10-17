@@ -76,8 +76,8 @@ def randomD():
     # Drietje (snare)
     # ------------------------------------------------
     plekkenSnare = [1,2,3]
-    kansSnare = [50,25,40]
-    # snare op 1 = 50 % kans
+    kansSnare = [70,40,50]
+    # snare op 1 = 70 % kans
     # snare op 2 = 25 % kans
     # snare op 3 = 50 % kans
     for index, item in enumerate(kansSnare):
@@ -107,8 +107,6 @@ def randomD():
             stempels.append(event_stamps("acht",i))
     # ------------------------------------------------
 
-
-
 # de timestamps van alle instrumenten / lengtesworden in 1 lijst gestopt samen met de instrument Naam
 alleStamps = []
 
@@ -134,23 +132,24 @@ def bijElkaar():
     # als ie alle timestamps heeft gemaakt mag de lijst gecleard worden voor een nieuwe reeks
     stempels.clear()
 
-# roep voor de eerste keer de functie aan
+# vul de lijst met timestamps van de instrumenten
 bijElkaar()
 
 # maak een copie van de stempels waar ze op gespeeld moeten worden zodat we ze later weer kunnen afspelen.
 # Ik maak er 2 voor het afspelen van steeds de zelfde en voor het einde (wil je hem nog eemn keer horen, dan word de 2e copie gebruikt
 copieVstampels = alleStamps.copy()
-copieVanstampels = alleStamps.copy()
 
 # maak een 0 tijd 
 tijdBegin = time.time()
 
 while True:
+    
 
-    a = 0
-    while a < hoevaakLoop: 
+    counter = 0 
+    while counter < 4: 
         # nu is de tijd die begint bij 0 oplopend
         nu = time.time() - tijdBegin
+        
         for i in alleStamps:
             # als het geluid van de kick matcht met de timestamp op dat moment speelt er een kick en zo voort
             if (nu >= i['timestamps']): 
@@ -176,37 +175,52 @@ while True:
                 # elke keer als er een geluid is gespeeld moet er 1 geluid weg
                 alleStamps.remove(i)
 
-                # elke keer als de lijst leeg is zal er een nieuwe begin tijd komen
-                # de lijst zal ook elke keer weer gevult worden
+                # elke keer als de lijst leeg is zal er 
+                # of een nieuwe zelfde lijst komen tenzij
+                # de loop op is (dus al hoevaakLoop) is geweest,
+                # in dat geval zal hij vragen "wil je de zelfde loop of een ander?"
+                # dan zal dus de lijst opnieuw met de zelfde lijst gevult worden of met een nieuwe
                 if alleStamps == []:
-                    print("--------------------------------------------------------------------------")
-                    print("")
-                    print("༼ ºل͟º ༼ ºل͟º ༼ ºل͟º ༽ ºل͟º ༽ ºل͟º ༽   ༼ ºل͟º ༼ ºل͟º ༼ ºل͟º ༽ ºل͟º ༽ ºل͟º ༽")
-                    print("--------------------------------------------------------------------------")
-                    tijdBegin = time.time()
-                    nu = time.time() - tijdBegin
-                    if a == hoevaakLoop: 
-                        print("----")
-                    else:
+                    counter += 1
+                    print(counter)
+                    if counter < hoevaakLoop: 
+                        print("--------------------------------------------------------------------------")
+                        print("")
+                        print("༼ ºل͟º ༼ ºل͟º ༼ ºل͟º ༽ ºل͟º ༽ ºل͟º ༽   ༼ ºل͟º ༼ ºل͟º ༼ ºل͟º ༽ ºل͟º ༽ ºل͟º ༽")
+                        print("--------------------------------------------------------------------------")
+                        tijdBegin = time.time()
+                        nu = time.time() - tijdBegin
                         alleStamps = copieVstampels  
                         copieVstampels = alleStamps.copy()
+                        
+                    else: 
+                        print("-------------------------------------")
+                        print("Wil je nog een keer de zelfde loop?")
+                        print("Zelfde Loop == 0")
+                        print("Nieuwe Loop == 1")
+                        print("-------------------------------------")
+                        opnieuw = int(input())
+                        if opnieuw == 0: 
+                            # speel de oude lijst weer af en begin  weer bij 0
+                            tijdBegin = time.time()
+                            nu = time.time() - tijdBegin
+                            alleStamps = copieVstampels  
+                            copieVstampels = alleStamps.copy()
 
-                    
-                    a += 1
-                    if a == hoevaakLoop:
-                        nu = 0 
-                        print("----------------------------------")
-                        print("nog een keer de zelfde luisten of een nieuwe?")
-                        print("opnieuw == 0")
-                        print("een andere == 1")
-                        print("----------------------------------")
-                        opnieuw = input(int())
-
-                        if opnieuw == 0:
-                            alleStamps = copieVanstampels  
-                            copieVanstampels = alleStamps.copy()
-                        if opnieuw == 1:
-                            print("een andere")
+                        if opnieuw == 1: 
+                            # maak een nieuwe lijst met timestamps en begin weer bij 0
+                            copieVstampels.clear()
+                            alleStamps.clear()
+                            
+                            bijElkaar()
+                            copieVstampels = alleStamps.copy()
+                            tijdBegin = time.time()
+                            nu = time.time() - tijdBegin
+                            alleStamps = copieVstampels  
+                            copieVstampels = alleStamps.copy()
+                            
+                
+                
                         
 
 
