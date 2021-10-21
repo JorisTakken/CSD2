@@ -11,7 +11,7 @@
 # snare heeft 3 plekken over de tijd van de 2 plekken van de Kick
 # snare     50% | 25% | 50%
 
-# Hat heeft 5 plekken over de tijd vand de 2 pekken van de kick
+# Hat heeft 6 plekken over de tijd vand de 2 pekken van de kick
 # hat       1 | 50% | 75% | 50% | 1
 
 import simpleaudio as sa
@@ -38,8 +38,9 @@ hoevaakLoop = float(input())
 
 BPMHeel = (60.0 / BPMinput) * 2  #= 1 hele noot  
 BPMTwee = BPMHeel / 2            #= 1/2 noot  
-BPMDrie = BPMHeel / 3            #= 1/3 noot  
-BPMVijf = BPMHeel / 6            #= 1/5 noot
+BPMDrie = BPMHeel / 3            #= 1/3 noot
+BPMVier = BPMHeel / 4            #= 1/4 noot
+BPMZes = BPMHeel / 6            #= 1/5 noot
 BPMAcht = BPMHeel / 8            #= 1/8 noot
 
 def event_instrument(instrument,stamps):
@@ -75,7 +76,6 @@ def randomD():
 
     # Drietje (snare)
     # ------------------------------------------------
-    plekkenSnare = [1,2,3]
     kansSnare = [70,40,50]
     # snare op 1 = 70 % kans
     # snare op 2 = 25 % kans
@@ -121,7 +121,7 @@ def bijElkaar():
         if i['welkBlok'] == "drie":
             alleStamps.append(event_instrument(samples[1],i['plek']*BPMDrie))
         if i['welkBlok'] == "vijf":
-            alleStamps.append(event_instrument(samples[2],i['plek']*BPMVijf))
+            alleStamps.append(event_instrument(samples[2],i['plek']*BPMZes))
         
         if i['welkBlok'] == "acht":
             if (rand4 <= 50):
@@ -143,10 +143,8 @@ copieVstampels = alleStamps.copy()
 tijdBegin = time.time()
 
 while True:
-    
-
     counter = 0 
-    while counter < 4: 
+    while counter < hoevaakLoop: 
         # nu is de tijd die begint bij 0 oplopend
         nu = time.time() - tijdBegin
         
@@ -162,8 +160,6 @@ while True:
                 if i["instrument"] == 'hat':
                     hat.play()
                     print("                      |                             (͡• ͜ʖ ͡•)")
-
-
                 if i["instrument"] == 'bongo1':
                     bongo1.play()
                     print("         (；☉_☉)")
