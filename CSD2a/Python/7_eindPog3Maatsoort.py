@@ -17,10 +17,11 @@ BPMHeel = (60.0 / BPMinput) * 4  #= 1 hele noot
 print("hoevaak wil je de loop afspelen")
 hoevaakLoop = float(input())
 
-def event_instrument(instrument,stamps):
+def event_instrument(instrument,stamps,sample):
     return{
         "instrument" : instrument,
-        "timestamps" : stamps    
+        "timestamps" : stamps,    
+        "sample" : sample
     }
 
 def event_stamps(welkBlok,plek):
@@ -114,19 +115,19 @@ def bijElkaar():
     for plek in stempels:
         rand4 = random.randint(1,100)
         if plek['welkBlok'] == "kickplek":
-            alleStamps.append(event_instrument(samples[0],plek['plek']*kick_omrekeken)) # dus nu zijn er 4 plekken beschikbaar en 2 daarvan worden gebruikt bij 4/4                                                                                                                                                     
+            alleStamps.append(event_instrument(samples[0],plek['plek']*kick_omrekeken,kick)) # dus nu zijn er 4 plekken beschikbaar en 2 daarvan worden gebruikt bij 4/4                                                                                                                                                     
                                                                                         # dus nu zijn er 5 plekken beschikbaar en 3 daarvan worden gebruikt bij 5/4 
                                                                                         # dus nu zijn er 7 plekken beschikbaar en 3 daarvan worden gebruikt bij 7/8 
         if plek['welkBlok'] == "snareplek":
-            alleStamps.append(event_instrument(samples[1],plek['plek']*snare_omrekeken))
+            alleStamps.append(event_instrument(samples[1],plek['plek']*snare_omrekeken,snare))
         if plek['welkBlok'] == "hatplek":
-            alleStamps.append(event_instrument(samples[2],plek['plek']*hat_omrekeken))
+            alleStamps.append(event_instrument(samples[2],plek['plek']*hat_omrekeken,hat))
         
         if plek['welkBlok'] == "bongplek":
             if (rand4 <= 50):
-                alleStamps.append(event_instrument(samples[3],plek['plek']*bongo_omrekeken))
+                alleStamps.append(event_instrument(samples[3],plek['plek']*bongo_omrekeken,bongo1))
             else:
-                alleStamps.append(event_instrument(samples[4],plek['plek']*bongo_omrekeken))
+                alleStamps.append(event_instrument(samples[4],plek['plek']*bongo_omrekeken,bongo2))
 
     # als ie alle timestamps heeft gemaakt mag de lijst gecleard worden voor een nieuwe reeks
     stempels.clear()
@@ -147,28 +148,13 @@ while True:
     while counter < hoevaakLoop: 
         # nu is de tijd die begint bij 0 oplopend
         nu = time.time() - tijdBegin
-        for i in alleStamps:
+        for stamps in alleStamps:
             # als het geluid van de kick matcht met de timestamp op dat moment speelt er een kick en zo voort
-            if (nu >= i['timestamps']): 
-                if i["instrument"] == 'kick':
-                    kick.play()
-                    print("                      |          ʕ•ᴥ•ʔ")
-                if i["instrument"] == 'snare':
-                    snare.play()
-                    print("                      |                    (▀̿Ĺ̯▀̿ ̿)")
-                if i["instrument"] == 'hat':
-                    hat.play()
-                    print("                      |                             (͡• ͜ʖ ͡•)")
-                if i["instrument"] == 'bongo1':
-                    bongo1.play()
-                    print("         (；☉_☉)")
-                if i["instrument"] == 'bongo2':
-                    bongo2.play()
-                    print("(☉_☉ ；)")
-
-                    
+            if (nu >= stamps['timestamps']): 
+                stamps["sample"].play()
+                
                 # elke keer als er een geluid is gespeeld moet er 1 geluid weg
-                alleStamps.remove(i)
+                alleStamps.remove(stamps)
 
                 # elke keer als de lijst leeg is zal er 
                 # of een nieuwe zelfde lijst komen tenzij
