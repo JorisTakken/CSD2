@@ -149,7 +149,7 @@ while True:
         nu = time.time() - tijdBegin
         for i in alleStamps:
             # als het geluid van de kick matcht met de timestamp op dat moment speelt er een kick en zo voort
-            if (nu >= stamp['timestamps']): 
+            if (nu >= i['timestamps']): 
                 if i["instrument"] == 'kick':
                     kick.play()
                     print("                      |          ʕ•ᴥ•ʔ")
