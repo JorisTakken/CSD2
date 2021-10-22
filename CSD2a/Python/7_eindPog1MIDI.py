@@ -147,7 +147,6 @@ MyMIDI = MIDIFile(1) # One track, defaults to format 1 (tempo track
 MyMIDI.addTempo(track, tijdMidi, 120)
 
 
-
 # maak een copie van de stempels waar ze op gespeeld moeten worden zodat we ze later weer kunnen afspelen.
 # Ik maak er 2 voor het afspelen van steeds de zelfde en voor het einde (wil je hem nog eemn keer horen, dan word de 2e copie gebruikt
 copieVstampels = alleStamps.copy()
@@ -167,19 +166,15 @@ while True:
                 if i["instrument"] == 'kick':
                     kick.play()
                     duratie = i['timestamps'] + i['timestamps']
-                    MyMIDI.addNote(track, channel,60 , i['timestamps'],duratie , 100)
+                    MyMIDI.addNote(track, channel, 60 , i['timestamps'],10 , 100)
                     print("                      |          ʕ•ᴥ•ʔ")
                 if i["instrument"] == 'snare':
                     snare.play()
-                    
-                    duratie = i['timestamps'] + i['timestamps']
-                    MyMIDI.addNote(track, channel,60 , i['timestamps'],duratie , 100)
                 
                     print("                      |                    (▀̿Ĺ̯▀̿ ̿)")
                 if i["instrument"] == 'hat':
                     hat.play()
-                    duratie = i['timestamps'] + i['timestamps']
-                    MyMIDI.addNote(track, channel,60 , i['timestamps'],duratie , 100)
+
 
                     print("                      |                             (͡• ͜ʖ ͡•)")
 

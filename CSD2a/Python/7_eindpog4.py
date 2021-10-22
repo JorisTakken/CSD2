@@ -18,24 +18,24 @@ BPMHeel = (60.0 / BPMinput) * 4  #= 1 hele noot
 print("hoevaak wil je de loop afspelen")
 hoevaakLoop = float(input())
 
-def event_instrument(instrument,stamps,sample,midinoot):
+def event_instrument(instrument,stamps,sample):
     return{
         "instrument" : instrument,
         "timestamps" : stamps,    
-        "sample" : sample,
-        "midinoot" : midinoot
-        
+        "sample" : sample
     }
 
 def event_stamps(welkBlok,plek):
     return{
         "welkBlok" : welkBlok,
         "plek" : plek,   
-        
     }
 
+def event_midi():
+    return{
 
-
+        
+    }
 
 print("welke maatsoort wil je?")
 maatsoort = int(input())
@@ -109,6 +109,8 @@ def randomD():
 
 # de timestamps van alle instrumenten / lengtesworden in 1 lijst gestopt samen met de instrument Naam
 alleStamps = []
+randomD()
+print(stempels)
 
 # hierin worden de plekken geconverteerd naar MS
 def bijElkaar():
@@ -117,19 +119,19 @@ def bijElkaar():
     for plek in stempels:
         rand4 = random.randint(1,100)
         if plek['welkBlok'] == "kickplek":
-            alleStamps.append(event_instrument(samples[0],plek['plek']*kick_omrekeken,kick,60)) # dus nu zijn er 4 plekken beschikbaar en 2 daarvan worden gebruikt bij 4/4                                                                                                                                                     
+            alleStamps.append(event_instrument(samples[0],plek['plek']*kick_omrekeken,kick)) # dus nu zijn er 4 plekken beschikbaar en 2 daarvan worden gebruikt bij 4/4                                                                                                                                                     
                                                                                         # dus nu zijn er 5 plekken beschikbaar en 3 daarvan worden gebruikt bij 5/4 
                                                                                         # dus nu zijn er 7 plekken beschikbaar en 3 daarvan worden gebruikt bij 7/8 
         if plek['welkBlok'] == "snareplek":
-            alleStamps.append(event_instrument(samples[1],plek['plek']*snare_omrekeken,snare,62))
+            alleStamps.append(event_instrument(samples[1],plek['plek']*snare_omrekeken,snare))
         if plek['welkBlok'] == "hatplek":
-            alleStamps.append(event_instrument(samples[2],plek['plek']*hat_omrekeken,hat,64))
+            alleStamps.append(event_instrument(samples[2],plek['plek']*hat_omrekeken,hat))
         
         if plek['welkBlok'] == "bongplek":
             if (rand4 <= 50):
-                alleStamps.append(event_instrument(samples[3],plek['plek']*bongo_omrekeken,bongo1,69))
+                alleStamps.append(event_instrument(samples[3],plek['plek']*bongo_omrekeken,bongo1))
             else:
-                alleStamps.append(event_instrument(samples[4],plek['plek']*bongo_omrekeken,bongo2,70))
+                alleStamps.append(event_instrument(samples[4],plek['plek']*bongo_omrekeken,bongo2))
 
     # als ie alle timestamps heeft gemaakt mag de lijst gecleard worden voor een nieuwe reeks
     stempels.clear()
@@ -144,27 +146,18 @@ copieVstampels = alleStamps.copy()
 
 
 
-track = 0 
-tijdMidi = 0
-channel = 0 
-
-MyMIDI = MIDIFile(1) # One track, defaults to format 1 (tempo track
-                     # automatically created)
-MyMIDI.addTempo(track, tijdMidi, 120)
-
-for midi in alleStamps:
-    MyMIDI.addNote(track, channel, midi['midinoot'], tijdMidi , midi['timestamps'], 100)
-    tijdMidi = tijdMidi +0.02
 
 
-with open("MidiFiletje.mid", "wb") as output_file:      
-    MyMIDI.writeFile(output_file)
+
+
+
+
 
 
 # maak een 0 tijd 
 tijdBegin = time.time()
 
-
+print('i want to breakfree')
 while True:
     counter = 0 
     while counter < hoevaakLoop: 
@@ -174,7 +167,6 @@ while True:
             # als het geluid van de kick matcht met de timestamp op dat moment speelt er een kick en zo voort
             if (nu >= stamps['timestamps']): 
                 stamps["sample"].play()
-                
                 
                 # elke keer als er een geluid is gespeeld moet er 1 geluid weg
                 alleStamps.remove(stamps)
@@ -222,8 +214,6 @@ while True:
                             nu = time.time() - tijdBegin
                             alleStamps = copieVstampels  
                             copieVstampels = alleStamps.copy()
-                            
-                
                 
                         
 
