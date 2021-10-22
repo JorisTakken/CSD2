@@ -215,9 +215,9 @@ while True:
                             # maak een nieuwe lijst met timestamps en begin weer bij 0
                             copieVstampels.clear()
                             alleStamps.clear()
-                            
                             bijElkaar()
                             copieVstampels = alleStamps.copy()
+
                             tijdBegin = time.time()
                             nu = time.time() - tijdBegin
                             alleStamps = copieVstampels  

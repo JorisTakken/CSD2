@@ -109,8 +109,6 @@ def randomD():
 
 # de timestamps van alle instrumenten / lengtesworden in 1 lijst gestopt samen met de instrument Naam
 alleStamps = []
-randomD()
-print(stempels)
 
 # hierin worden de plekken geconverteerd naar MS
 def bijElkaar():
@@ -136,28 +134,24 @@ def bijElkaar():
     # als ie alle timestamps heeft gemaakt mag de lijst gecleard worden voor een nieuwe reeks
     stempels.clear()
 
-# vul de lijst met timestamps van de instrumenten
+# vukl de lijst met timestamps van de instrumenten
 bijElkaar()
-print(alleStamps)
 
 # maak een copie van de stempels waar ze op gespeeld moeten worden zodat we ze later weer kunnen afspelen.
 # Ik maak er 2 voor het afspelen van steeds de zelfde en voor het einde (wil je hem nog eemn keer horen, dan word de 2e copie gebruikt
 copieVstampels = alleStamps.copy()
 
-
-
-
-
-
-
-
-
-
+# functie voor het opnieuw afspelen van loop
+def sequence():
+    copieVstampels = 0
+    tijdBegin = time.time()
+    nu = time.time() - tijdBegin
+    alleStamps = copieVstampels  
+    copieVstampels = alleStamps.copy()
 
 # maak een 0 tijd 
 tijdBegin = time.time()
 
-print('i want to breakfree')
 while True:
     counter = 0 
     while counter < hoevaakLoop: 
@@ -178,17 +172,9 @@ while True:
                 # dan zal dus de lijst opnieuw met de zelfde lijst gevult worden of met een nieuwe
                 if alleStamps == []:
                     counter += 1
-                    print(counter)
                     if counter < hoevaakLoop: 
                         print("--------------------------------------------------------------------------")
-                        print("")
-                        print("༼ ºل͟º ༼ ºل͟º ༼ ºل͟º ༽ ºل͟º ༽ ºل͟º ༽   ༼ ºل͟º ༼ ºل͟º ༼ ºل͟º ༽ ºل͟º ༽ ºل͟º ༽")
-                        print("--------------------------------------------------------------------------")
-                        tijdBegin = time.time()
-                        nu = time.time() - tijdBegin
-                        alleStamps = copieVstampels  
-                        copieVstampels = alleStamps.copy()
-                        
+                        sequence()
                     else: 
                         print("-------------------------------------")
                         print("Wil je nog een keer de zelfde loop?")
@@ -198,23 +184,15 @@ while True:
                         opnieuw = int(input())
                         if opnieuw == 0: 
                             # speel de oude lijst weer af en begin  weer bij 0
-                            tijdBegin = time.time()
-                            nu = time.time() - tijdBegin
-                            alleStamps = copieVstampels  
-                            copieVstampels = alleStamps.copy()
+                            sequence()
 
                         if opnieuw == 1: 
                             # maak een nieuwe lijst met timestamps en begin weer bij 0
                             copieVstampels.clear()
-                            alleStamps.clear()
-                            
+                            alleStamps.clear()                        
                             bijElkaar()
-                            copieVstampels = alleStamps.copy()
-                            tijdBegin = time.time()
-                            nu = time.time() - tijdBegin
-                            alleStamps = copieVstampels  
-                            copieVstampels = alleStamps.copy()
-                
+                            sequence()
+                            
                         
 
 
