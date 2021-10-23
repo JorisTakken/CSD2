@@ -173,6 +173,7 @@ def speelSequenser():
                         alleStamps = copieVstampels  
                         copieVstampels = alleStamps.copy()
 
+# hier maak je een midibestand
 def midi():
     print("midi")
 
