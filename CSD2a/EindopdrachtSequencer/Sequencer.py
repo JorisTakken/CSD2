@@ -7,10 +7,10 @@ from midiutil import MIDIFile #
 print("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=")
 print("welk drumstel kies je?")
 print(
-"arkoustisch [1] \n" +
+"accoustisch [1] \n" +
 "electronisch [2] \n" +
-"geluiden1 [3] \n" + 
-"geluiden2 [4]")
+"piepkuiken [3] \n" + 
+"goeroe [4]")
 print("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=")
 drumstel = int(input())
 
@@ -42,6 +42,7 @@ if drumstel == 4:
     kick = sa.WaveObject.from_wave_file("samples_drumstel/drumstel4/kick3.wav")
     bongo1 = sa.WaveObject.from_wave_file("samples_drumstel/drumstel4/bong1.wav")
     bongo2 = sa.WaveObject.from_wave_file("samples_drumstel/drumstel4/bong2.wav")
+
 # kies een BPM
 print("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=")
 print("wat voor BPM kies je?")
@@ -69,7 +70,7 @@ BPMHeel = (60.0 / BPMinput) * 4  #= 1 hele noot
 
 # hoevaak wil je de loop afspelen
 print("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=")
-print("hoevaak wil je de loop afspelen")
+print("hoevaak wil je de loop afspelen?")
 print("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=")
 hoevaakLoop = float(input())
 
@@ -123,7 +124,7 @@ if maatsoort == 5:
     snare_kans = [70,0,50,40,20]
     snare_omrekeken = BPMHeel / 6 
 
-    hat_kans = [100,100,50,100,100] 
+    hat_kans = [100,70,50,40,100] 
     hat_omrekeken = BPMHeel / 5
 
     bongo_kans = [1,2,3,4,5,6,7,8,9,10]
