@@ -1,26 +1,67 @@
 import simpleaudio as sa
 import time
 import random
+# MIDI gedeelte geinspireerd op Ciska haar code en van https://pypi.org/project/MIDIUtil/
 from midiutil import MIDIFile # 
 
-hat = sa.WaveObject.from_wave_file("samples_drumstel/hat.wav") 
-snare = sa.WaveObject.from_wave_file("samples_drumstel/snare.wav")
-kick = sa.WaveObject.from_wave_file("samples_drumstel/kick.wav")
-bongo1 = sa.WaveObject.from_wave_file("samples_drumstel/bongo1.wav")
-bongo2 = sa.WaveObject.from_wave_file("samples_drumstel/bongo2.wav")
+print("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=")
+print("welk drumstel kies je?")
+print(
+"arkoustisch [1] \n" +
+"electronisch [2] \n" +
+"geluiden1 [3] \n" + 
+"geluiden2 [4]")
+print("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=")
+drumstel = int(input())
 
+if drumstel == 1:
+    hat = sa.WaveObject.from_wave_file("samples_drumstel/drumstel1/hat1.wav") 
+    snare = sa.WaveObject.from_wave_file("samples_drumstel/drumstel1/snare1.wav")
+    kick = sa.WaveObject.from_wave_file("samples_drumstel/drumstel1/kick1.wav")
+    bongo1 = sa.WaveObject.from_wave_file("samples_drumstel/drumstel1/bongo11.wav")
+    bongo2 = sa.WaveObject.from_wave_file("samples_drumstel/drumstel1/bongo21.wav")
+
+if drumstel == 2:
+    hat = sa.WaveObject.from_wave_file("samples_drumstel/drumstel2/hat2.wav") 
+    snare = sa.WaveObject.from_wave_file("samples_drumstel/drumstel2/snare2.wav")
+    kick = sa.WaveObject.from_wave_file("samples_drumstel/drumstel2/kick2.wav")
+    bongo1 = sa.WaveObject.from_wave_file("samples_drumstel/drumstel2/geluid2.wav")
+    bongo2 = sa.WaveObject.from_wave_file("samples_drumstel/drumstel2/geluid1.wav")
+
+
+if drumstel == 3:
+    hat = sa.WaveObject.from_wave_file("samples_drumstel/drumstel3/een.wav") 
+    snare = sa.WaveObject.from_wave_file("samples_drumstel/drumstel3/twee.wav")
+    kick = sa.WaveObject.from_wave_file("samples_drumstel/drumstel3/drie.wav")
+    bongo1 = sa.WaveObject.from_wave_file("samples_drumstel/drumstel3/vier.wav")
+    bongo2 = sa.WaveObject.from_wave_file("samples_drumstel/drumstel3/vijf.wav")
+
+if drumstel == 4:
+    hat = sa.WaveObject.from_wave_file("samples_drumstel/drumstel4/hat3.wav") 
+    snare = sa.WaveObject.from_wave_file("samples_drumstel/drumstel4/snare3.wav")
+    kick = sa.WaveObject.from_wave_file("samples_drumstel/drumstel4/kick3.wav")
+    bongo1 = sa.WaveObject.from_wave_file("samples_drumstel/drumstel4/bong1.wav")
+    bongo2 = sa.WaveObject.from_wave_file("samples_drumstel/drumstel4/bong2.wav")
+
+print(kick)
 # kies een BPM
+print("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=")
 print("wat voor BPM kies je?")
+print("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=")
 BPMinput = float(input())
 BPMHeel = (60.0 / BPMinput) * 4  #= 1 hele noot  
 
 # hoevaak wil je de loop afspelen
+print("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=")
 print("hoevaak wil je de loop afspelen")
+print("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=")
 hoevaakLoop = float(input())
 
 def event_instrument(instrument,stamps,stampsMidi,sample,velocity,midiNoot,midiDur):
     return{
         "instrument" : instrument,
+        # ik heb twee lijsten met Timestamps omdat anders 1 van de twee raar doet.
+        # de pythonlijst heeft een index + 1 nodig en de MIDI juist index zodat midi niet verschuift ijn logic's grit
         "timestamps" : stamps,
         "timestampsMidi" : stampsMidi,     
         "sample" : sample,
@@ -36,16 +77,24 @@ def event_stamps(welkBlok,plek,plekMidi):
         "plekMidi" : plekMidi
     } 
 
+print("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=")
 print("welke maatsoort wil je?")
+print(
+"[4]/4 \n" +
+"[5]/4 \n" +
+"[7]/8")
+print("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=")
 maatsoort = int(input())
+
+# deze methode van maatsoort maken is geinspireerd van ROMAN
 if maatsoort == 4: 
     kick_kans = [80,0,40,0]   # kick op 1 is kans van 80% en op 2 kans van 40%  (op de 2 en 4 0% kans)
     kick_omrekeken = BPMHeel / 4 
 
-    snare_kans = [70,0,0,40,0,0,50,0,0] # de snare word de hele noot opgedeeld in 9 stukken ze kunnen maar op 3 komen dus eigenlijk / 3
+    snare_kans = [70,0,0,40,0,0,50,0] # de snare word de hele noot opgedeeld in 9 stukken ze kunnen maar op 3 komen dus eigenlijk / 3
     snare_omrekeken = BPMHeel / 9 # dit maakt het algoritme interessanter
 
-    hat_kans = [100,100,100,100,100,100] # kans waarop de hat kan komen
+    hat_kans = [100,50,100,50,100,50] # kans waarop de hat kan komen
     hat_omrekeken = BPMHeel / 6 
 
     bongo_kans = [1,2,3,4,5,6,7,8]
@@ -55,29 +104,29 @@ if maatsoort == 5:
     kick_kans = [80,0,60,0,40] # kick op 1 is kans van 80% en op 2 kans van 60% en op 3 40% 
     kick_omrekeken = BPMHeel / 8 
 
-    snare_kans = [70,0,0,40,0,20,50,0,0,50,0,40]
-    snare_omrekeken = BPMHeel / 12 
+    snare_kans = [70,0,50,40,20]
+    snare_omrekeken = BPMHeel / 6 
 
-    hat_kans = [100,100,100,100,100] 
-    hat_omrekeken = BPMHeel / 6 
+    hat_kans = [100,100,50,100,50] 
+    hat_omrekeken = BPMHeel / 5
 
-    bongo_kans = [1,2,3,4,5]
-    bongo_omrekeken = BPMHeel / 8 
+    bongo_kans = [1,2,3,4,5,6,7,8,9,10]
+    bongo_omrekeken = BPMHeel / 10 
 
 if maatsoort == 7: 
     kick_kans = [80,0,60,0,40,0,60]
     kick_omrekeken = BPMHeel / 8 
 
-    snare_kans = [70,20,40,0,50,20,0]  # hier gaat de snare heel gek doen omdat 1 hele noot word opgedeeld in 7 stappen
+    snare_kans = [70,20,40,0,50,20]  # hier gaat de snare heel gek doen omdat 1 hele noot word opgedeeld in 7 stappen
     snare_omrekeken = BPMHeel / 7 
 
-    hat_kans = [70,0,50,0,75,0,50,0,60,0,50,0]
-    hat_omrekeken = BPMHeel / 12 
+    hat_kans = [70,0,50,0,75,0,50]
+    hat_omrekeken = BPMHeel / 8 
 
     bongo_kans = [1,2,3,4,5,6,7]
     bongo_omrekeken = BPMHeel / 8 
 
-# arrays voor de timestamps van de groepen 
+# arrays voor de timestamps van de groepen met mogelijke plekken 
 stempels = []
 
 # in deze fucntie worden de plekken bepaald
@@ -102,32 +151,33 @@ def randomD():
         rand3 = random.randint(1,100)
         if (rand3 <= 60):
             stempels.append(event_stamps("bongplek",bongPlek,bongPlek))
+    print(bongPlek)
     # ------------------------------------------------
 
 # de timestamps van alle instrumenten / lengtesworden in 1 lijst gestopt samen met de instrument Naam
-alleStamps = []
+all_events = []
 
 # hierin worden de plekken geconverteerd naar MS
 def bijElkaar():
-    
+    # functie voor plekken word gemaakt  
     randomD()
+
+    # lijst met de samples die je kan kiezen
     samples = ['kick','snare','hat','bongo1','bongo2'] 
     for plek in stempels:
         rand4 = random.randint(1,100)
         if plek['welkBlok'] == "kickplek":
-            alleStamps.append(event_instrument(samples[0],plek['plek']*kick_omrekeken,plek['plekMidi']*kick_omrekeken,kick,120,36,0.1)) # dus nu zijn er 4 plekken beschikbaar en 2 daarvan worden gebruikt bij 4/4                                                                                                                                                     
-                                                                                        # dus nu zijn er 5 plekken beschikbaar en 3 daarvan worden gebruikt bij 5/4 
-                                                                                        # dus nu zijn er 7 plekken beschikbaar en 3 daarvan worden gebruikt bij 7/8 
+            all_events.append(event_instrument(samples[0],plek['plek']*kick_omrekeken,plek['plekMidi']*kick_omrekeken,kick,120,36,0.1))                                                                                                                                                                                                      
         if plek['welkBlok'] == "snareplek":
-            alleStamps.append(event_instrument(samples[1],plek['plek']*snare_omrekeken,plek['plekMidi']*snare_omrekeken,snare,120,38,0.1))
+            all_events.append(event_instrument(samples[1],plek['plek']*snare_omrekeken,plek['plekMidi']*snare_omrekeken,snare,120,38,0.1))
         if plek['welkBlok'] == "hatplek":
-            alleStamps.append(event_instrument(samples[2],plek['plek']*hat_omrekeken,plek['plekMidi']*hat_omrekeken,hat,120,42,0.1))
+            all_events.append(event_instrument(samples[2],plek['plek']*hat_omrekeken,plek['plekMidi']*hat_omrekeken,hat,120,42,0.1))
         
         if plek['welkBlok'] == "bongplek":
             if (rand4 <= 50):
-                alleStamps.append(event_instrument(samples[3],plek['plek']*bongo_omrekeken,plek['plekMidi']*bongo_omrekeken,bongo1,120,46,0.1))
+                all_events.append(event_instrument(samples[3],plek['plek']*bongo_omrekeken,plek['plekMidi']*bongo_omrekeken,bongo1,120,46,0.1))
             else:
-                alleStamps.append(event_instrument(samples[4],plek['plek']*bongo_omrekeken,plek['plekMidi']*bongo_omrekeken,bongo2,120,48,0.1))
+                all_events.append(event_instrument(samples[4],plek['plek']*bongo_omrekeken,plek['plekMidi']*bongo_omrekeken,bongo2,120,48,0.1))
 
     # als ie alle timestamps heeft gemaakt mag de lijst gecleard worden voor een nieuwe reeks
     stempels.clear()
@@ -136,41 +186,56 @@ def bijElkaar():
 bijElkaar()
 
 # maak een copie van de stempels waar ze op gespeeld moeten worden zodat we ze later weer kunnen afspelen.
-copieVstampels = alleStamps.copy()
+copieVstampels = all_events.copy()
 
 # maak een 0 tijd 
 def speelSequenser(): 
-    # global omdat deze lijsten anders niet werden gevonden in de code
-    global alleStamps
-    global copieVstampels
-    # de counter gaat over hoevaak de loop word afgespeeld.
+    global opnieuw
+
+    # de counter gaat over hoevaak de loop word afgespeeld. Dit heb je aan het begin gekozen.
+    # elke keer als de lijst leeg is is counter + 1 
     counter = 0 
-    tijdBegin = time.time()
     
+    # functie voor het opnieuw afspelen van de sequence
+    def opnieuw():
+        # ik gebruik de global functies omdat python deze anders niet herkent 
+        global copieVstampels
+        global all_events
+        global tijdBegin
+        global nu
+
+        # nieuwe beginteid en nieuwe copys worden gemaakt
+        tijdBegin = time.time() 
+        nu = time.time() - tijdBegin
+        all_events = copieVstampels  
+        copieVstampels = all_events.copy()
+
+    opnieuw()
+
     while counter < hoevaakLoop: 
+        # methode van timestamps afspelen geinspireerd op CISKA
         # nu is de tijd die begint bij 0 oplopend
         nu = time.time() - tijdBegin
-        for stamps in alleStamps:
+        for stamps in all_events:
             # als het geluid van de kick matcht met de timestamp op dat moment speelt er een kick en zo voort
             if (nu >= stamps['timestamps']):
-                print(nu)
+                
                 stamps["sample"].play()
-                time.sleep(0.001)
+                
 
-                alleStamps.remove(stamps)
+                # bij elke keer dat er 1 sample word gespeeld word hij er gelijk uit gehaald tot de lijst leeg is
+                all_events.remove(stamps)
+                time.sleep(0.001)
                 # elke keer als de lijst leeg is zal er 
                 # of een nieuwe zelfde lijst komen tenzij
                 # de loop op is (dus al hoevaakLoop) is geweest,
                 # in dat geval zal hij vragen "wil je de zelfde loop of een ander?"
                 # dan zal dus de lijst opnieuw met de zelfde lijst gevult worden of met een nieuwe
-                if alleStamps == []:
+                if all_events == []:
+                    print("(͡° ͜ʖ ͡°)")
                     counter += 1
-                    if counter < hoevaakLoop: 
-                        print("--------------------------------------------------------------------------")
-                        tijdBegin = time.time() 
-                        nu = time.time() - tijdBegin
-                        alleStamps = copieVstampels  
-                        copieVstampels = alleStamps.copy()
+                    if counter < hoevaakLoop + 1: 
+                        opnieuw()
 
 # hier maak je een midibestand
 def midi():
@@ -180,9 +245,7 @@ def midi():
     tijdMidi = 0
     channel = 0
 
-
-    MyMIDI = MIDIFile(1) # One track, defaults to format 1 (tempo track
-                        # automatically created)
+    MyMIDI = MIDIFile(1) 
     MyMIDI.addTempo(track, tijdMidi, BPMinput)
 
     for midi in copieVstampels:  
@@ -198,33 +261,30 @@ while afspelen:
     # de hele sequencer staat nu in een functie
     speelSequenser()     
 
+    print("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=")
     maakKeuze = input(
-    " Wil je de loop opslaan? (opslaan)(1) \n" + 
-    " Wil je hem opnieuw horen? (opnieuw)(2) \n" +
-    " Wil je een nieuwe Sequence? (nieuw)(3)\n" + 
-    " Wil je helemaal stoppen? (stop)(4) \n") 
+    "[B]ewaren (1) \n" + 
+    "[O]pnieuw afspelen (2) \n" +
+    "[N]ieuwe sequence (3) \n" +
+    "[S]top (4) \n") 
+    print("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=")
     
-    if maakKeuze == "opslaan" or maakKeuze == "1":
-        print("midi")
+    if maakKeuze == "B" or maakKeuze == "b" or maakKeuze == "1":
         midi()
+        afspelen = False
 
-    elif maakKeuze == "opnieuw" or maakKeuze == "2" :
-        tijdBegin = time.time() 
-        nu = time.time() - tijdBegin
-        alleStamps = copieVstampels  
-        copieVstampels = alleStamps.copy()
-        
-    elif maakKeuze == "nieuw" or maakKeuze == "3":
+    elif maakKeuze == "O" or maakKeuze == "o" or maakKeuze == "2" :
+        opnieuw()
+    
+    elif maakKeuze == "N" or maakKeuze == "n" or maakKeuze == "3" :
+        # clear alle lijsten en maak nieuwe
+        all_events.clear()
         copieVstampels.clear()
-        alleStamps.clear()                        
         bijElkaar()
+        copieVstampels = all_events.copy()
+        opnieuw()
 
-        tijdBegin = time.time() 
-        nu = time.time() - tijdBegin
-        alleStamps = copieVstampels  
-        copieVstampels = alleStamps.copy()
-
-    elif maakKeuze == "stop" or maakKeuze == "4":
+    elif maakKeuze == "S" or maakKeuze == "s" or maakKeuze == "4":
         afspelen = False
 
     
