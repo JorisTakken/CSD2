@@ -1,4 +1,3 @@
-
 import simpleaudio as sa
 import time
 import random
@@ -86,7 +85,6 @@ def randomD():
         rand = random.randint(1,100)
         if (rand <= item):
             stempels.append(event_stamps("kickplek",index + 1))
-
     # snare plek
     for index, item in enumerate(snare_kans):
         rand1 = random.randint(1,100)
@@ -115,23 +113,22 @@ def bijElkaar():
     for plek in stempels:
         rand4 = random.randint(1,100)
         if plek['welkBlok'] == "kickplek":
-            alleStamps.append(event_instrument(samples[0],plek['plek']*kick_omrekeken,kick,120,60,0.001)) # dus nu zijn er 4 plekken beschikbaar en 2 daarvan worden gebruikt bij 4/4                                                                                                                                                     
+            alleStamps.append(event_instrument(samples[0],plek['plek']*kick_omrekeken,kick,120,36,0.001)) # dus nu zijn er 4 plekken beschikbaar en 2 daarvan worden gebruikt bij 4/4                                                                                                                                                     
                                                                                         # dus nu zijn er 5 plekken beschikbaar en 3 daarvan worden gebruikt bij 5/4 
                                                                                         # dus nu zijn er 7 plekken beschikbaar en 3 daarvan worden gebruikt bij 7/8 
         if plek['welkBlok'] == "snareplek":
-            alleStamps.append(event_instrument(samples[1],plek['plek']*snare_omrekeken,snare,120,61,0.001))
+            alleStamps.append(event_instrument(samples[1],plek['plek']*snare_omrekeken,snare,120,38,0.001))
         if plek['welkBlok'] == "hatplek":
-            alleStamps.append(event_instrument(samples[2],plek['plek']*hat_omrekeken,hat,120,63,0.001))
+            alleStamps.append(event_instrument(samples[2],plek['plek']*hat_omrekeken,hat,120,42,0.001))
         
         if plek['welkBlok'] == "bongplek":
             if (rand4 <= 50):
-                alleStamps.append(event_instrument(samples[3],plek['plek']*bongo_omrekeken,bongo1,120,67,0.001))
+                alleStamps.append(event_instrument(samples[3],plek['plek']*bongo_omrekeken,bongo1,120,46,0.001))
             else:
-                alleStamps.append(event_instrument(samples[4],plek['plek']*bongo_omrekeken,bongo2,120,66,0.001))
+                alleStamps.append(event_instrument(samples[4],plek['plek']*bongo_omrekeken,bongo2,120,48,0.001))
 
     # als ie alle timestamps heeft gemaakt mag de lijst gecleard worden voor een nieuwe reeks
     stempels.clear()
-
 
 # vukl de lijst met timestamps van de instrumenten
 bijElkaar()
@@ -186,12 +183,10 @@ def midi():
                         # automatically created)
     MyMIDI.addTempo(track, tijdMidi, BPMinput)
 
-    for midi in copieVstampels:
-        dur = midi['timestamps']    
+    for midi in copieVstampels:  
         MyMIDI.addNote(track, channel, midi['midinoot'],
-                        tijdMidi , dur , 100)
+                        (midi['timestamps']*2) + 0.2, 0.1 , 100)
 
-        tijdMidi = tijdMidi + dur
 
     with open("MidiFiletje.mid", "wb") as output_file:      
         MyMIDI.writeFile(output_file)
