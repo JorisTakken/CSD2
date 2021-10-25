@@ -18,20 +18,22 @@ BPMHeel = (60.0 / BPMinput) * 4  #= 1 hele noot
 print("hoevaak wil je de loop afspelen")
 hoevaakLoop = float(input())
 
-def event_instrument(instrument,stamps,sample,velocity,midiNoot,midiDur):
+def event_instrument(instrument,stamps,stampsMidi,sample,velocity,midiNoot,midiDur):
     return{
         "instrument" : instrument,
-        "timestamps" : stamps,    
+        "timestamps" : stamps,
+        "timestampsMidi" : stampsMidi,     
         "sample" : sample,
         'velocity': velocity,
         'midinoot': midiNoot,
         'midi_dur': midiDur,
     }
 
-def event_stamps(welkBlok,plek):
+def event_stamps(welkBlok,plek,plekMidi):
     return{
         "welkBlok" : welkBlok,
         "plek" : plek,   
+        "plekMidi" : plekMidi
     } 
 
 print("welke maatsoort wil je?")
@@ -84,22 +86,22 @@ def randomD():
     for index, item in enumerate(kick_kans):
         rand = random.randint(1,100)
         if (rand <= item):
-            stempels.append(event_stamps("kickplek",index + 1))
+            stempels.append(event_stamps("kickplek",index+1,index))
     # snare plek
     for index, item in enumerate(snare_kans):
         rand1 = random.randint(1,100)
         if (rand1 <= item):
-            stempels.append(event_stamps("snareplek",index + 1))        
+            stempels.append(event_stamps("snareplek",index+1,index))        
     # hat plek
     for index, item in enumerate(hat_kans):
         rand20 = random.randint(1,100)
         if (rand20 <= item):
-            stempels.append(event_stamps("hatplek",index + 1))
+            stempels.append(event_stamps("hatplek",index+1,index))
     # bongo plek
     for bongPlek in bongo_kans:
         rand3 = random.randint(1,100)
         if (rand3 <= 60):
-            stempels.append(event_stamps("bongplek",bongPlek))
+            stempels.append(event_stamps("bongplek",bongPlek,bongPlek))
     # ------------------------------------------------
 
 # de timestamps van alle instrumenten / lengtesworden in 1 lijst gestopt samen met de instrument Naam
@@ -113,19 +115,19 @@ def bijElkaar():
     for plek in stempels:
         rand4 = random.randint(1,100)
         if plek['welkBlok'] == "kickplek":
-            alleStamps.append(event_instrument(samples[0],plek['plek']*kick_omrekeken,kick,120,36,0.001)) # dus nu zijn er 4 plekken beschikbaar en 2 daarvan worden gebruikt bij 4/4                                                                                                                                                     
+            alleStamps.append(event_instrument(samples[0],plek['plek']*kick_omrekeken,plek['plekMidi']*kick_omrekeken,kick,120,36,0.1)) # dus nu zijn er 4 plekken beschikbaar en 2 daarvan worden gebruikt bij 4/4                                                                                                                                                     
                                                                                         # dus nu zijn er 5 plekken beschikbaar en 3 daarvan worden gebruikt bij 5/4 
                                                                                         # dus nu zijn er 7 plekken beschikbaar en 3 daarvan worden gebruikt bij 7/8 
         if plek['welkBlok'] == "snareplek":
-            alleStamps.append(event_instrument(samples[1],plek['plek']*snare_omrekeken,snare,120,38,0.001))
+            alleStamps.append(event_instrument(samples[1],plek['plek']*snare_omrekeken,plek['plekMidi']*snare_omrekeken,snare,120,38,0.1))
         if plek['welkBlok'] == "hatplek":
-            alleStamps.append(event_instrument(samples[2],plek['plek']*hat_omrekeken,hat,120,42,0.001))
+            alleStamps.append(event_instrument(samples[2],plek['plek']*hat_omrekeken,plek['plekMidi']*hat_omrekeken,hat,120,42,0.1))
         
         if plek['welkBlok'] == "bongplek":
             if (rand4 <= 50):
-                alleStamps.append(event_instrument(samples[3],plek['plek']*bongo_omrekeken,bongo1,120,46,0.001))
+                alleStamps.append(event_instrument(samples[3],plek['plek']*bongo_omrekeken,plek['plekMidi']*bongo_omrekeken,bongo1,120,46,0.1))
             else:
-                alleStamps.append(event_instrument(samples[4],plek['plek']*bongo_omrekeken,bongo2,120,48,0.001))
+                alleStamps.append(event_instrument(samples[4],plek['plek']*bongo_omrekeken,plek['plekMidi']*bongo_omrekeken,bongo2,120,48,0.1))
 
     # als ie alle timestamps heeft gemaakt mag de lijst gecleard worden voor een nieuwe reeks
     stempels.clear()
@@ -185,7 +187,7 @@ def midi():
 
     for midi in copieVstampels:  
         MyMIDI.addNote(track, channel, midi['midinoot'],
-                        (midi['timestamps']*2) + 0.2, 0.1 , 100)
+                        (midi['timestampsMidi']*2),0.2 , 100)
 
 
     with open("MidiFiletje.mid", "wb") as output_file:      
@@ -216,6 +218,7 @@ while afspelen:
         copieVstampels.clear()
         alleStamps.clear()                        
         bijElkaar()
+
         tijdBegin = time.time() 
         nu = time.time() - tijdBegin
         alleStamps = copieVstampels  
