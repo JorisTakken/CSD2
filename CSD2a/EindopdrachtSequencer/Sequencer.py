@@ -68,10 +68,10 @@ foutBPM()
 
 BPMHeel = (60.0 / BPMinput) * 4  #= 1 hele noot  
 
-# hoevaak wil je de loop afspelen
 print("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=")
 print("hoevaak wil je de loop afspelen?")
 print("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=")
+# hoevaak wil je de loop afspelen
 hoevaakLoop = float(input())
 
 def event_instrument(instrument,stamps,stampsMidi,sample,velocity,midiNoot,midiDur):
