@@ -28,7 +28,6 @@ if drumstel == 2:
     bongo1 = sa.WaveObject.from_wave_file("samples_drumstel/drumstel2/geluid2.wav")
     bongo2 = sa.WaveObject.from_wave_file("samples_drumstel/drumstel2/geluid1.wav")
 
-
 if drumstel == 3:
     hat = sa.WaveObject.from_wave_file("samples_drumstel/drumstel3/een.wav") 
     snare = sa.WaveObject.from_wave_file("samples_drumstel/drumstel3/twee.wav")
