@@ -9,6 +9,7 @@ public:
     ~Speaker();
     void make_sound(float freq);
     float filter_freq;
+    
 
     Tweeter tweeter;
     Woofer woofer_big;

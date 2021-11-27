@@ -3,7 +3,6 @@
 
 Speaker::Speaker() 
 {
-
     filter_freq=205.4; //filter cuttoff frequency
 }
 
