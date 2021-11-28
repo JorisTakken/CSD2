@@ -3,7 +3,7 @@
 
 class String_instrument : public Instrument{ 
 public:
-    String_instrument(std::string instrument_naam);
+    String_instrument(std::string instrument_naam,std::string pitch_range);
     ~String_instrument();
 
     void struming();

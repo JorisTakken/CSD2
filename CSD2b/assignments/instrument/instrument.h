@@ -1,13 +1,15 @@
 #include <iostream>
+#pragma once
 
 class Instrument{ 
 public:
-    Instrument(std::string instrument_naam);
+    Instrument(std::string instrument_naam, std::string pitch_range);
     ~Instrument();
 
     void play();
-    void pitch_range();
+    void pitchRange();
 
 protected: 
     std::string instrument_naam;
+    std::string pitch_range;
 };

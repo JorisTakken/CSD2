@@ -1,7 +1,7 @@
 #include <iostream>
 #include "strings.h"
 
-String_instrument::String_instrument(std::string instrument_naam) : Instrument(instrument_naam){
+String_instrument::String_instrument(std::string instrument_naam,std::string pitch_range) : Instrument(instrument_naam,pitch_range){
 }
 
 String_instrument::~String_instrument(){
@@ -19,5 +19,4 @@ void String_instrument::tokkelen(){
 void String_instrument::number_of_String_instrument(int how_many_stings){
     this->how_many_stings = how_many_stings;
     std::cout << instrument_naam << " sting instrument has: " << how_many_stings << " strings\n";
-
-}
+} 
