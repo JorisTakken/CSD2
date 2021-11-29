@@ -22,7 +22,7 @@ void All_instruments::play_string(std::string play_way){
         string.struming();
     }
     else{ 
-        std::cout << "This is no way of playing, try an other way,\n";
+        std::cout << "your chosen way of playing is no way of playing, try an other way,\n";
         std::cout << "choose 'strum' or 'tokkel' !,\n";
     }
 
@@ -37,17 +37,25 @@ void All_instruments::play_wind(){
 
 void All_instruments::info_string(int number_strings){
     String_instrument string(instrument_naam,pitch_range);
+    std::cout << "_\n";
+    std::cout << "___--____---_--_-_____-__-_-__--__----____--_-----___-_--__--,\n";
+    std::cout << "info about the " << instrument_naam << ",\n";
     string.pitchRange();
     string.number_of_String_instrument(number_strings);
-
-    
+    std::cout << "-__----____--_---___---_--_---___-_--__--___--______-__-_-__-,\n";
 }
 
 void All_instruments::info_wind(std::string spectrum_place){
     Wind_instrument wind(instrument_naam,pitch_range);
+    std::cout << "_\n";
+    std::cout << "___--____---_--_-_____-__-_-__--__----____--_-----___-_--__--,\n";
+    std::cout << "info about the " << instrument_naam << ",\n";
     wind.place_in_spectrum(spectrum_place);
     wind.pitchRange();
-
-    
+    std::cout << "___--____---_--_-_____-__-_-__--__----____--_-----___-_--__--,\n";
 }
+
+
+
+
 

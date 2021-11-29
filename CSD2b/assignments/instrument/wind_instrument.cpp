@@ -10,5 +10,5 @@ Wind_instrument::~Wind_instrument(){
 void Wind_instrument::place_in_spectrum(std::string spectrum){
     this->spectrum = spectrum;
     std::cout << instrument_naam << " is in the " << spectrum << " part of the EQ spectrum  \n";
-
 }
+
