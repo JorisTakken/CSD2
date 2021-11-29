@@ -10,7 +10,7 @@ Instrument::Instrument(std::string instrument_naam, std::string pitch_range){
 Instrument::~Instrument(){    
 }
 
-void Instrument::play(){
+void Instrument::play_ins(){
     std::cout << instrument_naam << "  is playing now!\n";
 }
     

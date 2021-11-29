@@ -5,22 +5,20 @@
 
 
 
-class Play_info : public Instrument{ 
+class All_instruments : public Instrument{ 
 public:
-    Play_info(std::string instrument_naam, std::string pitch_range);
-    ~Play_info();
-
-    String_instrument inst_string("inst","hz");
-    Wind_instrument inst_wind("inst","hz");
-    Instrument inst("inst","hz");
+    All_instruments(std::string instrument_naam, std::string pitch_range);
+    ~All_instruments();
     
+    void play_string(std::string play_way);
+    void play_wind();
 
+    void info_wind(std::string spectrum_place);
+    void info_string(int number_strings);
 
-
-    void play();
-    void info();
 
 
 protected: 
-
+    std::string instrument_naam;
+    std::string pitch_range;
 };

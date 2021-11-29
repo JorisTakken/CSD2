@@ -1,4 +1,5 @@
 #include <iostream>
+#pragma once
 #include "instrument.h"
 
 class Wind_instrument : public Instrument{ 

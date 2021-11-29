@@ -6,7 +6,7 @@ public:
     Instrument(std::string instrument_naam, std::string pitch_range);
     ~Instrument();
 
-    void play();
+    void play_ins();
     void pitchRange();
 
 protected: 
