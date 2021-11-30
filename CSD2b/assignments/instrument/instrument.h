@@ -12,4 +12,4 @@ public:
 protected: 
     std::string instrument_naam;
     std::string pitch_range;
-};
+}; 
