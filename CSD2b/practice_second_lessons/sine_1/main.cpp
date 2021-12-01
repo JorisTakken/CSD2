@@ -9,7 +9,7 @@ int main(){
     // sine.setFrequency(100.2);
     // sine.setAmplitude(0.2);
 
-    // sine.getFrequency();
+    // sine.getFrequency();make 
     // sine.getAmplitude();
 
     for(int i = 0; i < 100; i++) {
