@@ -53,7 +53,6 @@ int main(){
         std::cin >> strings_bass;
         std::cout << "__-_-_,\n";
 
-
         saxephone.info_wind(user_question_spectrum_sax);
         trumpet.info_wind(user_question_spectrum_trump); 
         bass.info_string(strings_bass);

@@ -36,7 +36,11 @@ void All_instruments::play_wind(){
 }
 
 void All_instruments::info_string(int number_strings){
+
+
     String_instrument string(instrument_naam,pitch_range);
+
+
     std::cout << "_\n";
     std::cout << "___--____---_--_-_____-__-_-__--__----____--_-----___-_--__--,\n";
     std::cout << "info about the " << instrument_naam << ",\n";
@@ -46,7 +50,9 @@ void All_instruments::info_string(int number_strings){
 }
 
 void All_instruments::info_wind(std::string spectrum_place){
+
     Wind_instrument wind(instrument_naam,pitch_range);
+    
     std::cout << "_\n";
     std::cout << "___--____---_--_-_____-__-_-__--__----____--_-----___-_--__--,\n";
     std::cout << "info about the " << instrument_naam << ",\n";

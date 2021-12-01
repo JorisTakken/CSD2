@@ -9,6 +9,8 @@ public:
 
     void struming();
     void tokkelen();
+    void play();
+
     void number_of_String_instrument(int how_many_stings);
 
 protected:
