@@ -12,8 +12,8 @@ std::string number;
 
 
 int main(){  
-    Sine sine(100.2,0.5);
-    Square square(100.2,0.5);
+    Sine sine(10,0.5);
+    Square square(10,0.5);
 
 
     WriteToFile sine_file("sine_values.csv", true);
