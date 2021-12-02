@@ -24,8 +24,7 @@ int main(){
 
     WriteToFile square_file("square_values.csv", true);
     for(int i = 0; i < SAMPLERATE; i++) {
-    square.getSample2();
-    square_file.write(std::to_string(square.getSample(i)) + "\n");
+    square_file.write(std::to_string(square.getSample()) + "\n");
     square.tick();
     }
 

@@ -16,27 +16,20 @@ void Square::setFrequency(float frequency){
 void Square::setAmplitude(float amplitude) {
 }
 
-float Square::getSample2() {
-  return sampleVal;
-}
 
 
-float Square::getSample(int i) {
-  return sample[i];
+
+float Square::getSample() {
+  return sample;
 }
 
 void Square::tick(){
     phase += frequency / SAMPLERATE;
-    sampleVal = sin(M_PI * 2 * phase);
+    sample = sin(M_PI * 2 * phase);
 
     for (int i = 0; i < SAMPLERATE; i++){
-    if (sampleVal < 0.0){
-      sample[i] = amplitude * -1;
-    }
-    if(sampleVal > 0.0){
-      sample[i] = amplitude * -1;
-    }
-    std::cout << "sample" << i << "_"<< sample[i] << "\n";
+      if (sample > 0.0){sample = amplitude * -1;}
+      else{sample = amplitude * 1;}
     }
     
 

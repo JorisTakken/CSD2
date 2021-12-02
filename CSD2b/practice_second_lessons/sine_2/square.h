@@ -13,8 +13,7 @@ public:
     float getFrequency();
     float getAmplitude();
 
-    float getSample(int i);
-    float getSample2();
+    float getSample();
     void tick();
 
 
@@ -22,8 +21,7 @@ protected:
     float frequency;
     float amplitude;
 
-    float sample[44100];
-    float sampleVal;
+    float sample;
     float phase;
 
 };

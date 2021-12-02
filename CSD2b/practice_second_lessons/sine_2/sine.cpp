@@ -30,7 +30,6 @@ void Sine::tick(){
 
 
 void Sine::list_of_values(std::string value_sine){
-
     for(int i = 0; i < 100; i++) {
       values_sine[i] = value_sine;
     }
