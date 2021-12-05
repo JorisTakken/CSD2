@@ -1,10 +1,11 @@
 #include <iostream>
+#include "oscillator.h"
 
 #define SAMPLERATE 44100
 
-class Square{
+class Square : public Oscillator{
 public:
-    Square(float frequency,float amplitude);
+    Square(float frequency,float amplitude,int samplerate);
     ~Square();
 
 
@@ -20,6 +21,7 @@ public:
 protected:
     float frequency;
     float amplitude;
+    int samplerate;
 
     float sample;
     float phase;

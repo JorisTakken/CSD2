@@ -1,10 +1,13 @@
 #include "square.h"
 #include "math.h"
 
+#define SAMPLERATE 44100
 
 
-Square::Square(float frequency,float amplitude) : frequency(frequency), amplitude(amplitude){
-  phase = 0;
+Square::Square(float frequency,float amplitude,int samplerate) : Oscillator("square", frequency, amplitude, samplerate), 
+  frequency(frequency), amplitude(amplitude), samplerate(samplerate){
+    sample = 0;
+    phase = 0;
 }
 
 Square::~Square(){

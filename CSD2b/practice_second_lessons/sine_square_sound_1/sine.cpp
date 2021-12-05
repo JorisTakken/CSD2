@@ -1,11 +1,10 @@
 #include "sine.h"
 #include "math.h"
 
-
-
-Sine::Sine(float frequency,float amplitude) : frequency(frequency), amplitude(amplitude){
-  sample = 0;
-  phase = 0;
+Sine::Sine(float frequency,float amplitude,int samplerate) : Oscillator("sine", frequency, amplitude, samplerate), 
+  frequency(frequency), amplitude(amplitude), samplerate(samplerate){
+    sample = 0; 
+    phase = 0;
 }
 
 Sine::~Sine(){

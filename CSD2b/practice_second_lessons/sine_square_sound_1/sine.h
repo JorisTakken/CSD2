@@ -1,10 +1,10 @@
 #include <iostream>
-
+#include "oscillator.h"
 #define SAMPLERATE 44100
 
-class Sine{
+class Sine : public Oscillator{
 public:
-    Sine(float frequency,float amplitude);
+    Sine(float frequency, float amplitude, int samplerate);
     ~Sine();
 
 
@@ -21,6 +21,7 @@ public:
 protected:
     float frequency;
     float amplitude;
+    int samplerate;
 
     float sample;
     float phase;
