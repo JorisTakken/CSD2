@@ -5,7 +5,7 @@
 
 class Square : public Oscillator{
 public:
-    Square(float frequency,float amplitude,int samplerate);
+    Square(std::string waveform,float frequency,float amplitude,int samplerate);
     ~Square();
 
 
@@ -22,6 +22,7 @@ protected:
     float frequency;
     float amplitude;
     int samplerate;
+    std::string waveform;
 
     float sample;
     float phase;

@@ -4,7 +4,7 @@
 #define SAMPLERATE 44100
 
 
-Square::Square(float frequency,float amplitude,int samplerate) : Oscillator("square", frequency, amplitude, samplerate), 
+Square::Square(std::string waveform,float frequency,float amplitude,int samplerate) : Oscillator(waveform,frequency, amplitude, samplerate), 
   frequency(frequency), amplitude(amplitude), samplerate(samplerate){
     sample = 0;
     phase = 0;
@@ -34,10 +34,6 @@ void Square::tick(){
       if (sample > 0.0){sample = amplitude * -1;}
       else{sample = amplitude * 1;}
     }
-    
-
-
-
 }
 
 

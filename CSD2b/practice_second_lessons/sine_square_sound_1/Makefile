@@ -1,14 +1,14 @@
-CXX=g++
-CXXFLAGS=-Wall -std=c++14
-LDFLAGS=
-SOURCE=square.o sine.o oscillator.o main.o 
+CXX= g++
+CFLAGS = -I/usr/local/include -Wall -std=c++1z
+LDFLAGS= -ljack
+SOURCE=jack_module.o sine.o square.o oscillator.o main.o
 TARGET=synth
 
-$(TARGET): $(SOURCE)
-	$(CXX) -o $@ $(SOURCE) $(LDFLAGS)
+$(TARGET) : $(SOURCE)
+	$(CXX) -o $@ $(CFLAGS) $(SOURCE) $(LDFLAGS)
 
 .cpp.o:
-	$(CXX) -c $(CXXFLAGS) $<
+	$(CXX) -c $< $(CFLAGS)
 
 clean:
-	rm -f $(TARGET) *.o 
+	rm -f $(TARGET) *.o

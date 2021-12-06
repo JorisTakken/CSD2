@@ -5,32 +5,52 @@
 
 
 Oscillator::Oscillator(std::string waveform, float frequency, float amplitude, int samplerate) : 
-    waveform(waveform), frequency(frequency), amplitude(amplitude), samplerate(samplerate){
+    frequency(frequency), amplitude(amplitude), samplerate(samplerate){
 }
 
 Oscillator::~Oscillator(){
-
 }
 
-void Oscillator::changeWaveform(std::string waveform){
 
-}
 
 void Oscillator::playWaveform(){
+    
+
+
+  JackModule jack;
+    jack.onProcess = [&sine, &amplitude](jack_default_audio_sample_t *inBuf,
+    jack_default_audio_sample_t *outBuf, jack_nframes_t nframes) {
+
+    for(unsigned int i = 0; i < nframes; i++) {
+      outBuf[i] = sine.getSample() * amplitude;
+      sine.tick();
+    }
+    amplitude = 0.5;
+    return 0;
+  };
+
+  jack.autoConnect();
 }
 
+void Oscillator::write_waveFile(std::string waveform){
+    // if (waveform == "sine") {
+    //     Sine sine_make(frequency,amplitude,samplerate);
 
-void Oscillator::makeListOfPoints(){
-    WriteToFile sine_file("sine_values.csv", true);
-    for(int i = 0; i < SAMPLERATE; i++) {
-    sine_file.write(std::to_string(sine.getSample()) + "\n");
-    sine.tick();
-    }
+    //     WriteToFile waveform_file("square_values.csv", true);
+    //     for(int i = 0; i < samplerate; i++) {
+    //         waveform_file.write(std::to_string(sine_make.getSample()) + "\n");
+    //         sine_make.tick();
+    //     }
+    // }
+    // else if (waveform == "square"){
+    //     Square square_make(frequency,amplitude,samplerate);
 
-    WriteToFile square_file("square_values.csv", true);
-    for(int i = 0; i < SAMPLERATE; i++) {
-    square_file.write(std::to_string(square.getSample()) + "\n");
-    square.tick();
-    }
+    //     WriteToFile waveform_file("square_values.csv", true);
+    //     for(int i = 0; i < samplerate; i++) {
+    //         waveform_file.write(std::to_string(square_make.getSample()) + "\n");
+    //         square_make.tick();
+    //     }
+    // }
 
+    
 }
