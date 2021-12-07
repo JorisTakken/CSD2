@@ -7,9 +7,8 @@ public:
     Sine(std::string waveform,float frequency, float amplitude, int samplerate);
     ~Sine();
 
-
-    void setFrequency(float frequency);
-    void setAmplitude(float amplitude);
+    void setFrequency(float newfrequency);
+    void setAmplitude(float newAmplitude);
     float getFrequency();
     float getAmplitude();
 
@@ -20,12 +19,14 @@ public:
 
 protected:
     float frequency;
+    float newfrequency;
     float amplitude;
+    float newAmplitude;
+
     int samplerate;
 
     float sample;
     float phase;
     std::string waveform;
-
     std::string values_sine[100];
 };

@@ -9,8 +9,8 @@ public:
     ~Square();
 
 
-    void setFrequency(float frequency);
-    void setAmplitude(float amplitude);
+    void setFrequency(float newfrequency);
+    void setAmplitude(float newAmplitude);
     float getFrequency();
     float getAmplitude();
 
@@ -19,12 +19,14 @@ public:
 
 
 protected:
+    float newAmplitude;
+    float newfrequency;
     float frequency;
     float amplitude;
+
     int samplerate;
     std::string waveform;
 
     float sample;
     float phase;
-
 };

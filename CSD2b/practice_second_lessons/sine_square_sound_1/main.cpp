@@ -3,29 +3,27 @@
 #include "sine.h"
 #include "square.h"
 #include "jack_module.h"
+#include "writeToFile.h"
+
 
 
 int main(int argc,char **argv)
 {
+
   JackModule jack;
   jack.init(argv[0]);
   double samplerate = jack.getSamplerate();
-  std::string choise = "sine";
-  if (choise == "sine"){
-    Sine oscillator("sine",220, 0.5, samplerate);
-  }
-  if (choise == "square"){
-    Square oscillator("sine",220, 0.5, samplerate);
-  }
+  std::string choise = "sine";  
 
+  Square square("sine",220, 0.5, samplerate);
 
   float amplitude = 0.15;
-  jack.onProcess = [&oscillator, &amplitude](jack_default_audio_sample_t *inBuf,
+  jack.onProcess = [&square, &amplitude](jack_default_audio_sample_t *inBuf,
     jack_default_audio_sample_t *outBuf, jack_nframes_t nframes) {
 
     for(unsigned int i = 0; i < nframes; i++) {
-      outBuf[i] = oscillator.getSample() * amplitude;
-      oscillator.tick();
+      outBuf[i] = square.getSample() * amplitude;
+      square.tick();
     }
     return 0;
   };
@@ -44,6 +42,11 @@ int main(int argc,char **argv)
         break;
     }
   }
+
+
+
+
+   
 
   //end the program
   return 0;
