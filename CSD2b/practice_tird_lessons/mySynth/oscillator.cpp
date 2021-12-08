@@ -11,6 +11,3 @@ Oscillator::Oscillator(std::string waveform, float frequency, float amplitude, i
 Oscillator::~Oscillator(){
 }
 
-void Oscillator::write_waveFile(std::string waveform){
-
-}

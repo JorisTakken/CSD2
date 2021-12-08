@@ -1,17 +1,19 @@
 #include <iostream>
-#include "writeToFile.h"
-
-
 #pragma once
 
-class Oscillator{
+class Synth{
     public:
-        Oscillator(std::string waveform,float frequency, float amplitude, int samplerate);
-        ~Oscillator();
+        Synth();
+        ~Synth();
+
+        float getSample();
+        virtual void tick();
 
     protected:
         float frequency;
         float amplitude;
         int samplerate;
         std::string waveform;
+        // int argc;
+        // char **argv;
 };
