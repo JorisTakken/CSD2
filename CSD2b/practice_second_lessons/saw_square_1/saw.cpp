@@ -23,16 +23,17 @@ void Saw::setFrequency(float frequency){
 void Saw::setAmplitude(float amplitude) {
 }
 
-
-
-
 float Saw::getSample() {
   return sample;
 }
 
 void Saw::tick(int next_samp){
     phase += frequency / SAMPLERATE;
-    sample = phase * next_samp;
+    if(phase > 1){
+      phase -= 1.0;
+      }
+
+    sample = (1.0 - phase) * 2 - 1; 
 }
 
 

@@ -7,17 +7,22 @@
 
 
 
-int main(int argc,char **argv)
-{
-
+int main(int argc,char **argv){
   JackModule jack;
   jack.init(argv[0]);
   double samplerate = jack.getSamplerate();
   std::string choise = "sine";  
 
-  Square square("sine",220, 0.5, samplerate);
+  Sine square("sine",220, 0.5, samplerate);
 
-  float amplitude = 0.15;
+  float amplitude = square.getAmplitude();
+
+
+
+
+
+
+
   jack.onProcess = [&square, &amplitude](jack_default_audio_sample_t *inBuf,
     jack_default_audio_sample_t *outBuf, jack_nframes_t nframes) {
 
@@ -27,9 +32,7 @@ int main(int argc,char **argv)
     }
     return 0;
   };
-
   jack.autoConnect();
-
   std::cout << "\n\nPress 'q' when you want to quit the program.\n";
   bool running = true;
   while (running)
@@ -42,12 +45,6 @@ int main(int argc,char **argv)
         break;
     }
   }
-
-
-
-
-   
-
   //end the program
   return 0;
 } 

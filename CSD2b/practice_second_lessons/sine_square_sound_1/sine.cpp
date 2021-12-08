@@ -28,6 +28,18 @@ void Sine::setAmplitude(float newAmplitude) {
   }
 }
 
+float Sine::getFrequency(){
+  std::cout << "frequency" << frequency << "\n";
+  return frequency;
+}
+
+float Sine::getAmplitude(){
+  std::cout << "amplitude" << amplitude << "\n";
+  return amplitude;
+}
+
+
+
 
 float Sine::getSample() {
   return sample;
@@ -49,12 +61,4 @@ void Sine::list_of_values(std::string value_sine){
 
 
 
-float Sine::getFrequency(){
-  std::cout << "frequency" << frequency << "\n";
-  return frequency;
-}
 
-float Sine::getAmplitude(){
-  std::cout << "amplitude" << amplitude << "\n";
-  return amplitude;
-}
