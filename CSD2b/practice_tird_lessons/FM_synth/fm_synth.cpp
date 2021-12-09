@@ -18,8 +18,8 @@ void FM_synth::make_wave(){
     for(int i = 0; i < SAMPLERATE; i++) {
     float car_and_mod = carrier.getSample() * modulator.getSample();
     outBuf[i] = car_and_mod;
-    modulator.tick();
-    carrier.tick();
+    modulator.calculate();
+    carrier.calculate();
     }
 
 

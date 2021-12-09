@@ -7,7 +7,7 @@
 #define SAMPLERATE 44100
 
 int main(){
-    FM_synth fm1(2,20);
+    FM_synth fm1(100,20);
     fm1.make_wave();
     fm1.write_wave();
 }

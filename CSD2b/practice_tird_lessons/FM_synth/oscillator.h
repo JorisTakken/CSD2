@@ -8,6 +8,8 @@ class Oscillator{
         Oscillator(std::string waveform,float frequency, float amplitude, int samplerate);
         ~Oscillator();
 
+        float getSample(float sample);
+        float tick(); 
         
 
     protected:
@@ -15,4 +17,7 @@ class Oscillator{
         float amplitude;
         int samplerate;
         std::string waveform;
+
+        float sample;
+        float phase;
 };

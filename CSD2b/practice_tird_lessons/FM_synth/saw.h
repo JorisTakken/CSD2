@@ -1,21 +1,20 @@
 #include <iostream>
+#include "oscillator.h"
+
 #pragma once
 
 #define SAMPLERATE 44100
 
-class Saw{
+class Saw : public Oscillator{
 public:
     Saw(std::string waveform,float frequency,float amplitude,int samplerate);
     ~Saw();
-
-
     // void setFrequency(float frequency);
     // void setAmplitude(float amplitude);
     // float getFrequency();
     // float getAmplitude();
 
-    float getSample();
-    void tick();
+    void calculate();
 
 
 protected:
