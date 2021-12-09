@@ -8,7 +8,7 @@ class Oscillator{
         Oscillator(std::string waveform,float frequency, float amplitude, int samplerate);
         ~Oscillator();
 
-        float getSample(float sample);
+        float getSample();
         float tick(); 
         
 

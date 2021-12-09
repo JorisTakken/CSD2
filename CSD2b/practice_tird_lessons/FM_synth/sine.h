@@ -1,5 +1,6 @@
 #include <iostream>
 #include "oscillator.h"
+
 #pragma once
 
 #define SAMPLERATE 44100
@@ -9,7 +10,7 @@ public:
     Sine(std::string waveform,float frequency, float amplitude, int samplerate);
     ~Sine();
 
-    void calculate();
+    void calculate(float phase);
 
 
 protected:

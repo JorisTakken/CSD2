@@ -1,5 +1,10 @@
 #include <iostream>
 #include "oscillator.h"
+// #include "sine.h"
+// #include "saw.h"
+
+
+
 
 
 
@@ -21,7 +26,7 @@ float Oscillator::getSample() {
 float Oscillator::tick() {
   phase += frequency / samplerate;
   if(phase > 1) phase -= 1.0;
-  return phase;
+  calculate(phase);
 
 }
 

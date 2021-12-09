@@ -14,7 +14,7 @@ public:
     // float getFrequency();
     // float getAmplitude();
 
-    void calculate();
+    void calculate(float phase);
 
 
 protected:

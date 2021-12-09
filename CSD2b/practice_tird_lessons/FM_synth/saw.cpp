@@ -9,8 +9,8 @@ Saw::Saw(std::string waveform,float frequency,float amplitude,int samplerate) : 
 Saw::~Saw(){
 }
 
-void Saw::calculate() {
-  sample = tick() * 2.0 - 1.0;
+void Saw::calculate(float phase) {
+  sample = phase * 2.0 - 1.0;
 
   // sample *= amplitude;
 }

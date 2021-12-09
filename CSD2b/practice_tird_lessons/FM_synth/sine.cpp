@@ -8,8 +8,8 @@ Sine::Sine(std::string waveform,float frequency,float amplitude,int samplerate) 
 Sine::~Sine(){
 }
 
-void Sine::calculate(){
-  sample = sin(M_PI * 2 * tick());
+void Sine::calculate(float phase){
+  sample = sin(M_PI * 2 * phase);
 }
 
 
