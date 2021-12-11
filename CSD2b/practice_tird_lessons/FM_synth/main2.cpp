@@ -6,12 +6,12 @@
 
 #define SAMPLERATE 44100
 
-int main(){
-    // TODO uiteindelijk kan je dit kiezen: 
-    // FM_synth fm1(waveCarrier, freqCar, waveModulator, freqModulator )
+int main()
+    FM_synth fm1("saw", 10, "sine",20,0.5);
+    FM_synth fm12("sine", 10, "sine",40,0.5);
 
-    FM_synth fm1(100,20,0.5);
-    fm1.write_fm_waveform();    
+    fm12.write_fm_waveform();  
+
 
 }
 

@@ -10,6 +10,14 @@ Oscillator::Oscillator(float frequency, float amplitude, int samplerate) :
 Oscillator::~Oscillator(){
 }
 
+
+void Oscillator::initialize(double freq, double amp, double samplerate) 
+{ 
+  frequency = freq; 
+  amplitude = amp;
+  this->samplerate = samplerate; 
+}
+
 float Oscillator::getSample() {
   return sample;
 }

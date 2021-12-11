@@ -7,6 +7,7 @@ class Oscillator{
     public:
         Oscillator(float frequency, float amplitude, int samplerate);
         ~Oscillator();
+        void initialize(double freq, double amp, double samplerate);
 
         
         void tick(); 
