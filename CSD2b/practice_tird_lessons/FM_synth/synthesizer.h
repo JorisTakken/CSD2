@@ -6,12 +6,11 @@ class Synth{
         Synth();
         ~Synth();
 
+        void tick();
         float getSample();
-        virtual void tick();
 
     protected:
-        float frequency;
-        float amplitude;
-        int samplerate;
-        std::string waveform;
+       float midiPitch; 
+       double mtof(float pitch);
+       double sample;
 };

@@ -7,20 +7,15 @@
 
 class Sine : public Oscillator{
 public:
-    Sine(std::string waveform,float frequency, float amplitude, int samplerate);
+    Sine();  
+    Sine(float frequency, float amplitude, int samplerate);
     ~Sine();
 
-    void calculate(float phase);
 
 
 protected:
-    float frequency;
-    float amplitude;
+    void calculate() override;
+    
 
-    int samplerate;
-
-    float sample;
-    float phase;
-    std::string waveform;
   
 };

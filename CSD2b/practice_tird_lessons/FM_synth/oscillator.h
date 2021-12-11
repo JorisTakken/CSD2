@@ -5,19 +5,20 @@
 
 class Oscillator{
     public:
-        Oscillator(std::string waveform,float frequency, float amplitude, int samplerate);
+        Oscillator(float frequency, float amplitude, int samplerate);
         ~Oscillator();
 
-        float getSample();
-        float tick(); 
         
+        void tick(); 
+        float getSample();
 
     protected:
+        virtual void calculate() = 0;
+
         float frequency;
         float amplitude;
         int samplerate;
-        std::string waveform;
 
-        float sample;
+        double sample;
         float phase;
 };

@@ -7,23 +7,16 @@
 
 class Saw : public Oscillator{
 public:
-    Saw(std::string waveform,float frequency,float amplitude,int samplerate);
+    Saw(); 
+    Saw(float frequency,float amplitude,int samplerate);
     ~Saw();
     // void setFrequency(float frequency);
     // void setAmplitude(float amplitude);
     // float getFrequency();
     // float getAmplitude();
 
-    void calculate(float phase);
 
 
 protected:
-    float frequency;
-    float amplitude;
-    int samplerate;
-    std::string waveform;
-
-    float sample;
-    float phase;
-
+    void calculate() override;
 };

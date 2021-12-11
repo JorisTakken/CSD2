@@ -7,8 +7,11 @@
 #define SAMPLERATE 44100
 
 int main(){
-    FM_synth fm1(100,20);
-    fm1.make_wave();
-    fm1.write_wave();
+    // TODO uiteindelijk kan je dit kiezen: 
+    // FM_synth fm1(waveCarrier, freqCar, waveModulator, freqModulator )
+
+    FM_synth fm1(100,20,0.5);
+    fm1.write_fm_waveform();    
+
 }
 

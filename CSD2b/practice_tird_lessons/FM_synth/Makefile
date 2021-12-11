@@ -1,7 +1,7 @@
 CXX= g++
 CFLAGS = -I/usr/local/include -Wall -std=c++1z
 LDFLAGS= 
-SOURCE=writeToFile.o saw.o sine.o oscillator.o fm_synth.cpp main2.o
+SOURCE=writeToFile.o saw.o sine.o oscillator.o fm_synth.o main2.o
 TARGET=synth
 
 $(TARGET) : $(SOURCE)
