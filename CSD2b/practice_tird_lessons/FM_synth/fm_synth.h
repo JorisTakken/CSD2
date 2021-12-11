@@ -10,11 +10,14 @@ class FM_synth{
         FM_synth(std::string waveCarrier,float carrierFreq ,std::string waveModulator,float modulatorFreq,float amplitude);
         ~FM_synth();
 
-        // void make_fm_wave();
-        void sound();
-        void write_fm_waveform();
         void choose_waveform();
+
+        void make_fm_wave();
+        void sound();
+
+        void write_fm_waveform();
         
+        // float calculate_fm();
 
 
     protected:
