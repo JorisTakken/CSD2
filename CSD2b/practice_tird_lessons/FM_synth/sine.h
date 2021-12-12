@@ -11,11 +11,6 @@ public:
     Sine(float frequency, float amplitude, int samplerate);
     ~Sine();
 
-
-
 protected:
     void calculate() override;
-    
-
-  
 };
