@@ -2,6 +2,7 @@
 #include <thread>
 #include "sine.h"
 #include "saw.h"
+#include "LFO.h"
 #include "fm_synth.h"
 #include "jack_module.h"
 
@@ -15,7 +16,17 @@ int main(int argc,char **argv){
     
 
     float amlitude = 0.5;
-    FM_synth fm1("saw", 500, "sine",100,amlitude);
+    float freq;
+    Lfo lfo(1,0.5,SAMPLERATE);
+
+    for(unsigned int i = 0; i < SAMPLERATE; i++) {
+        freq = 500 + (10 * lfo.getSample());
+        lfo.tick();
+    }
+
+
+    FM_synth fm1("saw", freq, "sine",100,amlitude);
+    std::cout << "freq" << freq << "/n";
 
    
     JackModule jack;
