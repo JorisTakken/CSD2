@@ -5,12 +5,17 @@
 #include "fm_synth.h"
 #include "jack_module.h"
 
+// #include <forward_list>
+
 
 #define SAMPLERATE 44100
 
 int main(int argc,char **argv){
+
+    
+
     float amlitude = 0.5;
-    FM_synth fm1("sine", 100, "sine",20,amlitude);
+    FM_synth fm1("saw", 500, "sine",100,amlitude);
 
    
     JackModule jack;
