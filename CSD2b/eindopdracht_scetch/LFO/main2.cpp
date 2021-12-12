@@ -12,30 +12,35 @@
 #define SAMPLERATE 44100
 
 int main(int argc,char **argv){
-
-    
-
     float amlitude = 0.5;
-    float freq;
-    Lfo lfo(1,0.5,SAMPLERATE);
+    // float freq = 99;
 
-    for(unsigned int i = 0; i < SAMPLERATE; i++) {
-        freq = 500 + (10 * lfo.getSample());
-        lfo.tick();
-    }
+    Lfo lfo(1,1,SAMPLERATE);
 
     
-    FM_synth fm1("saw", freq, "sine",100,amlitude);
-    std::cout << "freq" << freq << "/n";
+    // float buff;
+    // // float *frequ[44100] = {&buff};
+    // for(unsigned int i = 0; i < SAMPLERATE; i++) {
+    //     buff = (10000 * lfo.getSample());
+    //     lfo.tick();
+    //     }
+    // std::cout << "freq" << buff;
+
+    FM_synth fm1("saw", 200, "sine", 100, amlitude,0.4,2);
+
+    
+
 
    
     JackModule jack;
     jack.init(argv[0]);
     jack.onProcess = [&fm1](jack_default_audio_sample_t *inBuf,
         jack_default_audio_sample_t *outBuf, jack_nframes_t nframes) {
+        
+
         for(unsigned int i = 0; i < nframes; i++) {
-        outBuf[i] = fm1.getSample();
-        fm1.synth2_tick();
+            outBuf[i] = fm1.getSample();
+            fm1.synth2_tick();
         }
         return 0;
     };
