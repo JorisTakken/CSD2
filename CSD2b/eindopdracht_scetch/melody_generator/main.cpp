@@ -3,10 +3,11 @@
 
 Stopwatch sw;
 
-
 int main(){
 // Record start  time
     sw.Start();
+
+    
 
     // Portion of code to be timed
     ...
