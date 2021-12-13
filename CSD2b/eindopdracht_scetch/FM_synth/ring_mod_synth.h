@@ -10,16 +10,16 @@
 
 #pragma once
 
-class FM_synth : public Synth{
+class RING_synth : public Synth{
     public:
-        FM_synth(
+        RING_synth(
         std::string waveCarrier,
         float carrierFreq ,
         std::string waveModulator,
         float modulatorFreq,
         float amplitude);
 
-        ~FM_synth();
+        ~RING_synth();
         
         void write_waveform();
 

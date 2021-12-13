@@ -2,8 +2,9 @@
 #include <thread>
 #include "sine.h"
 #include "saw.h"
-#include "LFO.h"
 #include "fm_synth.h"
+#include "ring_mod_synth.h"
+#include "synthesizer.h"
 #include "jack_module.h"
 
 // #include <forward_list>
@@ -13,29 +14,16 @@
 
 int main(int argc,char **argv){
 
-    
-
-    float amlitude = 0.5;
-    float freq;
-    Lfo lfo(1,0.5,SAMPLERATE);
-
-    for(unsigned int i = 0; i < SAMPLERATE; i++) {
-        freq = 500 + (10 * lfo.getSample());
-        lfo.tick();
-    }
-
-    
-    FM_synth fm1("saw", freq, "sine",100,amlitude);
-    std::cout << "freq" << freq << "/n";
+    RING_synth ring("saw", 120, "sine",100,0.4);
 
    
     JackModule jack;
     jack.init(argv[0]);
-    jack.onProcess = [&fm1](jack_default_audio_sample_t *inBuf,
+    jack.onProcess = [&ring](jack_default_audio_sample_t *inBuf,
         jack_default_audio_sample_t *outBuf, jack_nframes_t nframes) {
         for(unsigned int i = 0; i < nframes; i++) {
-        outBuf[i] = fm1.getSample();
-        fm1.synth2_tick();
+            outBuf[i] = ring.getSample();
+            ring.calculate();
         }
         return 0;
     };
@@ -54,7 +42,7 @@ int main(int argc,char **argv){
     }
     //end the program
     
-    fm1.write_fm_waveform_synth2();
+    ring.write_waveform();
     return 0;
 } 
 
