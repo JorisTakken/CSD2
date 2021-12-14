@@ -9,18 +9,29 @@
 
 // #include <forward_list>
 
+char squareC;
+char sineC;
+char sawC;
+
+char squareM;
+char sineM;
+char sawM;
+
+
+
 
 #define SAMPLERATE 44100
 
 int main(int argc,char **argv){
-
-    RING_synth ring("saw", 120, "sine",100,0.4);
-
+    FM_synth ring(square, 1000, sine,30,1);
+    
+    ring.write_waveform();
    
     JackModule jack;
     jack.init(argv[0]);
     jack.onProcess = [&ring](jack_default_audio_sample_t *inBuf,
         jack_default_audio_sample_t *outBuf, jack_nframes_t nframes) {
+        
         for(unsigned int i = 0; i < nframes; i++) {
             outBuf[i] = ring.getSample();
             ring.calculate();
@@ -42,7 +53,6 @@ int main(int argc,char **argv){
     }
     //end the program
     
-    ring.write_waveform();
     return 0;
 } 
 

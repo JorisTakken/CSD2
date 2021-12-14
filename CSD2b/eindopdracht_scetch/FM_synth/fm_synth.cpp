@@ -5,9 +5,9 @@
 
 FM_synth::FM_synth(
 
-    std::string waveCarrier,
+    char waveCarrier,
     float carrierFreq,
-    std::string waveModulator,
+    char waveModulator,
     float modulatorFreq,
     float amplitude) 
     : 
@@ -17,16 +17,16 @@ FM_synth::FM_synth(
 FM_synth::~FM_synth(){
 }
 
-float FM_synth::calculate(){
+void FM_synth::calculate(){
     initialize();
     tick();
     sample = (pow(1.1,carrier->getSample() * modulator->getSample() * 0.5)) - 1;
+    sample *= amplitude;
 }
 
-float Synth::getSample(){   
-    return sample;
-}
-
+// float FM_synth::getSample(){   
+//     return sample;
+// }
 
 void FM_synth::write_waveform(){   
     WriteToFile file("1_fm_waveForm.csv", true);

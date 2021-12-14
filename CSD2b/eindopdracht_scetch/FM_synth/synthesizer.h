@@ -3,15 +3,17 @@
 #include "saw.h"
 #include "square.h"
 
+#include "math.h"
+#include "writeToFile.h"
 
 #pragma once
 
 class Synth{
     public:
         Synth(
-            std::string waveCarrier,
+            char waveCarrier,
             float carrierFreq,
-            std::string waveModulator,
+            char waveModulator,
             float modulatorFreq,
             float amplitude
         );
@@ -19,14 +21,14 @@ class Synth{
         void initialize();
 
         void tick();
-        float getSample();
-        virtual float calculate();
-        
+        float getSample();        
 
     protected:
-        std::string waveCarrier;
+        virtual void calculate() = 0;
+
+        char waveCarrier;
         float carrierFreq;
-        std::string waveModulator;
+        char waveModulator;
         float modulatorFreq;
         float amplitude;
         float sample;

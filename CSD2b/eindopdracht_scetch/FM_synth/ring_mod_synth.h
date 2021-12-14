@@ -1,11 +1,4 @@
 #include <iostream>
-#include "sine.h"
-#include "saw.h"
-#include "square.h"
-
-#include "math.h"
-#include "writeToFile.h"
-
 #include "synthesizer.h"
 
 #pragma once
@@ -13,9 +6,9 @@
 class RING_synth : public Synth{
     public:
         RING_synth(
-        std::string waveCarrier,
+        char waveCarrier,
         float carrierFreq ,
-        std::string waveModulator,
+        char waveModulator,
         float modulatorFreq,
         float amplitude);
 
@@ -23,12 +16,12 @@ class RING_synth : public Synth{
         
         void write_waveform();
 
-        float calculate() override;  
-        void tick();
-        float getSample();
+        // void tick();
+        // float getSample();
+        void calculate() override;  
+
         
     protected:
-
         float car_and_mod;
 
         

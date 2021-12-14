@@ -5,9 +5,9 @@
 
 RING_synth::RING_synth(
 
-    std::string waveCarrier,
+    char waveCarrier,
     float carrierFreq,
-    std::string waveModulator,
+    char waveModulator,
     float modulatorFreq,
     float amplitude) 
     : 
@@ -17,14 +17,14 @@ RING_synth::RING_synth(
 RING_synth::~RING_synth(){
 }
 
-float RING_synth::calculate(){
+void RING_synth::calculate(){
     initialize();
     tick();
     sample = carrier->getSample() * modulator->getSample() * 0.5;
+    sample *= amplitude;
 }
-float Synth::getSample(){   
-    return sample;
-}
+
+
 
 void RING_synth::write_waveform(){   
     WriteToFile file("1_fm_waveForm.csv", true);
