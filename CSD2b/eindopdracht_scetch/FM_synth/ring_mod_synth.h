@@ -6,9 +6,9 @@
 class RING_synth : public Synth{
     public:
         RING_synth(
-        char waveCarrier,
+        std::string waveCarrier,
         float carrierFreq ,
-        char waveModulator,
+        std::string waveModulator,
         float modulatorFreq,
         float amplitude);
 

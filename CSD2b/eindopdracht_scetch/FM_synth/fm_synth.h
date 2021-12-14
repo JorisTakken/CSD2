@@ -6,9 +6,9 @@
 class FM_synth : public Synth{
     public:
         FM_synth(
-        char waveCarrier,
+        std::string waveCarrier,
         float carrierFreq ,
-        char waveModulator,
+        std::string waveModulator,
         float modulatorFreq,
         float amplitude);
 

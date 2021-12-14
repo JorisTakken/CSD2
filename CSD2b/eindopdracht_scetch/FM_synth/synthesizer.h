@@ -11,13 +11,15 @@
 class Synth{
     public:
         Synth(
-            char waveCarrier,
+            std::string waveCarrier,
             float carrierFreq,
-            char waveModulator,
+            std::string waveModulator,
             float modulatorFreq,
             float amplitude
         );
-        ~Synth();
+
+        virtual ~Synth();
+
         void initialize();
 
         void tick();
@@ -26,9 +28,9 @@ class Synth{
     protected:
         virtual void calculate() = 0;
 
-        char waveCarrier;
+        std::string waveCarrier;
         float carrierFreq;
-        char waveModulator;
+        std::string waveModulator;
         float modulatorFreq;
         float amplitude;
         float sample;
@@ -36,10 +38,10 @@ class Synth{
         Oscillator* modulator; 
         Oscillator* carrier;
 
-        Sine* sineM = new Sine();
-        Sine* sineC = new Sine();
-        Saw* sawM = new Saw();
-        Saw* sawC = new Saw();
-        Square* squareM = new Square();
-        Square* squareC = new Square();
+        // Sine* sineM = new Sine();
+        // Sine* sineC = new Sine();
+        // Saw* sawM = new Saw();
+        // Saw* sawC = new Saw();
+        // Square* squareM = new Square();
+        // Square* squareC = new Square();
 };

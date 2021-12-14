@@ -3,9 +3,9 @@
 
 
 Synth::Synth(
-    char waveCarrier,
+    std::string waveCarrier,
     float carrierFreq,
-    char waveModulator,
+    std::string waveModulator,
     float modulatorFreq,
     float amplitude) 
     : 
@@ -17,34 +17,31 @@ Synth::Synth(
 }
 
 Synth::~Synth(){
+    delete modulator; 
+    modulator = nullptr;
+    delete carrier; 
+    carrier = nullptr;
 }
 
 void Synth::initialize(){
-    char squareC;
-    char sineC;
-    char sawC;
+    if (waveCarrier == "sineC"){
+        carrier = new Sine();
+    }
+    else if (waveCarrier == "sawC"){
+        carrier = new Saw();
+    }
+    else if (waveCarrier == "squareC"){
+        carrier = new Square();
 
-    char squareM;
-    char sineM;
-    char sawM;
-
-    if (waveCarrier == sineC){
-        carrier = sineC;
     }
-    else if (waveCarrier == sawC){
-        carrier = sawC;
+    if (waveModulator  == "sineM"){
+        modulator = new Sine();;
     }
-    else if (waveCarrier == squareC){
-        carrier = squareC;
+    else if (waveModulator == "sawM"){
+        modulator = new Saw();
     }
-    if (waveModulator  == sineM){
-        modulator = sineM;
-    }
-    else if (waveModulator == sawM){
-        modulator = sawM;
-    }
-    else if (waveModulator == squareM){
-        modulator = squareM;
+    else if (waveModulator == "squareM"){
+        modulator = new Square();
     }
     modulator->initialize(carrierFreq,amplitude,SAMPLERATE);
     carrier->initialize(modulatorFreq,amplitude,SAMPLERATE);
@@ -56,6 +53,5 @@ void Synth::tick(){
 }
 
 float Synth::getSample(){   
-    sample *= amplitude;
     return sample;
 }

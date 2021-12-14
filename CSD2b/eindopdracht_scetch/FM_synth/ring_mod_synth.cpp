@@ -5,9 +5,9 @@
 
 RING_synth::RING_synth(
 
-    char waveCarrier,
+    std::string waveCarrier,
     float carrierFreq,
-    char waveModulator,
+    std::string waveModulator,
     float modulatorFreq,
     float amplitude) 
     : 
@@ -20,8 +20,8 @@ RING_synth::~RING_synth(){
 void RING_synth::calculate(){
     initialize();
     tick();
-    sample = carrier->getSample() * modulator->getSample() * 0.5;
-    sample *= amplitude;
+    sample = carrier->getSample() * modulator->getSample();
+    // sample *= amplitude;
 }
 
 

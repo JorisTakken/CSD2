@@ -7,34 +7,32 @@
 #include "synthesizer.h"
 #include "jack_module.h"
 
-// #include <forward_list>
-
-char squareC;
-char sineC;
-char sawC;
-
-char squareM;
-char sineM;
-char sawM;
-
-
-
-
 #define SAMPLERATE 44100
 
 int main(int argc,char **argv){
-    FM_synth ring(square, 1000, sine,30,1);
-    
+    std::cout << "DEBUG - start main" << std::endl;
+
+    FM_synth ring("sawC", 100, "sineM",500,1);
     ring.write_waveform();
    
+    // int framecount = 0; 
+    // int interval = 0; 
+    std::cout << "DEBUG  -  pre jack" << std::endl; 
+
     JackModule jack;
     jack.init(argv[0]);
     jack.onProcess = [&ring](jack_default_audio_sample_t *inBuf,
         jack_default_audio_sample_t *outBuf, jack_nframes_t nframes) {
-        
         for(unsigned int i = 0; i < nframes; i++) {
             outBuf[i] = ring.getSample();
             ring.calculate();
+            // if (framecount > interval){
+            //     std::cout << "niewe pitch" << "/n";
+            // }
+            // framecount += framecount;
+            // std::cout << framecount << "/n";
+            
+
         }
         return 0;
     };
