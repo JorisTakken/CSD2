@@ -10,14 +10,14 @@
 #define SAMPLERATE 44100
 
 int main(int argc,char **argv){
-    std::cout << "DEBUG - start main" << std::endl;
+    std::string modWave = "square"; 
+    std::string carWave = "saw";
 
-    FM_synth ring("sawC", 100, "sineM",500,1);
+    RING_synth ring(carWave + "C", 100, modWave + "M",1000,1);
     ring.write_waveform();
    
     // int framecount = 0; 
     // int interval = 0; 
-    std::cout << "DEBUG  -  pre jack" << std::endl; 
 
     JackModule jack;
     jack.init(argv[0]);

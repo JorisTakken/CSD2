@@ -53,5 +53,6 @@ void Synth::tick(){
 }
 
 float Synth::getSample(){   
+    sample *= amplitude;
     return sample;
 }
