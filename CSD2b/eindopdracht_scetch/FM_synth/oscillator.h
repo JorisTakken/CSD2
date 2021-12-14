@@ -9,6 +9,10 @@ class Oscillator{
         virtual ~Oscillator();
         void initialize(double freq, double amp, double samplerate);
 
+
+        float setFrequency(float newFreq);
+        float getFrequency();
+
         
         void tick(); 
         float getSample();
@@ -19,6 +23,8 @@ class Oscillator{
         float frequency;
         float amplitude;
         int samplerate;
+        
+        float newFreq;
 
         double sample;
         float phase;

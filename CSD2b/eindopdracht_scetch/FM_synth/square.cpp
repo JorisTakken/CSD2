@@ -27,5 +27,5 @@ void Square::calculate(){
     }else{
       sample = 1; 
     }
-  // sample *= amplitude;
+  sample *= amplitude;
 }

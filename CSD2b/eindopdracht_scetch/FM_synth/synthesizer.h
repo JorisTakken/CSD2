@@ -20,6 +20,9 @@ class Synth{
 
         virtual ~Synth();
 
+        float setFrequency_carrier(float newFreq);       
+        float getFrequency_carrier();        
+
         void initialize();
 
         void tick();
@@ -34,6 +37,7 @@ class Synth{
         float modulatorFreq;
         float amplitude;
         float sample;
+        float newFreq;
 
         Oscillator* modulator; 
         Oscillator* carrier;

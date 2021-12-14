@@ -18,11 +18,9 @@ FM_synth::~FM_synth(){
 }
 
 void FM_synth::calculate(){
-    initialize();
     tick();
-    sample = (pow(2,carrier->getSample() * modulator->getSample())) - 1;
-
-    // sample *= amplitude;
+    sample = (pow(1.1,modulator->getSample() + carrier->getSample())) - 1;
+    sample *= amplitude;
 }
 
 void FM_synth::write_waveform(){   

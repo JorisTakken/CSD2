@@ -47,12 +47,21 @@ void Synth::initialize(){
     carrier->initialize(modulatorFreq,amplitude,SAMPLERATE);
 }
 
+
+float Synth::setFrequency_carrier(float newFreq){
+    modulator->setFrequency(newFreq);
+}
+        
+float Synth::getFrequency_carrier(){
+    std::cout << "frequency" << newFreq << std::endl;
+}
+
 void Synth::tick(){  
     modulator->tick();
     carrier->tick();
 }
 
 float Synth::getSample(){   
-    sample *= amplitude;
+    // sample *= amplitude;
     return sample;
 }

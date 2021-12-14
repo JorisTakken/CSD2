@@ -18,10 +18,9 @@ RING_synth::~RING_synth(){
 }
 
 void RING_synth::calculate(){
-    initialize();
     tick();
     sample = (carrier->getSample() + modulator->getSample()) / 2;
-    // sample *= amplitude;
+    sample *= amplitude;
 }
 
 

@@ -15,7 +15,6 @@ class FM_synth : public Synth{
         ~FM_synth();
         
         void write_waveform();
-
         void calculate() override;  
 
         

@@ -10,29 +10,42 @@
 #define SAMPLERATE 44100
 
 int main(int argc,char **argv){
-    std::string modWave = "square"; 
+    std::string modWave = "sine"; 
     std::string carWave = "saw";
 
-    RING_synth ring(carWave + "C", 100, modWave + "M",1000,1);
+    RING_synth ring(carWave + "C", 91, modWave + "M",100,0.5);
     ring.write_waveform();
-   
-    // int framecount = 0; 
-    // int interval = 0; 
+    
+    
+    int pitch = 0;
+    int framecount = 0;
+    int interval = 44100; 
+    float pitches[12] = {100,120,150,170,180,200,240,250,270,300,320,340};
+
 
     JackModule jack;
     jack.init(argv[0]);
-    jack.onProcess = [&ring](jack_default_audio_sample_t *inBuf,
+    jack.onProcess = [&ring, &framecount, &interval, &pitches, &pitch](jack_default_audio_sample_t *inBuf,
         jack_default_audio_sample_t *outBuf, jack_nframes_t nframes) {
         for(unsigned int i = 0; i < nframes; i++) {
             outBuf[i] = ring.getSample();
             ring.calculate();
-            // if (framecount > interval){
-            //     std::cout << "niewe pitch" << "/n";
-            // }
-            // framecount += framecount;
-            // std::cout << framecount << "/n";
-            
+            framecount++;
+            // std::cout << framecount << std::endl;
+            if (framecount > interval){
+                ring.setFrequency_carrier(pitches[pitch]);
+                ring.getFrequency_carrier();
+                std::cout << pitch << std::endl;
+                pitch++;
+                if (pitch > 11){
+                    pitch = 0;
+                }
 
+
+                }
+                
+                framecount = 0;
+            }
         }
         return 0;
     };
