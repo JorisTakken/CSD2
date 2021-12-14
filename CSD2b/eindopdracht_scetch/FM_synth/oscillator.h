@@ -10,7 +10,7 @@ class Oscillator{
         void initialize(double freq, double amp, double samplerate);
 
 
-        float setFrequency(float newFreq);
+        void setFrequency(float newFreq);
         float getFrequency();
 
         

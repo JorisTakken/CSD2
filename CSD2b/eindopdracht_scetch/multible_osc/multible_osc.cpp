@@ -8,11 +8,11 @@ Multible_osc::Multible_osc(
     float array_of_frequencies[],
     float array_of_waves[], 
     float amplitude)
-    : 
-    number_of_oscillators(number_of_oscillators), 
-    array_of_frequencies(array_of_frequencies[10]),
-    array_of_waves(array_of_waves[10]),
-    amplitude(amplitude){
+    :
+    number_of_oscillators(number_of_oscillators),
+    array_of_frequencies([NUMBER_OF_OSCILLATORS]);
+    float array_of_waves[NUMBER_OF_OSCILLATORS];
+    float amplitude;
 
 }
 

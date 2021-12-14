@@ -37,7 +37,10 @@ class Synth{
         float modulatorFreq;
         float amplitude;
         float sample;
-        float newFreq;
+
+        float freqModulator;
+        // float newFreq;
+        // float newfrequency;
 
         Oscillator* modulator; 
         Oscillator* carrier;

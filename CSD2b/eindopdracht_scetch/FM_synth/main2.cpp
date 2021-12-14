@@ -7,48 +7,71 @@
 #include "synthesizer.h"
 #include "jack_module.h"
 
+
+#define NUMBER_PITCHES 12
 #define SAMPLERATE 44100
 
+
+
+
+
+
 int main(int argc,char **argv){
-    std::string modWave = "sine"; 
+    // std::cout << "doet het" << std::endl;
+
+    std::string modWave = "saw"; 
     std::string carWave = "saw";
 
-    RING_synth ring(carWave + "C", 91, modWave + "M",100,0.5);
+    FM_synth ring(carWave + "C", 901, modWave + "M",100,1);
     ring.write_waveform();
+    std::cout << "doet het2" << std::endl;
     
-    
-    int pitch = 0;
+    ring.setFrequency_carrier(100);
+    // int pitch = 0;
     int framecount = 0;
-    int interval = 44100; 
-    float pitches[12] = {100,120,150,170,180,200,240,250,270,300,320,340};
-
+    int interval = 22100; 
+    int nieuw = 0;
+    float pitches[NUMBER_PITCHES] = {100,120,150,170,180,200,240,250,270,300,320,340};
+    // float pitch;
 
     JackModule jack;
     jack.init(argv[0]);
-    jack.onProcess = [&ring, &framecount, &interval, &pitches, &pitch](jack_default_audio_sample_t *inBuf,
-        jack_default_audio_sample_t *outBuf, jack_nframes_t nframes) {
+    jack.onProcess = [&ring, &framecount, &interval, &pitches, &nieuw]
+    (jack_default_audio_sample_t *inBuf,jack_default_audio_sample_t *outBuf, jack_nframes_t nframes) {
         for(unsigned int i = 0; i < nframes; i++) {
             outBuf[i] = ring.getSample();
             ring.calculate();
             framecount++;
-            // std::cout << framecount << std::endl;
+
             if (framecount > interval){
-                ring.setFrequency_carrier(pitches[pitch]);
-                ring.getFrequency_carrier();
-                std::cout << pitch << std::endl;
-                pitch++;
-                if (pitch > 11){
-                    pitch = 0;
-                }
-
-
-                }
-                
+            std::cout << "pitch" << std::endl;
                 framecount = 0;
+                nieuw++;
+                if (nieuw > NUMBER_PITCHES - 1){
+                    nieuw = 0;
             }
-        }
+                std::cout << pitches[nieuw] << std::endl;
+                
+                
+            
+                
+                // pitch = pitches[nieuw];
+                // std::cout << pitch << std::endl;
+
+            //     // ring.setFrequency_carrier(pitch);
+            //     // ring.getFrequency_carrier();
+            //     framecount = 0;
+            //     }
+           }
+
+
+
         return 0;
     };
+    
+
+
+
     jack.autoConnect();
     std::cout << "\n\nPress 'q' when you want to quit the pmrogram.\n";
     bool running = true;
@@ -69,14 +92,9 @@ int main(int argc,char **argv){
 
 
 
-
-
-
-
-
-
-
-
+// int melody(int note){
+    
+// }
 
 
 

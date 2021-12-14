@@ -49,11 +49,15 @@ void Synth::initialize(){
 
 
 float Synth::setFrequency_carrier(float newFreq){
+    // newfrequency = newFreq;
     modulator->setFrequency(newFreq);
+    // std::cout << "frequency" << freqModulator << std::endl;
 }
         
 float Synth::getFrequency_carrier(){
-    std::cout << "frequency" << newFreq << std::endl;
+    freqModulator = modulator->getFrequency();
+    
+    return freqModulator; 
 }
 
 void Synth::tick(){  
