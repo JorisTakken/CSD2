@@ -16,7 +16,6 @@ int main(int argc,char **argv){
     int framecount = 0;
     int interval = 22100; 
     int nieuw = 0;
-    // int pitch = 0;
     float pitches[NUMBER_PITCHES] = {100,120,150,170,180,200,240,250,270,300,320,340};
 
 
@@ -26,7 +25,7 @@ int main(int argc,char **argv){
 
 
 
-    FM_synth synth(carWave + "C", 901, modWave + "M",100,amplitude);
+    FM_synth synth(carWave + "C", 901, modWave + "M",2,amplitude);
     synth.write_waveform();
 
     // ring.setFrequency_carrier(100);

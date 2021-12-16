@@ -49,7 +49,6 @@ void Synth::initialize(){
 
 
 float Synth::setFrequency_carrier(float newFreqCar){
-    // newfrequency = newFreq;
     modulator->setFrequency(newFreqCar);
     std::cout << "frequency" << freqModulator << std::endl;
 }
