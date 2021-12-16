@@ -26,7 +26,7 @@ int main(int argc,char **argv){
     //     }
     // std::cout << "freq" << buff;
 
-    FM_synth fm1("saw", 200, "sine", 100, amlitude,0.4,2);
+    FM_synth fm1("sine", 50, "saw", 100, amlitude,0.4,0);
 
     
 
