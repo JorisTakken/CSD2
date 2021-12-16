@@ -12,7 +12,11 @@ Oscillator::~Oscillator(){
 
 
 void Oscillator::setFrequency(float newFreq){
+    
+    newFreq = 110;
+
     frequency = newFreq;
+    // std::cout << frequency << std::endl;
 }
         
 float Oscillator::getFrequency(){
