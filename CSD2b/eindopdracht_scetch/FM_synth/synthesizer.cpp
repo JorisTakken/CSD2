@@ -54,8 +54,6 @@ float Synth::setFrequency_carrier(float newFreqCar){
 }
         
 float Synth::getFrequency_carrier(){
-    // freqModulator = ;
-    
     return modulator->getFrequency(); 
 }
 

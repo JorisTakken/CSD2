@@ -15,24 +15,51 @@
 
 
 int main(int argc,char **argv){
-    std::string waveFormOptions[3] = {"sine", "saw", "square"};
-    float freqs[3] = {90, 500, 2000};
+    // std::string waveFormOptions[3] = {"sine", "saw", "square"};
+    // int numWaveFormOptions = 3;
+    // User_input user;
+    // std::string waveform_selected = user.make_userSelection(waveFormOptions,numWaveFormOptions);
+    // std::cout << "You selected: " << waveform_selected << std::endl;
 
-    int numWaveFormOptions = 3;
-    User_input user;
-    std::string waveform_selected = user.make_userSelection(waveFormOptions,numWaveFormOptions);
-    std::cout << "You selected: " << waveform_selected << std::endl;
+
+
+    int number_oscilators = 2;
+    std::string waveforms[2] = {"sine", "saw"};
+    float freqs[2] = {20, 10};
 
     Wavetable wave;
-    wave.initialize(waveFormOptions[3],freqs[3],3);
+    wave.initialize(waveforms,freqs,number_oscilators);
     wave.write_waveform(); 
+    
+    JackModule jack;
+    jack.init(argv[0]);
+    jack.onProcess = [&wave]
+    (jack_default_audio_sample_t *inBuf,
+        jack_default_audio_sample_t *outBuf, jack_nframes_t nframes) {
+        for(unsigned int i = 0; i < nframes; i++) {
+            outBuf[i] = wave.getSample();
+            wave.calculate();
+        }
+        return 0;
+    };
 
-    Sine sine;
-    sine.initialize(200,1,SAMPLERATE);
-
-    sine.setFrequency(100);
-    float sineFreq = sine.getFrequency();
-    std::cout << sineFreq << std::endl;
+    jack.autoConnect();
+    std::cout << "\n\nPress 'q' when you want to quit the pmrogram.\n";
+    bool running = true;
+    while (running)
+    {
+        switch (std::cin.get())
+        {
+        case 'q':
+            running = false;
+            jack.end();
+            break;
+        }
+    }
+    //end the program
+    
+    
+    return 0;
 
 } 
 
