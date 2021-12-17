@@ -16,22 +16,30 @@ class Wavetable{
     public:
         Wavetable();
         ~Wavetable();
+
+        void setFrequency(float newFreq,int oscillator_number);
+        float getFrequency();
+
+
         
         void initialize(std::string waveform[],float frequencys[],int number_oscs);
         void write_waveform();
         void calculate();  
-        float getSample();
+         float getSample();
 
-        
     protected:
         float sample;
+        int number_oscs;
+
+        int oscillator_number;
+        Oscillator* oscillator[4];
+
 
         float samp;
-        int number_oscs;
         std::string waveform;
         float frequencys;
         
-        Oscillator* oscillator[];
+        
 
 
         
