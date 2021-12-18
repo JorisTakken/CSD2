@@ -19,7 +19,38 @@
 #define MIN_FREQ_WAVETABLE 2
 #define MAX_FREQ_WAVETABLE 10000
 
+// float ui_freq_wavetable(float frequency_selected){
+//     User_input user_wavetable_freq;
+//     for (int i = 0; i < NUMBER_OSCILLATORS; i++){
+//         std::cout << "choose Frequency for wave number :" << i << std::endl;
+//         std::cout << " " << std::endl;
+//         std::cout << "freqcuency should be a frequency between 2 and 10000" << i + 1 << std::endl;
+//         frequency_selected[i] = user_wavetable_freq.user_input_numbers(MIN_FREQ_WAVETABLE,MAX_FREQ_WAVETABLE);
+//         std::cout << "You selected: " << frequency_selected[i] << std::endl;
+
+//     }
+//     std::cout << "You selected: " << frequency_selected << std::endl;
+
+//     return frequency_selected;
+// }
+
+
+
+
 int main(int argc,char **argv){
+    User_input user_wavetable_freq;
+    float frequency_selected[NUMBER_OSCILLATORS] = {};
+
+    for (int i = 0; i < NUMBER_OSCILLATORS; i++){
+        std::cout << "choose Frequency for wave number :" << i << std::endl;
+        std::cout << " " << std::endl;
+        std::cout << "freqcuency should be a frequency between" <<  MIN_FREQ_WAVETABLE <<  " and "  << MAX_FREQ_WAVETABLE << i + 1 << std::endl;
+        frequency_selected[i] = user_wavetable_freq.user_input_numbers(MIN_FREQ_WAVETABLE,MAX_FREQ_WAVETABLE);
+        std::cout << "You selected: " << frequency_selected[i] << std::endl;
+        std::cout << "Array " << frequency_selected << std::endl;
+    }
+
+    std::string waveFormOptions[2] = {"sine", "saw"};
 
     float amplitude = 0.5;
 

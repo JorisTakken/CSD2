@@ -1,14 +1,13 @@
 #include <iostream>
-// #include "wavetable.h"
 #include "1_writeToFile.h"
-
 
 #include "sine.h"
 #include "saw.h"
 #include "square.h"
 
-
 #include "math.h"
+
+#define MAX_OSCILLATORS 20
 
 #pragma once
 
@@ -18,22 +17,22 @@ class Wavetable{
         ~Wavetable();
 
         void setFrequency(float newFreq,int oscillator_number);
-        float getFrequency();
+        float getFrequency(int oscillator_number);
 
-
-        
-        void initialize(std::string waveform[],float frequencys[],int number_oscs);
+        void validate_numOscillators(int input_number_oscs);
+        void initialize(std::string waveform[],float frequencys[],int input_number_oscs);
         void write_waveform();
         void calculate();  
          float getSample();
 
     protected:
         float sample;
-        int number_oscs;
+        int input_number_oscs;
+        float number_oscs;
+
+        Oscillator* oscillator[MAX_OSCILLATORS];
 
         int oscillator_number;
-        Oscillator* oscillator[4];
-
 
         float samp;
         std::string waveform;

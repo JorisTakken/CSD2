@@ -3,15 +3,7 @@
 
 #define SAMPLERATE 44100
 
-Square::Square() : Square(0,0,0){
-}
-
-Square::Square(
-  float frequency,
-  float amplitude,
-  int samplerate) 
-  : 
-  Oscillator(frequency, amplitude, samplerate){
+Square::Square() : Oscillator(){
 }
 
 Square::~Square(){
