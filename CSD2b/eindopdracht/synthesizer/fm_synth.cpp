@@ -10,103 +10,66 @@ FM_synth::~FM_synth(){
 
 
 
-void FM_synth::initialize(std::string waveform[],float frequency[], int input_number_oscs){
-    this->carrierFreq = frequency[0];
-    this->modulatorFreq = frequency[1];
+void FM_synth::initialize(std::string waveform,float frequency,float ratio, float mod_index
+){
+    carrier = new Sine;
+    modulator = new Sine;
+    this->frequency = frequency;
+    carrier->initialize(frequency,1,SAMPLERATE);
+    modulator->initialize(frequency,mod_index,SAMPLERATE);
 
-    if (waveform[0] == "sine"){
-        carrier = new Sine;
-        }
-    else if (waveform[0] == "saw"){
-        carrier = new Saw;
-        }
-    else if (waveform[0] == "square"){
-        carrier = new Square;
-        }
-
-    if (waveform[1] == "sine"){
-        modulator = new Sine;
-        }
-    else if (waveform[1] == "saw"){
-        modulator = new Saw;
-        }
-    else if (waveform[1] == "square"){
-        modulator = new Square;
-        }
-
-    carrier->initialize(carrierFreq,1,SAMPLERATE);
-    modulator->initialize(modulatorFreq,1,SAMPLERATE);
+    modFrequency = frequency * ratio;
+    modulator->setFrequency(modFrequency);
 }
 
-void FM_synth::setCarrierFrequency(float newFreq){
-    carrier->setFrequency(newFreq);   
+void FM_synth::setFrequency(float newFreq){
+    this->frequency = newFreq;
+    carrier->setFrequency(newFreq);
 }
 
-float FM_synth::getCarrierFrequency(){
-    float carrierFreq = carrier->getFrequency();
-    return carrierFreq;
-}
-
-
-void FM_synth::setModulationIndex(){
-    this->modulationIndex = (1.056 * modulator->getFrequency()) * 7.0;
-}
-
-float FM_synth::getModulationIndex(){
-    return modulationIndex
+float FM_synth::getFrequency(){
+    freq = carrier->getFrequency();
+    return freq;
 }
 
 
 
-void FM_synth::calculateCarrierFreq(){
-    carrierFreq = modulator->getFrequency() + (modulator->tick() * getModulationIndex());
 
+
+
+
+
+
+float FM_synth::sound(){   
+        carrier->setFrequency(modulator->getSample() + carrier->getFrequency());
+        sample = carrier->getSample();
+        carrier->tick();
+        modulator->tick();
+        return sample;
 }
 
-void FM_synth::calculate(){ 
-    sample = carrier->getSample() + (7 * modulator->getSample());
-    carrier->tick();
-    modulator->tick();
-}
 
-float FM_synth::getSample(){
-    return sample;
-}
 
 
 
 void FM_synth::write_waveform(){   
-    float ModulationIndex = (1.07 * modulator->getFrequency()) * 5; 
-
-    std::cout << ModulationIndex << std::endl;
-
     WriteToFile file("1_fm_waveForm.csv", true);
     for(int i = 0; i < SAMPLERATE; i++) {
-        float frequency = carrier->getFrequency() + (modulator->getSample() * (1.07 * modulator->getFrequency()));
-        samp = frequency;
-
+        carrier->setFrequency(modulator->getSample() + carrier->getFrequency());
+        samp = carrier->getSample();
         file.write(std::to_string(samp) + "\n");
         carrier->tick();
         modulator->tick();
+
     }
 }
 
 
-
-void Fmsynth::calculateCarrierFreq(){
-  //modulation index = (ratio * oscFreq) * x   (1 <= x >= 0.0)
-  //(mod * modulation index) + (carFreq)
-}
+// // set at initialisation or when you want to alter the modulation
+// carrier.setAmplitude(modDepth); 
+// carrier.setFrequency(modFreq); 
 
 
-// double Fmsynth::tick(){
-//   calculateCarrierFreq();
-//   return car->tick();
-// }
-
-
-// //heb zelf geen ADSR dr in maar een statische waarde _ experimenteer dr mee, kijk wat voor boventonen je krijgt ;) 
-// ModulationIndex = (ratio * Frequency) * ADSR 
-// modulatorFreq = Frequency * Ratio
-// carrierFreq = Frequency + (outputModulator * Modulation Index)
-
+// // update functionality
+// carrier.setFreq(modulator.getSample() + carrierFreq); 
+// sample = carrier.getSample(); 

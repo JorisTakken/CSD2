@@ -15,35 +15,40 @@ class FM_synth{
     public:
         FM_synth();
         ~FM_synth();
+        void initialize(std::string waveform,float frequency,float ratio, float mod_index);
 
-        void setCarrierFrequency(float newFreq);
-        float getCarrierFrequency();
+        void calcModulator_freq();
+        float make_modulator();
+        void calcCarrier_freq();
 
-        void setModulationIndex();
-        float getModulationIndex();
-
-        void calculateCarrierFreq();
-
+        void setFrequency(float newFreq);
+        float getFrequency();
 
 
-        void validate_numOscillators(int input_number_oscs);
-        void initialize(std::string waveform[],float frequencys[],int input_number_oscs);
+        float sound();
         void write_waveform();
-        void calculate();  
-        float getSample();
+        // float getSample();
 
     protected:
+        std::string waveform;
+        float frequency;
+        float ratio;
+        float mod_index;
+
+        float modFrequency;
+        float modAmplitude;
+        float modulation_depth;
+        float freq;
+        float newFreq;
+
         float sample;
         float samp;
-        float number_oscs;
-        float carrierFreq;
-        float modulatorFreq;
 
         Oscillator* carrier;
         Oscillator* modulator;
 
-        std::string waveform;
-        float frequencys;    
         float modulationIndex;
+
+        
 };
 
