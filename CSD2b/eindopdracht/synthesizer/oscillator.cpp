@@ -32,3 +32,5 @@ void Oscillator::tick(){
 float Oscillator::getSample() {
   return sample;
 }
+
+

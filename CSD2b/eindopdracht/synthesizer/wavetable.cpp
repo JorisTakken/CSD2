@@ -27,9 +27,6 @@ void Wavetable::validate_numOscillators(int input_number_oscs){
 
 void Wavetable::initialize(std::string waveform[],float frequencys[],int input_number_oscs){
     validate_numOscillators(input_number_oscs);
-
-    
-      
     for (int i = 0; i < number_oscs; i++){
         if (waveform[i] == "sine"){
             oscillator[i] = new Sine;

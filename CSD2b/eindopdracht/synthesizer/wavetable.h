@@ -23,7 +23,7 @@ class Wavetable{
         void initialize(std::string waveform[],float frequencys[],int input_number_oscs);
         void write_waveform();
         void calculate();  
-         float getSample();
+        float getSample();
 
     protected:
         float sample;
