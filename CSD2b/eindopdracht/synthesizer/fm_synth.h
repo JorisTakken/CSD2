@@ -15,7 +15,7 @@ class FM_synth{
     public:
         FM_synth();
         ~FM_synth();
-        void initialize(std::string waveform,float frequency,float ratio, float mod_index);
+        void initialize(std::string waveformCarrier,std::string waveformModulator, float frequency,float ratio, float mod_index);
 
         void calcModulator_freq();
         float make_modulator();
@@ -30,7 +30,9 @@ class FM_synth{
         // float getSample();
 
     protected:
-        std::string waveform;
+        std::string waveformCarrier;
+        std::string waveformModulator;
+
         float frequency;
         float ratio;
         float mod_index;
