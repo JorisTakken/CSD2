@@ -24,23 +24,26 @@ int main(int argc,char **argv){
     float amplitude = 0.2;
 
     FM_synth fm1;
-    FM_synth fm2;
-    FM_synth fm3;
 
-    fm1.initialize("sine","sine",80,32,10);
-    // fm2.initialize("sine","saw",freqs[1],ratio[1],mod_index[1]);
-    // fm3.initialize("sine","saw",freqs[2],ratio[2],mod_index[2]);
+    fm1.initialize("saw","sine",60,8,100);
+    fm1.setPitch(60);
+
+    Wavetable wave;
+    std::string waveForms[3] = {"sine","sine","square"};
+    int midiPitches[3] = {60,61,62};
+
+    wave.initialize(waveForms,midiPitches,NUMBER_OSCILLATORS);
+    wave.setPitch(60,0);
+    wave.write_waveform();
 
 
-    fm1.write_waveform();
-    
+
     JackModule jack;
     jack.init(argv[0]);
-    jack.onProcess = [&fm1, &amplitude]
+    jack.onProcess = [&wave, &amplitude]
     (jack_default_audio_sample_t *inBuf, jack_default_audio_sample_t *outBuf, jack_nframes_t nframes) {
         for(unsigned int i = 0; i < nframes; i++) {
-            outBuf[i] = fm1.sound() * amplitude;
-           
+            outBuf[i] = wave.nextSample() * amplitude;
             }
         return 0;
     };

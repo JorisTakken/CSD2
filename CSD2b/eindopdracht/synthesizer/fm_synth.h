@@ -1,5 +1,6 @@
 #include <iostream>
 #include "1_writeToFile.h"
+#include "synth.h"
 
 #include "sine.h"
 #include "saw.h"
@@ -11,23 +12,23 @@
 
 #pragma once
 
-class FM_synth{
+class FM_synth : public Synth{
     public:
         FM_synth();
         ~FM_synth();
-        void initialize(std::string waveformCarrier,std::string waveformModulator, float frequency,float ratio, float mod_index);
+
+        void write_waveform();
+        void initialize(std::string waveformCarrier,std::string waveformModulator, int midiPitch,float ratio, float mod_index);
 
         void calcModulator_freq();
         float make_modulator();
         void calcCarrier_freq();
 
-        void setFrequency(float newFreq);
+        void setPitch(int pitch);
         float getFrequency();
 
 
-        float sound();
-        void write_waveform();
-        // float getSample();
+        float nextSample();
 
     protected:
         std::string waveformCarrier;

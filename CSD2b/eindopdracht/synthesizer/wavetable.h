@@ -1,5 +1,7 @@
 #include <iostream>
 #include "1_writeToFile.h"
+#include "synth.h"
+
 
 #include "sine.h"
 #include "saw.h"
@@ -11,19 +13,19 @@
 
 #pragma once
 
-class Wavetable{
+class Wavetable : public Synth{
     public:
         Wavetable();
         ~Wavetable();
 
-        void setFrequency(float newFreq,int oscillator_number);
+        void setPitch(float newFreq,int oscillator_number);
         float getFrequency(int oscillator_number);
 
         void validate_numOscillators(int input_number_oscs);
-        void initialize(std::string waveform[],float frequencys[],int input_number_oscs);
+        void initialize(std::string waveform[],int midiPitches[],int input_number_oscs);
         void write_waveform();
-        void calculate();  
-        float getSample();
+
+        float nextSample();  
 
     protected:
         float sample;
@@ -37,9 +39,5 @@ class Wavetable{
         float samp;
         std::string waveform;
         float frequencys;
-        
-        
-
-
         
 };
