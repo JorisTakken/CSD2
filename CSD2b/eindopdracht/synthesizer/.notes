@@ -1,0 +1,41 @@
+
+
+
+
+wat moet ik nog doen, ik word gek.
+
+ TODO: 
+ User Input:  
+     choose your synth : 
+         (fm) (wavetable)
+
+     do you want to hear 1 tone or a melodie?
+         (melo) (note)
+
+
+
+ wavetable: NOTE
+ if (melodie or not = note){
+     if (choise = wavetable) {
+         how many oscillator woulkd you like to modulate each other :
+             (Number_oscillators)
+         choose waveforms yourself or all waveforms are sines saws or squares?
+             (my choise) (sines) (saws) (squares)
+         choose midiPitches myself or (random/preset)
+             (my choise) (preset) (random)    
+     }
+ }
+
+ wavetable: MELODY
+
+ if (melodie or not = melodie){
+     if (choise = wavetable) {
+         how many oscillator woulkd you like to modulate each other :
+             (Number_oscillators)
+         choose waveforms yourself or all waveforms are sines saws or squares?
+             (my choise) (sines) (saws) (squares)
+         welke toonladder would you like your generated melody?
+             (C7) (Dm7) (G) (Fmin)    
+     }
+ }
+   

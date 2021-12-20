@@ -22,8 +22,8 @@ std::string Melody::getScale(){
 
 void Melody::setMelodyType(){
     std::cout << "What kind of melody would you like?" << std::endl;
-    std::string melodyOptions[5] = {"liniar", "random", "pauzed", "arp", "emotional"};
-    std::string melodyInput = make_userSelection(melodyOptions,5);
+    std::string melodyOptions[3] = {"liniair", "random", "pauzed"};
+    std::string melodyInput = make_userSelection(melodyOptions,3);
     std::cout << "your choise was : " << melodyInput << std::endl;
     // generateMelody(melodyInput);
 }
@@ -68,14 +68,17 @@ void Melody::makeScale(std::string scale){
 // // }
 
 int Melody::liniair(int nextNote){
-    if (nextNote == 1){
-        note++;
-    }
-    std::cout << note << std::endl; 
-    note = midiValues[nextNote];
-    std::cout << note << std::endl; 
-    return note;
+    int midiNote_liniair[8] = {1,2,3,4,5,4,3,2};
+    int midiOut = midiValues[midiNote_liniair[nextNote]];
+    std::cout << midiOut << std::endl;
+    return midiOut;
 }
+
+
+
+
+
+
 
 void Melody::setNotelenght(int notelenght){
     this->notelenght = noteLengths[notelenght];

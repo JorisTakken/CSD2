@@ -18,18 +18,6 @@
 #define MIN_FREQ_WAVETABLE 2
 #define MAX_FREQ_WAVETABLE 10000
 
-/*
- * NOTE: jack2 needs to be installed
- * jackd invokes the JACK audio server daemon
- * https://github.com/jackaudio/jackaudio.github.com/wiki/jackd(1)
- * on mac, you can start the jack audio server daemon in the terminal:
- * jackd -d coreaudio
- */
-
-
-
-
-
 
 // TODO: 
 // UI:  
@@ -108,13 +96,12 @@ int main(int argc,char **argv){
                 lenght = 1;
                 melo.setNotelenght(lenght);
                 interval = (melo.getNotelenght() / 4);
-                
-                
                 nieuw++;
-                if (nieuw == 7){
+                if (nieuw == 8){
                     nieuw = 0;
                 }
                 wave1.setPitch(melo.liniair(nieuw), 0);
+                std::cout << melo.liniair(nieuw)<< "\n";
 
                 framecount = 0;
             }
