@@ -20,8 +20,10 @@ public:
 
 
 
+
     void setNotelenght(int notelenght);
     int getNotelenght();
+    
     int liniair(int nextNote);
 
 protected:

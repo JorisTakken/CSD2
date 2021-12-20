@@ -70,6 +70,9 @@ int main(int argc,char **argv){
 
     float amplitude = 0.2;
     Wavetable wave1;
+    FM_synth fm1;
+    fm1.initialize("sine","sine", 60,0.2,10);
+
 
     // initialise wavetable, give waveform and pitch for every oscilator
     std::string waveForms[3] = {"sine","sine","sine"};
@@ -87,21 +90,26 @@ int main(int argc,char **argv){
 
     JackModule jack;
     jack.init(argv[0]);
-    jack.onProcess = [&wave1, &melo, &amplitude, &framecount, &interval, &nieuw, &lenght]
+    jack.onProcess = [&fm1, &melo, &amplitude, &framecount, &interval, &nieuw, &lenght]
     (jack_default_audio_sample_t *inBuf, jack_default_audio_sample_t *outBuf, jack_nframes_t nframes) {
         for(unsigned int i = 0; i < nframes; i++) {
-            outBuf[i] = wave1.nextSample() * amplitude;
+            outBuf[i] = fm1.nextSample() * amplitude;
             framecount++;
+
             if (framecount > interval){
-                lenght = 1;
+                lenght++;
+                if (lenght == 3){
+                    lenght = 0;
+                }
                 melo.setNotelenght(lenght);
-                interval = (melo.getNotelenght() / 4);
+                interval = (melo.getNotelenght());
+
                 nieuw++;
                 if (nieuw == 8){
                     nieuw = 0;
                 }
-                wave1.setPitch(melo.liniair(nieuw), 0);
-                std::cout << melo.liniair(nieuw)<< "\n";
+
+                fm1.setPitch(melo.liniair(nieuw));
 
                 framecount = 0;
             }

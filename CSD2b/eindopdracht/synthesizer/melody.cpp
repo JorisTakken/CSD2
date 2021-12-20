@@ -60,12 +60,7 @@ void Melody::makeScale(std::string scale){
     }
 }
 
-// int Melody::generateMelody(std::string melodyType){
-//     // int noteLengths[3] = {44100,22050,11025};
-// //     for (int i = 0; i < 8; i++){
-// //         std::cout << midiValues[i] << std::endl; 
-// //     } 
-// // }
+
 
 int Melody::liniair(int nextNote){
     int midiNote_liniair[8] = {1,2,3,4,5,4,3,2};
@@ -87,3 +82,4 @@ void Melody::setNotelenght(int notelenght){
 int Melody::getNotelenght(){
     return notelenght;
 }
+
