@@ -71,14 +71,15 @@ int main(int argc,char **argv){
     float amplitude = 0.2;
     Wavetable wave1;
     FM_synth fm1;
-    fm1.initialize("sine","sine", 60,0.2,10);
+    fm1.initialize("sine","sine", 60,12,48);
+    fm1.write_waveform();
+
 
 
     // initialise wavetable, give waveform and pitch for every oscilator
     std::string waveForms[3] = {"sine","sine","sine"};
     int midipitches[3] = {20,64,57};
     wave1.initialize(waveForms,midipitches,NUMBER_OSCILLATORS);
-    wave1.write_waveform();
 
 
 
@@ -98,18 +99,19 @@ int main(int argc,char **argv){
 
             if (framecount > interval){
                 lenght++;
-                if (lenght == 3){
+                if (lenght == 10){
                     lenght = 0;
                 }
                 melo.setNotelenght(lenght);
-                interval = (melo.getNotelenght());
+                interval = (melo.getNotelenght() * 2);
 
                 nieuw++;
                 if (nieuw == 8){
                     nieuw = 0;
                 }
+                std::cout << (melo.liniair(nieuw)) << std::endl;
 
-                fm1.setPitch(melo.liniair(nieuw));
+                fm1.setPitch((melo.liniair(nieuw)));
 
                 framecount = 0;
             }

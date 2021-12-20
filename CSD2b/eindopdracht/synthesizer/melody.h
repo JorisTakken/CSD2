@@ -21,14 +21,14 @@ public:
 
 
 
-    void setNotelenght(int notelenght);
+    void setNotelenght(int lenght);
     int getNotelenght();
-    
+
     int liniair(int nextNote);
 
 protected:
     int notelenght;
-    int noteLengths[3] = {44100,22050,11025};
+    int noteLengths[11] = {1,1,2,3,5,8,13,21,34,55,89};
 
     
     std::string scaleInput;

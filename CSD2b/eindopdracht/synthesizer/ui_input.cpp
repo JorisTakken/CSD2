@@ -42,7 +42,7 @@ bool User_input::validateSelection(std::string selection, std::string options_se
 }
 
 std::string User_input::retrieveUserInput(std::string options_selection[], int number_options){
-
+  
     // show all options you can choose from
     std::cout << "Please enter your selection. You can choice between: ";
     for(int i = 0; i < number_options - 1; i++) {

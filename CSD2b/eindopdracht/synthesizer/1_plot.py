@@ -5,7 +5,7 @@ import csv
 
 # create a list and import data from output.csv file
 data = list()
-with open('./1_fm_waveForm.csv', 'r') as file:
+with open('./_waveForm.csv', 'r') as file:
     reader = csv.reader(file)
     for row in reader:
         data.append(float(row[0]))
