@@ -18,6 +18,18 @@
 #define MIN_FREQ_WAVETABLE 2
 #define MAX_FREQ_WAVETABLE 10000
 
+/*
+ * NOTE: jack2 needs to be installed
+ * jackd invokes the JACK audio server daemon
+ * https://github.com/jackaudio/jackaudio.github.com/wiki/jackd(1)
+ * on mac, you can start the jack audio server daemon in the terminal:
+ * jackd -d coreaudio
+ */
+
+
+
+
+
 
 // TODO: 
 // UI:  
@@ -68,9 +80,6 @@ int main(int argc,char **argv){
     melo.setMelodyType();
 
 
-
-
-
     float amplitude = 0.2;
     Wavetable wave1;
 
@@ -79,14 +88,6 @@ int main(int argc,char **argv){
     int midipitches[3] = {20,64,57};
     wave1.initialize(waveForms,midipitches,NUMBER_OSCILLATORS);
     wave1.write_waveform();
-
-
-
-
-
-
-
-
 
 
 
@@ -114,11 +115,7 @@ int main(int argc,char **argv){
                     nieuw = 0;
                 }
                 wave1.setPitch(melo.liniair(nieuw), 0);
-                // wave1.setPitch(melo.liniair(nieuw)*0.5, 1);
-                // wave1.setPitch(melo.liniair(nieuw), 2);
 
-
-                // wave1.setPitch(melo.liniair(nieuw) * 2, 1);
                 framecount = 0;
             }
         }
