@@ -24,6 +24,9 @@ class FM_synth : public Synth{
         float make_modulator();
         void calcCarrier_freq();
 
+
+        void setRatio(float ratio);
+        float getRatio();
         void setPitch(int pitch);
         float getFrequency();
 

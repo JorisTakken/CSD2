@@ -58,9 +58,9 @@ std::string User_input::retrieveUserInput(std::string options_selection[], int n
     return selection;
 }
 
-float User_input::user_input_numbers(float min, float max){
+int User_input::user_input_numbers(int min, int max){
   std::string input;
-  float value = 0;
+  int value = 0;
   bool notInRange = true;
 
   while(notInRange) {
@@ -68,7 +68,7 @@ float User_input::user_input_numbers(float min, float max){
       << std::endl;
     // first capture input in input string
     std::cin >> input;
-    // validate if input string can be transformed into a float
+    // validate if input string can be transformed into a int
     try {
       value = std::stof(input);
       // validate range
@@ -79,7 +79,7 @@ float User_input::user_input_numbers(float min, float max){
         std::cout << "Incorrect range, please try again." << std::endl;
       }
     } catch (const std::exception& e) {
-      // no float as input
+      // no int as input
       std::cout << "Invalid input, this was not a number, please try again"
         << std::endl;
     }

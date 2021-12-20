@@ -13,7 +13,7 @@ class User_input{
         bool validateSelection(std::string selection, std::string selectionOptions[],int numOptions);
         std::string retrieveUserInput(std::string selectionOptions[], int numOptions);
 
-        float user_input_numbers(float min, float max);
+        int user_input_numbers(int min, int max);
 
 
     protected:

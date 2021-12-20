@@ -42,8 +42,6 @@ void Wavetable::initialize(std::string waveform[],int midiPitches[],int input_nu
     }
 }
 
-
-
 void Wavetable::setPitch(float pitch,int oscillator_number){
     setMidiPitch(pitch);
     oscillator[oscillator_number]->setFrequency(MTOF(getMidiPitch()));   
@@ -67,7 +65,7 @@ float Wavetable::nextSample(){
 }
 
 void Wavetable::write_waveform(){   
-    WriteToFile file("1_fm_waveForm.csv", true);
+    WriteToFile file("_waveForm.csv", true);
     for(int i = 0; i < SAMPLERATE; i++) {
         float total = 1;
 
@@ -82,4 +80,4 @@ void Wavetable::write_waveform(){
         }  
     }
 }
-    
+

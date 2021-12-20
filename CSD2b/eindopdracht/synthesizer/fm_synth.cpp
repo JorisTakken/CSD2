@@ -37,6 +37,16 @@ void FM_synth::initialize(std::string waveformCarrier, std::string waveformModul
     modulator->initialize(modFrequency,mod_index,SAMPLERATE);
 }
 
+void FM_synth::setRatio(float ratio){
+    this->ratio = ratio;
+    modulator->setFrequency(ratio * frequency);
+}
+
+float FM_synth::getRatio(){
+    return ratio;
+}
+
+  
 void FM_synth::setPitch(int pitch){
     setMidiPitch(pitch);
     this->frequency = MTOF(getMidiPitch());
@@ -57,7 +67,7 @@ float FM_synth::nextSample(){
 }
 
 void FM_synth::write_waveform(){   
-    WriteToFile file("1_fm_waveForm.csv", true);
+    WriteToFile file("_waveForm.csv", true);
     for(int i = 0; i < SAMPLERATE; i++) {
         carrier->setFrequency(modulator->getSample() + carrier->getFrequency());
         samp = carrier->getSample();
@@ -66,13 +76,3 @@ void FM_synth::write_waveform(){
         modulator->tick();
     }
 }
-
-
-// // set at initialisation or when you want to alter the modulation
-// carrier.setAmplitude(modDepth); 
-// carrier.setFrequency(modFreq); 
-
-
-// // update functionality
-// carrier.setFreq(modulator.getSample() + carrierFreq); 
-// sample = carrier.getSample(); 
