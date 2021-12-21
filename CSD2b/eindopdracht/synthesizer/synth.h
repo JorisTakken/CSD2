@@ -21,8 +21,8 @@ class Synth{
 
         float mtof(int midiPitch);
 
-        virtual float nextSample() = 0;
 
+        virtual float nextSample() = 0;
     protected:        
 
         int midiPitch;

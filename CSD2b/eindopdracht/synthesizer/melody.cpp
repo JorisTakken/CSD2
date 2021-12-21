@@ -70,12 +70,6 @@ int Melody::liniair(int nextNote){
     return midiOut;
 }
 
-
-
-
-
-
-
 void Melody::setNotelenght(int lenght){
     this->notelenght = noteLengths[lenght] * 1225;
 }

@@ -12,98 +12,124 @@
 #define NUMBER_PITCHES 12
 #define SAMPLERATE 44100
 
-#define WRITE_TO_FILE 1
+#define WRITE_TO_FILE 0
 
-#define NUMBER_OSCILLATORS 5
+#define NUMBER_OSCILLATORS 2
 
 #define MIN_FREQ_WAVETABLE 2
 #define MAX_FREQ_WAVETABLE 10000
 
-void chooseSynth(Synth* synth,Synth* fmSynth,Synth* wavetable){
+std::string chooseSynth(Synth* &synth,Synth* fmSynth,Synth* wavetable){
     User_input synthSel;
-    std::string synthChoises[2] = {"FM","wavetable"};
+    std::cout << "==============================================" << std::endl;
+    std::cout << "choose your synth : FM (fm) wavetable (w)" << std::endl;
+    std::string synthChoises[2] = {"fm","w"};
     std::string synthChoise = synthSel.make_userSelection(synthChoises,2);
     std::cout << "synthChoise " << synthChoise << std::endl;
-    if (synthChoise == "FM"){
+    std::cout << "==============================================" << std::endl;
+    if (synthChoise == "fm"){
         synth = fmSynth;
     }
-    if (synthChoise == "wavetable"){
+    else if (synthChoise == "w"){
         synth = wavetable;
     }
+    return synthChoise;
 }
 
 int main(int argc,char **argv){
     Synth* synth = nullptr;
     FM_synth fmSynth;
-    // ----------------------
-    // initialise FM synth, give waveform and pitch for every oscilator.
-    fmSynth.initialize("sine","saw",40,1.2,500);
+    Wavetable wavetable;    
 
+    std::string synthChoise = chooseSynth(synth,&fmSynth,&wavetable);
+    // std::cout << chooseSynth(synth,&fmSynth,&wavetable) << std::endl;
+
+    if (synthChoise == "fm"){
+            // ------------------------------------------------------------------
+            // initialise FM synth, give waveform and pitch for every oscilator.
+        User_input FM;
+            std::string waveOptions[3] = {"saw","sine","square"};
+            std::cout << "choose waveform carrier : " << std::endl;
+            std::string waveFormCar = FM.make_userSelection(waveOptions, 3);
+            std::cout << "choose waveform modulator : " << std::endl;
+            std::string waveFormMod = FM.make_userSelection(waveOptions, 3);
+            std::cout << "choose ratio : " << std::endl;
+            float ratio = FM.user_input_numbers(0,40);
+            std::cout << "choose modulaton depth : " << std::endl;
+            float modDepth = FM.user_input_numbers(0,1000);
+        fmSynth.initialize(waveFormCar,waveFormMod,40,ratio,modDepth);
+         // ------------------------------------------------------------------           
+    } else if (synthChoise == "w"){
+        // ------------------------------------------------------------------
+        // initialise wavetable, give waveform and pitch for every oscilator
+        // std::string waveForms[NUMBER_OSCILLATORS] = {"square","sine"};
+        // ------------------------------------------------------------------
+
+        User_input waveUI;
+            std::string waveOptions[3] = {"saw","sine","square"};
+            std::string waveforms[NUMBER_OSCILLATORS];
+            int midipitches[NUMBER_OSCILLATORS];    
+                for (int i = 0; i < NUMBER_OSCILLATORS; i++){
+                    std::cout << "choose waveform for oscillator number : " << i + 1 <<  std::endl;
+                    waveforms[i] = waveUI.make_userSelection(waveOptions,3);
+                    std::cout << "choose midipitch for oscillator number : " << i + 1 <<  std::endl;
+                    midipitches[i] = waveUI.user_input_numbers(0,127);
+                }
+        wavetable.initialize(waveforms,midipitches,NUMBER_OSCILLATORS);
+        // ------------------------------------------------------------------
+
+    }
+    
     Melody melo;
     melo.setScale(); 
     melo.setMelodyType();
-// ----------------------
-    // ----------------------
-    Wavetable wavetable;
-    // initialise wavetable, give waveform and pitch for every oscilator
-    std::string waveForms[NUMBER_OSCILLATORS] = {"sine","sine","saw","square","sine"};
-    int midipitches[NUMBER_OSCILLATORS] = {23,4,23,56,80};    
-    wavetable.initialize(waveForms,midipitches,NUMBER_OSCILLATORS);
-// ----------------------
-  
-
-
-
-
-    chooseSynth(synth,&fmSynth,&wavetable);
-
-   
-
-
+    
 #if WRITE_TO_FILE
     WriteToFile fileWriter("_waveForm.csv", true);
 
+if(synth != nullptr) {
+  // hier je forloop 
+    std::cout << "nullptr"<< std::endl;
     for(int i = 0; i < SAMPLERATE; i++) {
         fileWriter.write(std::to_string(synth->nextSample()) + "\n");
     }
+
+}
+    
 #else
 
-    float amplitude = 0.5;
+    float amplitude = 0.2;
     int framecount = 0;
     int interval = 44100;
     int nieuw = 1;
     int lenght = 0;
 
-    
-
-
     JackModule jack;
     jack.init(argv[0]);
-    jack.onProcess = [&wave1, &melo, &amplitude, &framecount, &interval, &lenght, &nieuw]
+    jack.onProcess = [&synth, &melo, &amplitude, &framecount, &interval, &lenght, &nieuw, &synthChoise]
     (jack_default_audio_sample_t *inBuf, jack_default_audio_sample_t *outBuf, jack_nframes_t nframes) {
         for(unsigned int i = 0; i < nframes; i++) {
-            outBuf[i] = wave1.nextSample() * amplitude;
-            framecount++;
-            if (framecount > interval){
-                lenght++;
-                if (lenght == 10){
-                    lenght = 0;
-                }
-                melo.setNotelenght(lenght);
-                interval = (melo.getNotelenght());
+            
+                outBuf[i] = synth->nextSample() * amplitude;
+                if (synthChoise == "fm"){
+                framecount++;
+                if (framecount > interval){
+                        lenght++;
+                        if (lenght == 10){
+                            lenght = 0;
+                        }
+                        melo.setNotelenght(lenght);
+                        interval = (melo.getNotelenght());
+                        nieuw++;
+                        if (nieuw == 8){
+                            nieuw = 0;
+                        }
+                        std::cout << melo.liniair(nieuw) << std::endl;
+                        synth->setMidiPitch(melo.liniair(nieuw) - 4,0);
+                        framecount = 0;
 
-                nieuw++;
-                if (nieuw == 8){
-                    nieuw = 0;
-                }
-                std::cout << melo.liniair(nieuw) << std::endl;
-                wave1.setMidiPitch(melo.liniair(nieuw) - 4,0);
-                wave1.setMidiPitch(melo.liniair(nieuw) - 2,1);
-                wave1.setMidiPitch(melo.liniair(nieuw) - 1,2);
-
-
-
-                framecount = 0;
+            }else if(synthChoise == "m"){
+                }   
             }
         }
         return 0;

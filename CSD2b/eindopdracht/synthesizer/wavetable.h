@@ -24,11 +24,12 @@ class Wavetable : public Synth{
 
         void validate_numOscillators(int input_number_oscs);
         void initialize(std::string waveform[],int midiPitches[],int input_number_oscs);
-        void write_waveform();
-
+        
         float nextSample() override;  
 
+
     protected:
+
         float sample;
         int input_number_oscs;
         float number_oscs;
