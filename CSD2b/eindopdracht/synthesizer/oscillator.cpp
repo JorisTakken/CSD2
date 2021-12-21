@@ -9,8 +9,7 @@ Oscillator::Oscillator(){
 Oscillator::~Oscillator(){
 }
 
-void Oscillator::initialize(double freq, double amp, double samplerate){ 
-  this->frequency = freq; 
+void Oscillator::initialize(double amp, double samplerate){ 
   this->amplitude = amp;
   this->samplerate = samplerate; 
 }

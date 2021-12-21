@@ -13,9 +13,13 @@ class Synth{
         Synth();
         ~Synth();
 
+        virtual void updateOscFreq(float pitch) = 0;
+
         void setMidiPitch(int midiPitch);
         float getMidiPitch(); 
-        float MTOF(int midiPitch);
+
+
+        float mtof(int midiPitch);
 
     protected:        
         virtual float nextSample() = 0;

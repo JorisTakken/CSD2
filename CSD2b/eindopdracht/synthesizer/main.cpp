@@ -12,6 +12,7 @@
 #define NUMBER_PITCHES 12
 #define SAMPLERATE 44100
 
+#define WRITE_TO_FILE 1
 
 #define NUMBER_OSCILLATORS 3
 
@@ -53,65 +54,68 @@
             // (C7) (Dm7) (G) (Fmin)    
     // }
 // }
-   
-
-
- 
-
 
 int main(int argc,char **argv){
 
-
-    Melody melo;
-    
-    melo.setScale(); 
-    melo.setMelodyType();
+   
 
 
-    float amplitude = 0.2;
-    Wavetable wave1;
     FM_synth fm1;
-    fm1.initialize("sine","sine", 60,12,48);
-    fm1.write_waveform();
+    // initialise FM synth, give waveform and pitch for every oscilator
+    fm1.initialize("sine","saw",40,24,12);
 
-
-
+    Wavetable wave1;
     // initialise wavetable, give waveform and pitch for every oscilator
-    std::string waveForms[3] = {"sine","sine","sine"};
-    int midipitches[3] = {20,64,57};
+    std::string waveForms[3] = {"square","saw","sine"};
+    int midipitches[3] = {23,24,60};    
     wave1.initialize(waveForms,midipitches,NUMBER_OSCILLATORS);
 
 
 
+   
+
+
+#if WRITE_TO_FILE
+    WriteToFile fileWriter("output.csv", true);
+
+    for(int i = 0; i < SAMPLERATE; i++) {
+        fileWriter.write(std::to_string(fm1.nextSample()) + "\n");
+    }
+#else
+
+    float amplitude = 0.2;
     int framecount = 0;
     int interval = 44100;
     int nieuw = 1;
     int lenght = 0;
 
+    Melody melo;
+
+    melo.setScale(); 
+    melo.setMelodyType();
+
 
     JackModule jack;
     jack.init(argv[0]);
-    jack.onProcess = [&fm1, &melo, &amplitude, &framecount, &interval, &nieuw, &lenght]
+    jack.onProcess = [&fm1, &melo, &amplitude, &framecount, &interval, &lenght, &nieuw]
     (jack_default_audio_sample_t *inBuf, jack_default_audio_sample_t *outBuf, jack_nframes_t nframes) {
         for(unsigned int i = 0; i < nframes; i++) {
             outBuf[i] = fm1.nextSample() * amplitude;
             framecount++;
-
             if (framecount > interval){
                 lenght++;
                 if (lenght == 10){
                     lenght = 0;
                 }
                 melo.setNotelenght(lenght);
-                interval = (melo.getNotelenght() * 2);
+                interval = (melo.getNotelenght());
 
                 nieuw++;
                 if (nieuw == 8){
                     nieuw = 0;
                 }
-                std::cout << (melo.liniair(nieuw)) << std::endl;
-
-                fm1.setPitch((melo.liniair(nieuw)));
+                std::cout << melo.liniair(nieuw) << std::endl;
+                fm1.setMidiPitch(melo.liniair(nieuw) - 4);
 
                 framecount = 0;
             }
@@ -133,8 +137,7 @@ int main(int argc,char **argv){
         }
     }
     //end the program
-    
-    
+#endif
     return 0;
 } 
 

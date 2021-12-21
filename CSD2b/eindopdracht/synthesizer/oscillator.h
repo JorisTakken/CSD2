@@ -8,7 +8,7 @@ class Oscillator{
         Oscillator();
         virtual ~Oscillator();
         
-        void initialize(double freq, double amp, double samplerate);
+        void initialize(double amp, double samplerate);
 
         void setFrequency(float newFreq);
         float getFrequency();

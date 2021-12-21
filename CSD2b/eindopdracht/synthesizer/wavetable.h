@@ -26,8 +26,6 @@ class Wavetable : public Synth{
         void initialize(std::string waveform[],int midiPitches[],int input_number_oscs);
         void write_waveform();
 
-        int UI_midiPitches(int osc);
-
         float nextSample();  
 
     protected:

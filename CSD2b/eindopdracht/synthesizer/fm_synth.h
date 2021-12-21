@@ -24,14 +24,14 @@ class FM_synth : public Synth{
         float make_modulator();
         void calcCarrier_freq();
 
+        void updateOscFreq(float pitch) override;
 
         void setRatio(float ratio);
         float getRatio();
-        void setPitch(int pitch);
         float getFrequency();
 
 
-        float nextSample();
+        float nextSample() override;
 
     protected:
         std::string waveformCarrier;
@@ -40,6 +40,8 @@ class FM_synth : public Synth{
         float frequency;
         float ratio;
         float mod_index;
+
+        float carrierFreq;
 
         float modFrequency;
         float modAmplitude;
