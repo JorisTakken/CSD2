@@ -19,14 +19,14 @@ class Wavetable : public Synth{
         Wavetable();
         ~Wavetable();
 
-        void setPitch(float newFreq,int oscillator_number);
+        void updateOscFreq(int pitch,int oscillator_number) override;
         float getFrequency(int oscillator_number);
 
         void validate_numOscillators(int input_number_oscs);
         void initialize(std::string waveform[],int midiPitches[],int input_number_oscs);
         void write_waveform();
 
-        float nextSample();  
+        float nextSample() override;  
 
     protected:
         float sample;
@@ -34,8 +34,6 @@ class Wavetable : public Synth{
         float number_oscs;
 
         Oscillator* oscillator[MAX_OSCILLATORS];
-
-
         int oscillator_number;
 
         float samp;

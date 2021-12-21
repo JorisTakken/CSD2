@@ -8,9 +8,9 @@ FM_synth::FM_synth() : Synth(){
 FM_synth::~FM_synth(){
 }
 
-void FM_synth::initialize(std::string waveformCarrier, std::string waveformModulator, int midiPitch,float ratio, float mod_index){
+void FM_synth::initialize(std::string waveformCarrier, std::string waveformModulator, int midiPitch,float ratio, float modDepth){
     this->ratio = ratio; 
-    this->mod_index = mod_index;
+    this->modDepth = modDepth;
 
     if (waveformCarrier == "sine"){
         carrier = new Sine;
@@ -34,9 +34,9 @@ void FM_synth::initialize(std::string waveformCarrier, std::string waveformModul
     carrier->initialize(1,SAMPLERATE);
     
     // modular frequency is the ratio multiplied by the base frequency
-    // i put mod_index as amplitude for the modulair wave
-    modulator->initialize(mod_index,SAMPLERATE);
-    setMidiPitch(midiPitch);
+    // i put modDepth as amplitude for the modulair wave
+    modulator->initialize(modDepth,SAMPLERATE);
+    setMidiPitch(midiPitch,0);
 
 }
 
@@ -49,11 +49,11 @@ float FM_synth::getRatio(){
     return ratio;
 }
 
-void FM_synth::updateOscFreq(float freq){
+void FM_synth::updateOscFreq(int pitch,int oscillator_number){
     // update frequency of modulator and carrier
-    float modFrequency = freq * ratio;
+    float modFrequency = pitch * ratio;
     modulator->setFrequency(modFrequency);
-    carrierFreq = freq;
+    carrierFreq = pitch;
     carrier->setFrequency(carrierFreq + modulator->getSample());
 }
 
@@ -68,15 +68,4 @@ float FM_synth::nextSample(){
     carrier->tick();
 
     return sample;
-}
-
-void FM_synth::write_waveform(){   
-    WriteToFile file("_waveForm.csv", true);
-    for(int i = 0; i < SAMPLERATE; i++) {
-        carrier->setFrequency(modulator->getSample() + carrier->getFrequency());
-        samp = carrier->getSample();
-        file.write(std::to_string(samp) + "\n");
-        carrier->tick();
-        modulator->tick();
-    }
 }

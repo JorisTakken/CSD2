@@ -38,13 +38,13 @@ void Wavetable::initialize(std::string waveform[],int midiPitches[],int input_nu
             oscillator[i] = new Square;
         }
 
-    oscillator[i]->initialize(MTOF(midiPitches[i]),1,SAMPLERATE);
+    oscillator[i]->initialize(1,SAMPLERATE);
+    setMidiPitch(midiPitches[i],i);
     }
 }
 
-void Wavetable::setPitch(float pitch,int oscillator_number){
-    setMidiPitch(pitch);
-    oscillator[oscillator_number]->setFrequency(MTOF(getMidiPitch()));   
+void Wavetable::updateOscFreq(int pitch,int oscillator_number){
+    oscillator[oscillator_number]->setFrequency(pitch);   
 }
 
 float Wavetable::getFrequency(int oscillator_number){
@@ -64,20 +64,5 @@ float Wavetable::nextSample(){
     return sample;
 }
 
-void Wavetable::write_waveform(){   
-    WriteToFile file("_waveForm.csv", true);
-    for(int i = 0; i < SAMPLERATE; i++) {
-        float total = 1;
 
-        for (int i = 0; i < number_oscs; i++){ 
-            total = total * oscillator[i]->getSample(); 
-        }
-        float samp = total;
-
-        file.write(std::to_string(samp) + "\n");
-        for (int i = 0; i < number_oscs; i++){ 
-            oscillator[i]->tick();
-        }  
-    }
-}
 

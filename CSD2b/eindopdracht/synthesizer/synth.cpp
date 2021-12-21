@@ -8,10 +8,10 @@ Synth::Synth(){
 Synth::~Synth(){
 }
 
-void Synth::setMidiPitch(int midiPitch){
+void Synth::setMidiPitch(int midiPitch,int oscillator_number){
     this->midiPitch = midiPitch;
     float pitch = mtof(midiPitch);
-    updateOscFreq(pitch);
+    updateOscFreq(pitch,oscillator_number);
 }
 
 float Synth::getMidiPitch(){

@@ -13,16 +13,17 @@ class Synth{
         Synth();
         ~Synth();
 
-        virtual void updateOscFreq(float pitch) = 0;
+        virtual void updateOscFreq(int pitch,int oscillator_number) = 0;
 
-        void setMidiPitch(int midiPitch);
+
+        void setMidiPitch(int midiPitch,int oscillator_number);
         float getMidiPitch(); 
-
 
         float mtof(int midiPitch);
 
-    protected:        
         virtual float nextSample() = 0;
+
+    protected:        
 
         int midiPitch;
 };

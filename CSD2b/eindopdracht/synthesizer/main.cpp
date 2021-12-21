@@ -14,93 +14,75 @@
 
 #define WRITE_TO_FILE 1
 
-#define NUMBER_OSCILLATORS 3
+#define NUMBER_OSCILLATORS 5
 
 #define MIN_FREQ_WAVETABLE 2
 #define MAX_FREQ_WAVETABLE 10000
 
-
-// TODO: 
-// UI:  
-    // choose your synth : 
-        // (fm) (wavetable)
-
-    // do you want to hear 1 tone or a melodie?
-        // (melo) (note)
-
-
-
-// wavetable: NOTE
-// if (melodie or not = note){
-    // if (choise = wavetable) {
-        // how many oscillator woulkd you like to modulate each other :
-            // (Number_oscillators)
-        // choose waveforms yourself or all waveforms are sines saws or squares?
-            // (my choise) (sines) (saws) (squares)
-        // choose midiPitches myself or (random/preset)
-            // (my choise) (preset) (random)    
-    // }
-// }
-
-// wavetable: MELODY
-
-// if (melodie or not = melodie){
-    // if (choise = wavetable) {
-        // how many oscillator woulkd you like to modulate each other :
-            // (Number_oscillators)
-        // choose waveforms yourself or all waveforms are sines saws or squares?
-            // (my choise) (sines) (saws) (squares)
-        // welke toonladder would you like your generated melody?
-            // (C7) (Dm7) (G) (Fmin)    
-    // }
-// }
+void chooseSynth(Synth* synth,Synth* fmSynth,Synth* wavetable){
+    User_input synthSel;
+    std::string synthChoises[2] = {"FM","wavetable"};
+    std::string synthChoise = synthSel.make_userSelection(synthChoises,2);
+    std::cout << "synthChoise " << synthChoise << std::endl;
+    if (synthChoise == "FM"){
+        synth = fmSynth;
+    }
+    if (synthChoise == "wavetable"){
+        synth = wavetable;
+    }
+}
 
 int main(int argc,char **argv){
+    Synth* synth = nullptr;
+    FM_synth fmSynth;
+    // ----------------------
+    // initialise FM synth, give waveform and pitch for every oscilator.
+    fmSynth.initialize("sine","saw",40,1.2,500);
 
-   
-
-
-    FM_synth fm1;
-    // initialise FM synth, give waveform and pitch for every oscilator
-    fm1.initialize("sine","saw",40,24,12);
-
-    Wavetable wave1;
+    Melody melo;
+    melo.setScale(); 
+    melo.setMelodyType();
+// ----------------------
+    // ----------------------
+    Wavetable wavetable;
     // initialise wavetable, give waveform and pitch for every oscilator
-    std::string waveForms[3] = {"square","saw","sine"};
-    int midipitches[3] = {23,24,60};    
-    wave1.initialize(waveForms,midipitches,NUMBER_OSCILLATORS);
+    std::string waveForms[NUMBER_OSCILLATORS] = {"sine","sine","saw","square","sine"};
+    int midipitches[NUMBER_OSCILLATORS] = {23,4,23,56,80};    
+    wavetable.initialize(waveForms,midipitches,NUMBER_OSCILLATORS);
+// ----------------------
+  
 
 
+
+
+    chooseSynth(synth,&fmSynth,&wavetable);
 
    
 
 
 #if WRITE_TO_FILE
-    WriteToFile fileWriter("output.csv", true);
+    WriteToFile fileWriter("_waveForm.csv", true);
 
     for(int i = 0; i < SAMPLERATE; i++) {
-        fileWriter.write(std::to_string(fm1.nextSample()) + "\n");
+        fileWriter.write(std::to_string(synth->nextSample()) + "\n");
     }
 #else
 
-    float amplitude = 0.2;
+    float amplitude = 0.5;
     int framecount = 0;
     int interval = 44100;
     int nieuw = 1;
     int lenght = 0;
 
-    Melody melo;
-
-    melo.setScale(); 
-    melo.setMelodyType();
+    
 
 
     JackModule jack;
     jack.init(argv[0]);
-    jack.onProcess = [&fm1, &melo, &amplitude, &framecount, &interval, &lenght, &nieuw]
+    jack.onProcess = [&wave1, &melo, &amplitude, &framecount, &interval, &lenght, &nieuw]
     (jack_default_audio_sample_t *inBuf, jack_default_audio_sample_t *outBuf, jack_nframes_t nframes) {
         for(unsigned int i = 0; i < nframes; i++) {
-            outBuf[i] = fm1.nextSample() * amplitude;
+            outBuf[i] = wave1.nextSample() * amplitude;
             framecount++;
             if (framecount > interval){
                 lenght++;
@@ -115,7 +97,11 @@ int main(int argc,char **argv){
                     nieuw = 0;
                 }
                 std::cout << melo.liniair(nieuw) << std::endl;
-                fm1.setMidiPitch(melo.liniair(nieuw) - 4);
+                wave1.setMidiPitch(melo.liniair(nieuw) - 4,0);
+                wave1.setMidiPitch(melo.liniair(nieuw) - 2,1);
+                wave1.setMidiPitch(melo.liniair(nieuw) - 1,2);
+
+
 
                 framecount = 0;
             }

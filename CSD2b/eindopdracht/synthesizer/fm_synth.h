@@ -17,19 +17,13 @@ class FM_synth : public Synth{
         FM_synth();
         ~FM_synth();
 
-        void write_waveform();
-        void initialize(std::string waveformCarrier,std::string waveformModulator, int midiPitch,float ratio, float mod_index);
+        void initialize(std::string waveformCarrier,std::string waveformModulator, int midiPitch,float ratio, float modDepth);
 
-        void calcModulator_freq();
-        float make_modulator();
-        void calcCarrier_freq();
-
-        void updateOscFreq(float pitch) override;
+        void updateOscFreq(int pitch,int oscillator_number) override;
+        float getFrequency();
 
         void setRatio(float ratio);
         float getRatio();
-        float getFrequency();
-
 
         float nextSample() override;
 
@@ -37,25 +31,19 @@ class FM_synth : public Synth{
         std::string waveformCarrier;
         std::string waveformModulator;
 
-        float frequency;
-        float ratio;
-        float mod_index;
-
         float carrierFreq;
+        float ratio;
+        float modDepth;
+
 
         float modFrequency;
-        float modAmplitude;
-        float modulation_depth;
         float freq;
         float newFreq;
 
         float sample;
-        float samp;
 
         Oscillator* carrier;
         Oscillator* modulator;
-
-        float modulationIndex;
 
         
 };
