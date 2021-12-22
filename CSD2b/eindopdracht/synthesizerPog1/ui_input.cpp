@@ -1,6 +1,7 @@
 #include "ui_input.h"
 
 
+
 User_input::User_input(){
 }
 
@@ -86,4 +87,48 @@ int User_input::user_input_numbers(int min, int max){
   }
 
   return value;
+}
+
+void User_input::userInitializeFMsynth(Synth* &synth){
+  // ------------------------------------------------------------------
+  // initialise FM synth, give waveform and ratio for modulator and carrier
+  // ------------------------------------------------------------------
+  std::string waveOptions[3] = {"saw","sine","square"};
+
+  std::cout << "choose waveform carrier : " << std::endl;
+  std::string waveFormCar = make_userSelection(waveOptions, 3);
+
+  std::cout << "choose waveform modulator : " << std::endl;
+  std::string waveFormMod = make_userSelection(waveOptions, 3);
+
+  std::cout << "choose ratio : " << std::endl;
+  float ratio = user_input_numbers(0,40);
+
+  std::cout << "choose modulaton depth : " << std::endl;
+  float modDepth = user_input_numbers(0,1000);
+
+
+  synth->initialize(waveFormCar,waveFormMod,40,ratio,modDepth);
+
+  
+}
+
+void User_input::userInitializeWavetable(Synth* &synth,int numberOfOscillators){
+  // ------------------------------------------------------------------
+  // initialise wavetable, give waveform and pitch for every oscilator
+  // ------------------------------------------------------------------
+    std::string waveOptions[3] = {"saw","sine","square"};
+    std::string waveforms[numberOfOscillators];
+    int midipitches[numberOfOscillators];    
+    
+    for (int i = 0; i < numberOfOscillators; i++){
+      std::cout << "choose waveform for oscillator number : " << i + 1 <<  std::endl;
+      waveforms[i] = make_userSelection(waveOptions,3);
+      std::cout << "choose midipitch for oscillator number : " << i + 1 <<  std::endl;
+      midipitches[i] = user_input_numbers(0,127);
+  }
+
+
+  synth->initialize(waveforms,midipitches,numberOfOscillators);
+
 }

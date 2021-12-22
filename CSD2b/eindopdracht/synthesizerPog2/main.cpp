@@ -19,7 +19,7 @@
 #define MIN_FREQ_WAVETABLE 2
 #define MAX_FREQ_WAVETABLE 10000
 
-std::string chooseSynth(Synth* &synth,Synth* fmSynth,Synth* wavetable){
+std::string chooseSynth(){
     User_input synthSel;
     std::cout << "==============================================" << std::endl;
     std::cout << "choose your synth : FM (fm) wavetable (w)" << std::endl;
@@ -27,62 +27,33 @@ std::string chooseSynth(Synth* &synth,Synth* fmSynth,Synth* wavetable){
     std::string synthChoise = synthSel.make_userSelection(synthChoises,2);
     std::cout << "synthChoise " << synthChoise << std::endl;
     std::cout << "==============================================" << std::endl;
-    if (synthChoise == "fm"){
-        synth = fmSynth;
-    }
-    else if (synthChoise == "w"){
-        synth = wavetable;
-    }
+    
     return synthChoise;
 }
 
 int main(int argc,char **argv){
-    Synth* synth = nullptr;
-    FM_synth fmSynth;
-    Wavetable wavetable;    
-
-    std::string synthChoise = chooseSynth(synth,&fmSynth,&wavetable);
-    // std::cout << chooseSynth(synth,&fmSynth,&wavetable) << std::endl;
+    Synth* synth;
+    User_input initualizeSynth;
+    std::string synthChoise = chooseSynth();
 
     if (synthChoise == "fm"){
-            // ------------------------------------------------------------------
-            // initialise FM synth, give waveform and pitch for every oscilator.
-        User_input FM;
-            std::string waveOptions[3] = {"saw","sine","square"};
-            std::cout << "choose waveform carrier : " << std::endl;
-            std::string waveFormCar = FM.make_userSelection(waveOptions, 3);
-            std::cout << "choose waveform modulator : " << std::endl;
-            std::string waveFormMod = FM.make_userSelection(waveOptions, 3);
-            std::cout << "choose ratio : " << std::endl;
-            float ratio = FM.user_input_numbers(0,40);
-            std::cout << "choose modulaton depth : " << std::endl;
-            float modDepth = FM.user_input_numbers(0,1000);
-        fmSynth.initialize(waveFormCar,waveFormMod,40,ratio,modDepth);
-         // ------------------------------------------------------------------           
-    } else if (synthChoise == "w"){
-        // ------------------------------------------------------------------
-        // initialise wavetable, give waveform and pitch for every oscilator
-        // std::string waveForms[NUMBER_OSCILLATORS] = {"square","sine"};
-        // ------------------------------------------------------------------
-
-        User_input waveUI;
-            std::string waveOptions[3] = {"saw","sine","square"};
-            std::string waveforms[NUMBER_OSCILLATORS];
-            int midipitches[NUMBER_OSCILLATORS];    
-                for (int i = 0; i < NUMBER_OSCILLATORS; i++){
-                    std::cout << "choose waveform for oscillator number : " << i + 1 <<  std::endl;
-                    waveforms[i] = waveUI.make_userSelection(waveOptions,3);
-                    std::cout << "choose midipitch for oscillator number : " << i + 1 <<  std::endl;
-                    midipitches[i] = waveUI.user_input_numbers(0,127);
-                }
-        wavetable.initialize(waveforms,midipitches,NUMBER_OSCILLATORS);
-        // ------------------------------------------------------------------
-
+        FM_synth synth;
+        initualizeSynth.userInitializeFMsynth(synth);
     }
+    else if (synthChoise == "w"){
+        Wavetable synth;
+        initualizeSynth.userInitializeWavetable(synth,NUMBER_OSCILLATORS);
+    }
+
+    
     
     Melody melo;
     melo.setScale(); 
     melo.setMelodyType();
+
+    std::cout << "lalalalala" << synth->getMidiPitch() << std::endl;
+
+    
     
 #if WRITE_TO_FILE
     WriteToFile fileWriter("_waveForm.csv", true);
@@ -97,7 +68,6 @@ if(synth != nullptr) {
 }
     
 #else
-
     float amplitude = 0.2;
     int framecount = 0;
     int interval = 44100;

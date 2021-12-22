@@ -69,3 +69,4 @@ float FM_synth::nextSample(){
 
     return sample;
 }
+

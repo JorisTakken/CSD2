@@ -2,8 +2,6 @@
 #include "1_writeToFile.h"
 #include "synth.h"
 
-#include "ui_input.h"
-
 #include "sine.h"
 #include "saw.h"
 #include "square.h"
@@ -22,8 +20,9 @@ class Wavetable : public Synth{
         void updateOscFreq(int pitch,int oscillator_number) override;
         float getFrequency(int oscillator_number);
 
-        void validate_numOscillators(int input_number_oscs);
+        // void validate_numOscillators(int input_number_oscs);
         void initialize(std::string waveform[],int midiPitches[],int input_number_oscs);
+        // void initializeFm(std::string waveformCarrier,std::string waveformModulator, int midiPitch,float ratio, float modDepth) override;
         
         float nextSample() override;  
 

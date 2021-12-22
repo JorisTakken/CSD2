@@ -18,6 +18,8 @@ class FM_synth : public Synth{
         ~FM_synth();
 
         void initialize(std::string waveformCarrier,std::string waveformModulator, int midiPitch,float ratio, float modDepth);
+        // void initializeWavetable(std::string waveform[],int midiPitches[],int input_number_oscs) override;
+
 
         void updateOscFreq(int pitch,int oscillator_number) override;
         float getFrequency();
