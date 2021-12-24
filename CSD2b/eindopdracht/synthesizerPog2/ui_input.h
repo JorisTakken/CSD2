@@ -22,12 +22,32 @@ class User_input{
         // user input function for choosing number between chosen range
         int user_input_numbers(int min, int max);
 
-        void userInitializeFMsynth(FM_synth &synth);
-        void userInitializeWavetable(Wavetable &synth,int numberOfOscillators);
+        void userInitializeFMsynth();
+        std::string getWaveFormCar(); 
+        std::string getwaveFormMod();
+        float getRatio();
+        float getModDepth();
+
+        void userInitializeWavetable(int numberOfOscillators);
+        std::string getWaveforms(int next);
+        int getMidiPitches(int next);
+        int getNumberOfOscillators();
 
     protected:
         int numOptions;
         std::string selection;
-        
+
+        std::string waveFormCar;
+        std::string waveFormMod;
+        float ratio;
+        float modDepth;
+
+        std::string waveforms[MAX_OSCILLATORS];
+        float midipitches[MAX_OSCILLATORS];
+
+
+        int numberOfOscillators; 
+
+
 };
 

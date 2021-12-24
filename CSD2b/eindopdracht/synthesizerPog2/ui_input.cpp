@@ -89,7 +89,7 @@ int User_input::user_input_numbers(int min, int max){
   return value;
 }
 
-void User_input::userInitializeFMsynth(FM_synth &synth){
+void User_input::userInitializeFMsynth(){
   // ------------------------------------------------------------------
   // initialise FM synth, give waveform and ratio for modulator and carrier
   // ------------------------------------------------------------------
@@ -97,36 +97,71 @@ void User_input::userInitializeFMsynth(FM_synth &synth){
 
   std::cout << "choose waveform carrier : " << std::endl;
   std::string waveFormCar = make_userSelection(waveOptions, 3);
+  this->waveFormCar = waveFormCar;
 
   std::cout << "choose waveform modulator : " << std::endl;
   std::string waveFormMod = make_userSelection(waveOptions, 3);
+  this->waveFormMod = waveFormMod; 
 
   std::cout << "choose ratio : " << std::endl;
   float ratio = user_input_numbers(0,40);
+  this->ratio = ratio;
 
   std::cout << "choose modulaton depth : " << std::endl;
   float modDepth = user_input_numbers(0,1000);
+  this->modDepth = modDepth;
 
-
-  synth.initialize(waveFormCar,waveFormMod,40,ratio,modDepth);
-  
 }
 
-void User_input::userInitializeWavetable(Wavetable &synth, int numberOfOscillators){
+std::string User_input::getWaveFormCar(){
+  return waveFormCar;
+}
+
+std::string User_input::getwaveFormMod(){
+  return waveFormMod;
+}
+
+float User_input::getRatio(){
+  return ratio;
+}
+
+float User_input::getModDepth(){
+  return modDepth;
+}
+
+
+
+
+void User_input::userInitializeWavetable(int numberOfOscillators){
   // ------------------------------------------------------------------
   // initialise wavetable, give waveform and pitch for every oscilator
   // ------------------------------------------------------------------
     std::string waveOptions[3] = {"saw","sine","square"};
-    std::string waveforms[numberOfOscillators];
-    int midipitches[numberOfOscillators];    
-    
+    // std::string waveforms[] = {};
+    // int midipitches[] = {};
+
+    this->waveforms[numberOfOscillators] = waveforms[numberOfOscillators]; 
+    this->midipitches[numberOfOscillators] = midipitches[numberOfOscillators]; 
+    this->numberOfOscillators = numberOfOscillators;
+
     for (int i = 0; i < numberOfOscillators; i++){
       std::cout << "choose waveform for oscillator number : " << i + 1 <<  std::endl;
       waveforms[i] = make_userSelection(waveOptions,3);
       std::cout << "choose midipitch for oscillator number : " << i + 1 <<  std::endl;
       midipitches[i] = user_input_numbers(0,127);
-  }
-
-  synth.initialize(waveforms,midipitches,numberOfOscillators);
-
+    }    
+    
 }
+
+std::string User_input::getWaveforms(int next){
+  return this->waveforms[next];
+}
+
+int User_input::getMidiPitches(int next){
+  return this->midipitches[next];
+}
+
+int User_input::getNumberOfOscillators(){
+  return numberOfOscillators;
+}
+

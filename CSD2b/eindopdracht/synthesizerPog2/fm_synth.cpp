@@ -6,6 +6,11 @@ FM_synth::FM_synth() : Synth(){
 }
 
 FM_synth::~FM_synth(){
+    delete carrier;
+    carrier = nullptr;
+
+    delete modulator;
+    modulator = nullptr;
 }
 
 void FM_synth::initialize(std::string waveformCarrier, std::string waveformModulator, int midiPitch,float ratio, float modDepth){
