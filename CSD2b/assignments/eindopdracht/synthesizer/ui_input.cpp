@@ -8,7 +8,7 @@ User_input::User_input(){
 User_input::~User_input(){
 }
 
-std::string User_input::make_userSelection(std::string options_selection[], int number_options){
+std::string User_input::makeUserSelection(std::string options_selection[], int number_options){
     bool noCorrectSelection = true;
     std::string userSelection;
 
@@ -59,7 +59,7 @@ std::string User_input::retrieveUserInput(std::string options_selection[], int n
     return selection;
 }
 
-int User_input::user_input_numbers(int min, int max){
+int User_input::userInputNumbers(int min, int max){
   std::string input;
   int value = 0;
   bool notInRange = true;
@@ -89,26 +89,27 @@ int User_input::user_input_numbers(int min, int max){
   return value;
 }
 
+  // ------------------------------------------------------------------
+  // userinput initialise FM synth, give waveform and ratio for modulator and carrier
+  // ------------------------------------------------------------------
 void User_input::userInitializeFMsynth(){
-  // ------------------------------------------------------------------
-  // initialise FM synth, give waveform and ratio for modulator and carrier
-  // ------------------------------------------------------------------
+
   std::string waveOptions[3] = {"saw","sine","square"};
 
   std::cout << "choose waveform carrier : " << std::endl;
-  std::string waveFormCar = make_userSelection(waveOptions, 3);
+  std::string waveFormCar = makeUserSelection(waveOptions, 3);
   this->waveFormCar = waveFormCar;
 
   std::cout << "choose waveform modulator : " << std::endl;
-  std::string waveFormMod = make_userSelection(waveOptions, 3);
+  std::string waveFormMod = makeUserSelection(waveOptions, 3);
   this->waveFormMod = waveFormMod; 
 
   std::cout << "choose ratio : " << std::endl;
-  float ratio = user_input_numbers(0,40);
+  float ratio = userInputNumbers(-500,500);
   this->ratio = ratio;
 
   std::cout << "choose modulaton depth : " << std::endl;
-  float modDepth = user_input_numbers(0,1000);
+  float modDepth = userInputNumbers(0,5000);
   this->modDepth = modDepth;
 
 }
@@ -129,16 +130,12 @@ float User_input::getModDepth(){
   return modDepth;
 }
 
-
-
-
+  // ------------------------------------------------------------------
+  // user input to initialize wavetable, give waveform and pitch for every oscilator
+  // ------------------------------------------------------------------
 void User_input::userInitializeWavetable(int numberOfOscillators){
-  // ------------------------------------------------------------------
-  // initialise wavetable, give waveform and pitch for every oscilator
-  // ------------------------------------------------------------------
+
     std::string waveOptions[3] = {"saw","sine","square"};
-    // std::string waveforms[] = {};
-    // int midipitches[] = {};
 
     this->waveforms[numberOfOscillators] = waveforms[numberOfOscillators]; 
     this->midipitches[numberOfOscillators] = midipitches[numberOfOscillators]; 
@@ -146,9 +143,9 @@ void User_input::userInitializeWavetable(int numberOfOscillators){
 
     for (int i = 0; i < numberOfOscillators; i++){
       std::cout << "choose waveform for oscillator number : " << i + 1 <<  std::endl;
-      waveforms[i] = make_userSelection(waveOptions,3);
+      waveforms[i] = makeUserSelection(waveOptions,3);
       std::cout << "choose midipitch for oscillator number : " << i + 1 <<  std::endl;
-      midipitches[i] = user_input_numbers(0,127);
+      midipitches[i] = userInputNumbers(0,127);
     }    
     
 }

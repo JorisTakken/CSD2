@@ -1,5 +1,4 @@
 #include <iostream>
-#include "1_writeToFile.h"
 #include "synth.h"
 
 #include "sine.h"
@@ -12,16 +11,24 @@
 
 #pragma once
 
+//------------------------------------------------------------------
+// Wavetable is a subclass of Synth
+// its acctualy a ring modulator but you can choose as many oscillators as you want.
+//------------------------------------------------------------------
 class Wavetable : public Synth{
     public:
         Wavetable();
         ~Wavetable();
 
+        // initialisation for oscilators
+        void initialize(std::string waveform[],int midiPitches[],int input_number_oscs);
+
+        // functions overide from bassclass
+        // updateFreq is to change oscillator frequency
         void updateOscFreq(int pitch,int oscillator_number) override;
         float getFrequency(int oscillator_number);
 
-        void initialize(std::string waveform[],int midiPitches[],int input_number_oscs);
-        
+        // next sample is to caluculate next sample with specific formula
         float nextSample() override;  
 
 
@@ -31,6 +38,8 @@ class Wavetable : public Synth{
         int input_number_oscs;
         float number_oscs;
 
+        // program doesnt know witch oscillator it will be
+        // make 20 oscillators already and UI will say if its to many oscillators
         Oscillator* oscillator[MAX_OSCILLATORS];
         int oscillator_number;
 
