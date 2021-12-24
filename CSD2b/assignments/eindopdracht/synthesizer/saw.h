@@ -5,11 +5,12 @@
 
 #define SAMPLERATE 44100
 
-class Sine : public Oscillator{
+class Saw : public Oscillator{
 public:
-    Sine();
-    ~Sine();
+    Saw();
+    ~Saw();
 
 protected:
+    // make a saw wave
     void calculate() override;
 };

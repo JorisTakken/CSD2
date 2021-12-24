@@ -30,7 +30,6 @@ std::string chooseSynth(){
 
 int chooseNumOscillators(){
     User_input oscillatorsNumber;
-    std::cout << "==============================================" << std::endl;
     std::cout << "choose how many oscillators you want (from 1 - 20)" << std::endl;
     // int numberOfOscillators;
     int numberOfOscillators = oscillatorsNumber.user_input_numbers(1,20);
@@ -39,7 +38,6 @@ int chooseNumOscillators(){
     
     return numberOfOscillators;
 }
-
 
 int main(int argc,char **argv){
     Synth* synth = nullptr;
@@ -57,21 +55,20 @@ int main(int argc,char **argv){
     }
     else if (synthChoise == "w"){
         synth = new Wavetable;
-            int numberOfOscillators = chooseNumOscillators();
-            init.userInitializeWavetable(numberOfOscillators);  
-            std::string waveform[20] = {};
-            int midipitch[20] = {};    
-            for (int i = 0; i < numberOfOscillators; i++){
-                waveform[i] = init.getWaveforms(i);
-                midipitch[i] = init.getMidiPitches(i);
-            }
+        std::string waveform[20] = {};
+        int midipitch[20] = {};  
+        int numberOfOscillators = chooseNumOscillators();
+        init.userInitializeWavetable(numberOfOscillators);  
+              
+        for (int i = 0; i < numberOfOscillators; i++){
+            waveform[i] = init.getWaveforms(i);
+            midipitch[i] = init.getMidiPitches(i);
+        }
         ((Wavetable*)synth)->initialize(waveform,midipitch,numberOfOscillators);
     }
 
-    
-// #if WRITE_TO_FILE
-WriteToFile fileWriter("_waveForm.csv", true);
 
+WriteToFile fileWriter("_waveForm.csv", true);
 if(synth != nullptr) {
   // hier je forloop 
     for(int i = 0; i < SAMPLERATE; i++) {
@@ -79,7 +76,6 @@ if(synth != nullptr) {
     }
 }
     
-// #else
     float amplitude = 0.2;
     int framecount = 0;
     int interval = 44100;
@@ -96,19 +92,21 @@ if(synth != nullptr) {
                 if (synthChoise == "fm"){
                     framecount++;
                     if (framecount > interval){
-                            lenght++;
-                            if (lenght == 10){
-                                lenght = 0;
-                            }
-                            melo.setNotelenght(lenght);
-                            interval = (melo.getNotelenght());
-                            nieuw++;
-                            if (nieuw == 8){
-                                nieuw = 0;
-                            }
-                            std::cout << melo.liniair(nieuw) << std::endl;
-                            synth->setMidiPitch(melo.liniair(nieuw) - 4,0);
-                            framecount = 0;
+                        lenght++;
+                        if (lenght == 10){
+                            lenght = 0;
+                        }
+                        // melo.setNotelenght(lenght);
+                        interval = (melo.getNotelenght());
+
+                        // new pitch every interval
+                        nieuw++;
+                        if (nieuw == 8){  
+                            nieuw = 0;
+                        }
+                        std::cout << melo.fibonacci(nieuw,lenght) << std::endl;
+                        synth->setMidiPitch(melo.fibonacci(nieuw,lenght) - 12,0);
+                        framecount = 0;
                 }else if (synthChoise == "w"){
                 
                 }
@@ -138,22 +136,5 @@ if(synth != nullptr) {
     }
 
     //end the program
-// #endif
     return 0;
 } 
-
-
-
-
-//int Wavetable::UI_midiPitches(int osc){
-//     User_input user_wavetable_freq;   
-//     int midinote;
-//         std::cout << "=======================================" << std::endl;
-//         std::cout << "choose Frequency for wave number : "  << osc << std::endl;
-//         std::cout << "freqcuency should be a frequency between" <<  0 <<  " and "  << 127 << std::endl;
-//         midinote = user_wavetable_freq.user_input_numbers(0,127);
-//         std::cout << "You selected: " << midinotes << std::endl;
-//         std::cout << "=======================================" << std::endl;
-//     return midinote;
-// }  
-    

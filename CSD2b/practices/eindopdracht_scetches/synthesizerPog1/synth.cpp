@@ -11,8 +11,6 @@ Synth::~Synth(){
 void Synth::setMidiPitch(int midiPitch,int oscillator_number){
     this->midiPitch = midiPitch;
     float pitch = mtof(midiPitch);
-    std::cout << "initilize midipitch" << midiPitch << std::endl;
-
     updateOscFreq(pitch,oscillator_number);
 }
 

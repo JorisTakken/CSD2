@@ -22,6 +22,8 @@ class User_input{
         // user input function for choosing number between chosen range
         int user_input_numbers(int min, int max);
 
+        
+
         void userInitializeFMsynth();
         std::string getWaveFormCar(); 
         std::string getwaveFormMod();

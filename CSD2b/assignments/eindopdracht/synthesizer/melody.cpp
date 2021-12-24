@@ -22,11 +22,10 @@ std::string Melody::getScale(){
 
 void Melody::setMelodyType(){
     std::cout << "What kind of melody would you like?" << std::endl;
-    std::cout << "Fibonacci (f),random (r), pauzed (p)" << std::endl;
-    std::string melodyOptions[3] = {"f", "r", "p"};
-    std::string melodyInput = make_userSelection(melodyOptions,3);
+    std::cout << "Fibonacci (f),random (r)" << std::endl;
+    std::string melodyOptions[2] = {"f", "r"};
+    std::string melodyInput = make_userSelection(melodyOptions,2);
     std::cout << "your choise was : " << melodyInput << std::endl;
-    // generateMelody(melodyInput);
 }
 
 void Melody::makeScale(std::string scale){
@@ -63,10 +62,17 @@ void Melody::makeScale(std::string scale){
 
 
 
-int Melody::liniair(int nextNote){
-    int midiNote_liniair[8] = {1,2,3,4,5,4,3,2};
+int Melody::fibonacci(int nextNote,int lenght){
+    int midiNote_liniair[8] = {1,2,3,5,3,4,2,1};
     int midiOut = midiValues[midiNote_liniair[nextNote]];
-    // std::cout << midiOut << std::endl;
+    setNotelenght(lenght);
+    return midiOut;
+}
+
+int Melody::random(){
+    int nextnote = rand() % 8; 
+    int midiOut = midiValues[nextnote];
+    setNotelenght(nextnote);
     return midiOut;
 }
 

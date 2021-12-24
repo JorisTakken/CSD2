@@ -24,8 +24,8 @@ class Synth{
         
         
         
-        // virtual void initializeFm(std::string waveformCarrier,std::string waveformModulator, int midiPitch,float ratio, float modDepth);
-        // virtual void initializeWavetable(std::string waveform[],int midiPitches[],int input_number_oscs);
+        virtual void initializeFm(std::string waveformCarrier,std::string waveformModulator, int midiPitch,float ratio, float modDepth);
+        virtual void initializeWavetable(std::string waveform[],int midiPitches[],int input_number_oscs);
 
 
     protected:        

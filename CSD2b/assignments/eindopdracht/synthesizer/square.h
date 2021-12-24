@@ -11,5 +11,6 @@ public:
     ~Square();
 
 protected:
+    // make a square wave
     void calculate() override;
 };

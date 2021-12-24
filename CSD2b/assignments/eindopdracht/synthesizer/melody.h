@@ -24,7 +24,8 @@ public:
     void setNotelenght(int lenght);
     int getNotelenght();
 
-    int liniair(int nextNote);
+    int fibonacci(int nextNote,int lenght);
+    int random();
 
 protected:
     int notelenght;

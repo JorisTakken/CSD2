@@ -3,13 +3,12 @@
 
 #define SAMPLERATE 44100
 
-Square::Square() : Oscillator(){
-}
+// sine is a subclass of baseclass oscillator
+Square::Square() : Oscillator(){}
 
-Square::~Square(){
-}
+Square::~Square(){}
 
-
+// formula for making a squarewave
 void Square::calculate(){
   if(phase > 1){
       phase -= 1.0;
