@@ -1,20 +1,27 @@
 #include <iostream>
 #include <thread>
-#include "sine.h"
 #include "jack_module.h"
+#include "1_writeToFile.h"
+
 #include "ui_input.h"
 #include "melody.h"
 
-#include "1_writeToFile.h"
 #include "wavetable.h"
 #include "fm_synth.h"
 
-#define NUMBER_PITCHES 12
 #define SAMPLERATE 44100
 
-
-
+// PUT YOUR SAMPLERATE ON 44100!!
+// 
+// ==========================================================================================================================
+// in my synth you can choose for making a sound with the wavetable or making a melody with the FM synth
 // wavetable had no function of using a melody buy has as many oscillators as you want (up to 20)
+// for every oscillator you are choosing you can choose a waveform with i made myself and with help of my fellow students and my teachers: 
+// Ciska Vriezenga and Marc Dinkum
+// credits to Ciska Vriezenga and Marc Dinkum for the jack audio module and Write to file module!
+// ==========================================================================================================================
+// 
+// PUT YOUR SAMPLERATE ON 44100!!
 
 // -----------------------------------------------------------------------
 // function to choose the synth you want to hear
