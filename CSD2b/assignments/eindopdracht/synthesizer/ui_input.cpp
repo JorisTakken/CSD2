@@ -95,22 +95,31 @@ int User_input::userInputNumbers(int min, int max){
 void User_input::userInitializeFMsynth(){
 
   std::string waveOptions[3] = {"saw","sine","square"};
-
+    
+  std::cout << "------------------------------------------------------------------" << std::endl;
   std::cout << "choose waveform carrier : " << std::endl;
   std::string waveFormCar = makeUserSelection(waveOptions, 3);
   this->waveFormCar = waveFormCar;
+  std::cout << "------------------------------------------------------------------" << std::endl;
 
+  std::cout << "------------------------------------------------------------------" << std::endl;
   std::cout << "choose waveform modulator : " << std::endl;
   std::string waveFormMod = makeUserSelection(waveOptions, 3);
   this->waveFormMod = waveFormMod; 
+  std::cout << "------------------------------------------------------------------" << std::endl;
 
+  std::cout << "------------------------------------------------------------------" << std::endl;
   std::cout << "choose ratio : " << std::endl;
   float ratio = userInputNumbers(-500,500);
   this->ratio = ratio;
+  std::cout << "------------------------------------------------------------------" << std::endl;
 
+  std::cout << "------------------------------------------------------------------" << std::endl;
   std::cout << "choose modulaton depth : " << std::endl;
   float modDepth = userInputNumbers(0,5000);
   this->modDepth = modDepth;
+  std::cout << "------------------------------------------------------------------" << std::endl;
+
 
 }
 
@@ -142,10 +151,14 @@ void User_input::userInitializeWavetable(int numberOfOscillators){
     this->numberOfOscillators = numberOfOscillators;
 
     for (int i = 0; i < numberOfOscillators; i++){
+      std::cout << "------------------------------------------------------------------" << std::endl;
       std::cout << "choose waveform for oscillator number : " << i + 1 <<  std::endl;
       waveforms[i] = makeUserSelection(waveOptions,3);
+      std::cout << "------------------------------------------------------------------" << std::endl;
       std::cout << "choose midipitch for oscillator number : " << i + 1 <<  std::endl;
       midipitches[i] = userInputNumbers(0,127);
+      std::cout << "------------------------------------------------------------------" << std::endl;
+
     }    
     
 }

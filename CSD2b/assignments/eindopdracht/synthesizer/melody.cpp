@@ -13,8 +13,10 @@ Melody::~Melody(){
 // -----------------------------------------
 void Melody::setScale(){
     std::string scaleOptions[4] = {"C7", "Dm7", "G", "random"};
+    std::cout << "------------------------------------------------------------------" << std::endl;
     std::string scaleInput = makeUserSelection(scaleOptions,4);
     std::cout << "your choise was : " << scaleInput << std::endl;
+    std::cout << "------------------------------------------------------------------" << std::endl;
     makeScale(scaleInput);
 }
 
@@ -26,12 +28,14 @@ std::string Melody::getScale(){
 // set melody type with userinput
 // -----------------------------------------
 void Melody::setMelodyType(){
+    std::cout << "------------------------------------------------------------------" << std::endl;
     std::cout << "What kind of melody would you like?" << std::endl;
     std::cout << "Fibonacci (f),random (r)" << std::endl;
     std::string melodyOptions[2] = {"f", "r"};
     std::string melodyInput = makeUserSelection(melodyOptions,2);
     this->melodyInput = melodyInput;
     std::cout << "your choise was : " << melodyInput << std::endl;
+    std::cout << "------------------------------------------------------------------" << std::endl;
 }
 
 std::string Melody::getMelodyType(){
