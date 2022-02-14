@@ -1,43 +1,46 @@
-#include "tremolo.h"
+#include "circBuf.h"
+#include <iostream>
+#include "sine.h"
+#include "square.h"
+#include "saw.h"
 #include "writeToFile.h"
 #include "jack_module.h"
-#include "sine.h"
 
+#define WRITE_NUM_SAMPLES 44100
 #define WRITE_TO_FILE 0
-#define WRITE_NUM_SAMPLES 1000
-#define SAMPLERATE 44100 
 
 int main(int argc,char **argv){
     JackModule jack;
     jack.init(argv[0]);
-    // float samplerate = jack.getSamplerate();
-    // float amplitude = 0.5;
 
-    Tremolo trem("square",2,SAMPLERATE);
-    Sine sine(400,SAMPLERATE);
-
+    // FLOAT 1 = BUFFERSIZE in seconds so 0.5 = halve seconde
+    // FLOAT 2 = IS SAMPLEDELAY 
+    circBuf circ(44100, 44100 / 2);
+    Sine sine(200,44100);
 
 #if WRITE_TO_FILE
     WriteToFile fileWriter("output.csv", true);
-    // ---------------------------
-    // FOR WRITING TO PYTHON
-    // ---------------------------
-    jack.onProcess = [&trem, &fileWriter, &sine](jack_default_audio_sample_t* inBuf,
+    
+    jack.onProcess = [&circ, &fileWriter, &sine](jack_default_audio_sample_t* inBuf,
       jack_default_audio_sample_t* outBuf, jack_nframes_t nframes) {
-  #else
+#else
     // ---------------------------
     // FOR JACK AUDIO
     // ---------------------------
-    jack.onProcess = [&trem, &sine](jack_default_audio_sample_t* inBuf,
+    jack.onProcess = [&circ, &sine](jack_default_audio_sample_t* inBuf,
       jack_default_audio_sample_t* outBuf, jack_nframes_t nframes) {
 
-  #endif
-      for(unsigned int i = 0; i < nframes; i++) {
-        // outBuf[i] = sine.genNextSample() * trem.process(inBuf[i]);
-        outBuf[i] = inBuf[i] * trem.process(inBuf[i]);
+#endif
+    for(unsigned int i = 0; i < nframes; i++) {
+        float sample = sine.genNextSample();
+        circ.addValue(sample);
+        outBuf[i] = (sample + circ.readValue()) * 0.5;
 
 
-  #if WRITE_TO_FILE
+#if WRITE_TO_FILE
+    // ---------------------------
+    // FOR WRITING TO PYTHON
+    // ---------------------------
         static int count = 0;
         if(count < WRITE_NUM_SAMPLES) {
           fileWriter.write(std::to_string(outBuf[i]) + "\n");

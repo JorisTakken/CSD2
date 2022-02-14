@@ -1,17 +1,13 @@
 #pragma once 
-#include "sine.h"
-#include "square.h"
-#include "saw.h"
-
-
+#include "effect.h"
 #include <iostream>
 
-class Tremolo{
+class Tremolo : public Effect{
     public: 
-        Tremolo(std::string waveform, float modFreq, int samplerate);
+        Tremolo(std::string waveform, float modFreq);
         ~Tremolo();
 
-        float process(float sample);
+        float process(float inputSample) override;
         void setModFreq(float freq);
 
     private: 

@@ -136,12 +136,11 @@ if(synth != nullptr) {
 
                         // if melody is different, an different melody is comming
                         if (meloType == "f"){
-                            std::cout << melo.fibonacci(nieuw,lenght) << std::endl;
+                            std::cout << melo.fibonacci(nieuw,lenght) - 12 << std::endl;
                             synth->setMidiPitch(melo.fibonacci(nieuw,lenght) - 12,0);   
                         }else if (meloType == "r"){
-                            std::cout << melo.random() << std::endl;
+                            std::cout << melo.random() - 12 << std::endl;
                             synth->setMidiPitch(melo.random() - 12,0);  
-
                         }
                         
                         framecount = 0;

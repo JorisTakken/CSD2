@@ -33,6 +33,7 @@ void Oscillator::tick(){
   calculate();
 }
 
+
 // get sample of calculated sample.
 float Oscillator::getSample() {
   return sample;

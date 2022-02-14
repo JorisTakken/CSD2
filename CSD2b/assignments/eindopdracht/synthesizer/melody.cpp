@@ -86,7 +86,7 @@ void Melody::makeScale(std::string scale){
 // see "noteLengths[]" in melody.h
 // ----------------------------------------------------------------------------------
 int Melody::fibonacci(int nextNote,int lenght){
-    int fibonacciNotes[8] = {1,2,3,5,3,4,2,1};
+    int fibonacciNotes[8] = {1,2,4,5,2,4,1,5};
     int midiOut = midiValues[fibonacciNotes[nextNote]];
     setNotelenght(lenght);
     return midiOut;

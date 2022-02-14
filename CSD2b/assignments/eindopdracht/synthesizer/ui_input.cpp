@@ -158,9 +158,7 @@ void User_input::userInitializeWavetable(int numberOfOscillators){
       std::cout << "choose midipitch for oscillator number : " << i + 1 <<  std::endl;
       midipitches[i] = userInputNumbers(0,127);
       std::cout << "------------------------------------------------------------------" << std::endl;
-
     }    
-    
 }
 
 std::string User_input::getWaveforms(int next){

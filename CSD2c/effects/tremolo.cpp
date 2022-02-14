@@ -1,7 +1,7 @@
 #include "tremolo.h"
 
 
-Tremolo::Tremolo(std::string waveform, float modFreq, int samplerate) : modSignal(0){
+Tremolo::Tremolo(std::string waveform, float modFreq) : Effect(samplerate,dryWet){
     if (waveform == "sine") {
         oscillator = new Sine(modFreq, samplerate);
     }
@@ -22,10 +22,9 @@ void Tremolo::setModFreq(float freq){
     oscillator->setFrequency(freq);
 }
 
-float Tremolo::process(float sample){
-    // modSignal = range 0 - 1
-    // oscillator in range van -1 tot 1 
-    // scale the sine to 0 - 1
+float Tremolo::process(float inputSample){
+    // modSignal = range 0 - 1 ==== oscillator in range van -1 tot 1 
     modSignal = (oscillator->genNextSample() + 1.0) * 0.5;
+    modSignal *= inputSample;
     return modSignal;
 }
