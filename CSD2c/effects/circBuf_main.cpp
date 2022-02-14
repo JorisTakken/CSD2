@@ -13,10 +13,17 @@ int main(int argc,char **argv){
     JackModule jack;
     jack.init(argv[0]);
 
-    // FLOAT 1 = BUFFERSIZE in seconds so 0.5 = halve seconde
+    // FLOAT 1 = BUFFERSIZE
     // FLOAT 2 = IS SAMPLEDELAY 
-    circBuf circ(44100, 44100 / 2);
+     
+    circBuf circ(44100, 1231);
+    // dry = 0 
+    // wet = 1 
+    circ.setDrywet(1);
     Sine sine(200,44100);
+
+
+
 
 #if WRITE_TO_FILE
     WriteToFile fileWriter("output.csv", true);
@@ -33,8 +40,7 @@ int main(int argc,char **argv){
 #endif
     for(unsigned int i = 0; i < nframes; i++) {
         float sample = sine.genNextSample();
-        circ.addValue(sample);
-        outBuf[i] = (sample + circ.readValue()) * 0.5;
+        outBuf[i] = (sample + circ.process(sample)) * 0.5;
 
 
 #if WRITE_TO_FILE

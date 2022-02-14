@@ -1,7 +1,7 @@
 #include "circBuf.h"
 
 
-circBuf::circBuf(int size, int numSamplesDelay) : Effect(samplerate,dryWet)
+circBuf::circBuf(int size, int numSamplesDelay) : Effect(samplerate),
     size(size), numSamplesDelay(numSamplesDelay),
     writePoint(0), readPoint(size - numSamplesDelay){
 
@@ -23,17 +23,16 @@ circBuf::~circBuf(){
     buffer = nullptr;
 }
 
-void circBuf::addValue(float newValue){
-    // newValue = newValue * -1;
-    buffer[writePoint++] = newValue;
+float circBuf::process(float inputSample){
+    buffer[writePoint++] = inputSample;
     writePoint = wrap(writePoint);
-}
 
-float circBuf::readValue(){
     float readVal = buffer[readPoint++];
     readPoint = wrap(readPoint);
     return readVal;
 }
+
+
 
 float circBuf::getDistance(){   
     if(writePoint < readPoint) {
@@ -41,9 +40,7 @@ float circBuf::getDistance(){
         flip += size;
         return flip - readPoint;
     }
-
     return writePoint - readPoint;
-
 }
 
 

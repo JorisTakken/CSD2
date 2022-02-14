@@ -14,6 +14,9 @@ int main(int argc,char **argv){
     // float amplitude = 0.5;
 
     Tremolo trem("sine",2);
+    // my dry and wet is ciska's moddepth!
+    trem.setDrywet(1);
+    
     Sine sine(400,SAMPLERATE);
 
 
@@ -34,7 +37,7 @@ int main(int argc,char **argv){
   #endif
       for(unsigned int i = 0; i < nframes; i++) {
         // outBuf[i] = sine.genNextSample() * trem.process();
-        outBuf[i] = trem.process(inBuf[i]);
+        outBuf[i] = trem.process(sine.genNextSample());
 
 
   #if WRITE_TO_FILE
