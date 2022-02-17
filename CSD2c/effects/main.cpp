@@ -1,52 +1,52 @@
-#include "circBuf.h"
-#include <iostream>
-#include "sine.h"
-#include "square.h"
-#include "saw.h"
+#include "tremolo.h"
+#include "delay.h"
+
 #include "writeToFile.h"
 #include "jack_module.h"
+#include "sine.h"
 
-#define WRITE_NUM_SAMPLES 44100
 #define WRITE_TO_FILE 0
+#define WRITE_NUM_SAMPLES 44100
+#define SAMPLERATE 44100 
+
+
 
 int main(int argc,char **argv){
     JackModule jack;
     jack.init(argv[0]);
 
-    // FLOAT 1 = BUFFERSIZE
-    // FLOAT 2 = IS SAMPLEDELAY 
-     
-    circBuf circ(44100, 1231);
-    // dry = 0 
-    // wet = 1 
-    circ.setDrywet(1);
-    Sine sine(200,44100);
+    // Tremolo trem("sine",2);
+    // // dry wet is modDeptht bij mij
+    // trem.setDrywet(1);
+    
+    Sine sine(400,SAMPLERATE);
 
-
-
+    
+    Delay delay(44100,22050,0.9);
+    delay.setDrywet(0.5,0,1);
 
 #if WRITE_TO_FILE
     WriteToFile fileWriter("output.csv", true);
-    
-    jack.onProcess = [&circ, &fileWriter, &sine](jack_default_audio_sample_t* inBuf,
-      jack_default_audio_sample_t* outBuf, jack_nframes_t nframes) {
-#else
-    // ---------------------------
-    // FOR JACK AUDIO
-    // ---------------------------
-    jack.onProcess = [&circ, &sine](jack_default_audio_sample_t* inBuf,
-      jack_default_audio_sample_t* outBuf, jack_nframes_t nframes) {
-
-#endif
-    for(unsigned int i = 0; i < nframes; i++) {
-        float sample = sine.genNextSample();
-        outBuf[i] = (sample + circ.process(sample)) * 0.5;
-
-
-#if WRITE_TO_FILE
     // ---------------------------
     // FOR WRITING TO PYTHON
     // ---------------------------
+    jack.onProcess = [&delay, &fileWriter, &sine](jack_default_audio_sample_t* inBuf,
+      jack_default_audio_sample_t* outBuf, jack_nframes_t nframes) {
+  #else
+    // ---------------------------
+    // FOR JACK AUDIO
+    // ---------------------------
+    jack.onProcess = [&delay](jack_default_audio_sample_t* inBuf,
+      jack_default_audio_sample_t* outBuf, jack_nframes_t nframes) {
+
+  #endif
+      for(unsigned int i = 0; i < nframes; i++) {
+        // outBuf[i] = sine.genNextSample() * trem.process();
+        delay.process(inBuf[i],outBuf[i]);
+        // outBuf[i] = inBuf[i] * 1;
+
+
+  #if WRITE_TO_FILE
         static int count = 0;
         if(count < WRITE_NUM_SAMPLES) {
           fileWriter.write(std::to_string(outBuf[i]) + "\n");

@@ -1,10 +1,10 @@
-#include "circBuf.h"
+#include "delay.h"
 
 
-circBuf::circBuf(int size, int numSamplesDelay) : Effect(samplerate),
+Delay::Delay(int size, int numSamplesDelay, float feedback) : Effect(samplerate),
     size(size), numSamplesDelay(numSamplesDelay),
-    writePoint(0), readPoint(size - numSamplesDelay){
-
+    writePoint(0), readPoint(size - numSamplesDelay), feedback(feedback){ 
+    
     while (numSamplesDelay > size) {
         std::cout << "MAG NIET, kies andere sampledelay!" << std::endl;
         std::cout << "kies maar : " << std::endl;
@@ -18,23 +18,20 @@ circBuf::circBuf(int size, int numSamplesDelay) : Effect(samplerate),
     }
 }
 
-circBuf::~circBuf(){
+Delay::~Delay(){
     delete [] buffer;
     buffer = nullptr;
 }
 
-float circBuf::process(float inputSample){
-    buffer[writePoint++] = inputSample;
+void Delay::processEffect(float &input, float &output){
+    buffer[writePoint++] = input + (output * feedback);
     writePoint = wrap(writePoint);
-
-    float readVal = buffer[readPoint++];
+    
+    output = buffer[readPoint++];
     readPoint = wrap(readPoint);
-    return readVal;
 }
 
-
-
-float circBuf::getDistance(){   
+float Delay::getDistance(){   
     if(writePoint < readPoint) {
         int flip = writePoint;
         flip += size;
@@ -44,10 +41,9 @@ float circBuf::getDistance(){
 }
 
 
-float circBuf::wrap(int point){
+float Delay::wrap(int point){
     if (point >= size){
         point -= size; 
     }
-
     return point;
 }

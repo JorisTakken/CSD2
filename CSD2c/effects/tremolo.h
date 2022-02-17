@@ -5,11 +5,11 @@
 class Tremolo : public Effect{
     public: 
         Tremolo(std::string waveform, float modFreq);
-        ~Tremolo();
+        ~Tremolo() override;
 
-        float process(float inputSample) override;
+        void processEffect(float &input, float &output) override;
         void setModFreq(float freq);
-
+ 
     private: 
         Oscillator* oscillator;
         float modSignal;

@@ -1,47 +1,49 @@
-#include "tremolo.h"
+#include "delay.h"
+#include <iostream>
+#include "sine.h"
+#include "square.h"
+#include "saw.h"
 #include "writeToFile.h"
 #include "jack_module.h"
-#include "sine.h"
 
+#define WRITE_NUM_SAMPLES 44100
 #define WRITE_TO_FILE 0
-#define WRITE_NUM_SAMPLES 1000
-#define SAMPLERATE 44100 
 
 int main(int argc,char **argv){
     JackModule jack;
     jack.init(argv[0]);
-    // float samplerate = jack.getSamplerate();
-    // float amplitude = 0.5;
-    Tremolo trem("sine",2);
-    // my dry and wet is ciska's moddepth!
-    trem.setDrywet(1);
+     
+    Delay delay(44100, 22050);
+    // dry = 0 
+    // wet = 1 
+    Sine sine(200,44100);
 
-    
-    
-    Sine sine(400,SAMPLERATE);
+
 
 
 #if WRITE_TO_FILE
     WriteToFile fileWriter("output.csv", true);
-    // ---------------------------
-    // FOR WRITING TO PYTHON
-    // ---------------------------
-    jack.onProcess = [&trem, &fileWriter, &sine](jack_default_audio_sample_t* inBuf,
+    
+    jack.onProcess = [&fileWriter, &delay](jack_default_audio_sample_t* inBuf,
       jack_default_audio_sample_t* outBuf, jack_nframes_t nframes) {
-  #else
+#else
     // ---------------------------
     // FOR JACK AUDIO
     // ---------------------------
-    jack.onProcess = [&trem, &sine](jack_default_audio_sample_t* inBuf,
+    jack.onProcess = [&delay](jack_default_audio_sample_t* inBuf,
       jack_default_audio_sample_t* outBuf, jack_nframes_t nframes) {
 
-  #endif
-      for(unsigned int i = 0; i < nframes; i++) {
-        // outBuf[i] = sine.genNextSample() * trem.process();
-        outBuf[i] = trem.process(sine.genNextSample());
+#endif
+    for(unsigned int i = 0; i < nframes; i++) {
+        
+        // outBuf[i] = inBuf[i];
+        outBuf[i] = delay.processEffect(inBuf[i]) * 0.5;
 
 
-  #if WRITE_TO_FILE
+#if WRITE_TO_FILE
+    // ---------------------------
+    // FOR WRITING TO PYTHON
+    // ---------------------------
         static int count = 0;
         if(count < WRITE_NUM_SAMPLES) {
           fileWriter.write(std::to_string(outBuf[i]) + "\n");
@@ -81,6 +83,3 @@ int main(int argc,char **argv){
     //end the program
     return 0;
   }
-
-
-

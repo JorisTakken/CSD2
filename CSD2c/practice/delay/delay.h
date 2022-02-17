@@ -1,16 +1,17 @@
 #pragma once 
-#include "effect.h"
+
 #include <iostream>
 
-class circBuf : public Effect{
+class Delay{
     public:
-        circBuf(int size, int numSamplesDelay);
-        ~circBuf();
+        Delay(int size, int numSamplesDelay);
+        ~Delay();
 
         // PROCESS FUNTION IN STEAD OF ADD AND READ
-        float process(float inputSample) override;
 
-        float wrap(int point);
+        float processEffect(float inputSample);
+        float process(float sample);
+
         float getDistance();
 
     protected: 
@@ -21,6 +22,9 @@ class circBuf : public Effect{
         
         int writePoint;
         int readPoint;
+
+    private:
+        inline float wrap(int point);
 
 };
 
