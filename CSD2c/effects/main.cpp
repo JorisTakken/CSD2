@@ -1,4 +1,5 @@
 #include "tremolo.h"
+#include "chorus.h"
 #include "delay.h"
 
 #include "writeToFile.h"
@@ -21,8 +22,11 @@ int main(int argc,char **argv){
     
     Sine sine(400,SAMPLERATE);
 
-    
-    Delay delay(44100,22050,0.9);
+    Chorus chorus(SAMPLERATE,50, 1);
+    Delay delay(44100,20000,0.9);
+
+    Tremolo tremolo(Tremolo::Waveformtype::sine,20);
+
     delay.setDrywet(0.5,0,1);
 
 #if WRITE_TO_FILE
@@ -36,13 +40,13 @@ int main(int argc,char **argv){
     // ---------------------------
     // FOR JACK AUDIO
     // ---------------------------
-    jack.onProcess = [&delay](jack_default_audio_sample_t* inBuf,
+    jack.onProcess = [&chorus](jack_default_audio_sample_t* inBuf,
       jack_default_audio_sample_t* outBuf, jack_nframes_t nframes) {
 
   #endif
       for(unsigned int i = 0; i < nframes; i++) {
         // outBuf[i] = sine.genNextSample() * trem.process();
-        delay.process(inBuf[i],outBuf[i]);
+        chorus.process(inBuf[i],outBuf[i]);
         // outBuf[i] = inBuf[i] * 1;
 
 

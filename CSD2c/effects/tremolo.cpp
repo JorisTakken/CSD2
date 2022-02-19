@@ -1,15 +1,21 @@
 #include "tremolo.h"
 
 
-Tremolo::Tremolo(std::string waveform, float modFreq) : Effect(samplerate){
-    if (waveform == "sine") {
-        oscillator = new Sine(modFreq, samplerate);
+Tremolo::Tremolo(Waveformtype waveform, float modFreq) : Effect(samplerate){
+    switch (waveform) {
+    case Waveformtype::sine:
+    {
+    oscillator = new Sine(modFreq, samplerate);
+    break;
     }
-    else if (waveform == "saw") {
-        oscillator = new Saw(modFreq, samplerate);
+    case Waveformtype::saw:{
+    oscillator = new Saw(modFreq, samplerate);
+    break;
     }
-    else if (waveform == "square") {
-        oscillator = new Square(modFreq, samplerate);
+    case Waveformtype::square:{
+    oscillator = new Square(modFreq, samplerate);
+    break;
+        }
     }
 }
 

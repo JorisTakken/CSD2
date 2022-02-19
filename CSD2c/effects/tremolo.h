@@ -4,13 +4,16 @@
 
 class Tremolo : public Effect{
     public: 
-        Tremolo(std::string waveform, float modFreq);
+    // 0 = sine, 1 = saw, square = 2 
+        enum Waveformtype {sine = 0,saw,square};
+        
+        Tremolo(Waveformtype waveform, float modFreq);
         ~Tremolo() override;
 
         void processEffect(float &input, float &output) override;
         void setModFreq(float freq);
  
     private: 
-        Oscillator* oscillator;
+        // Oscillator* oscillator;
         float modSignal;
 };
