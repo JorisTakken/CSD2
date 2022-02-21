@@ -16,15 +16,6 @@ float nearestNabour(float input, float min, float max){
 float inRange(float input, int x1, int x2 , float min, float max){
     // STARTING AT A X VALUE
     float value = (min * (x2 - input) + max * (input - x1)) / (x2 - x1);    
-    // float rangeX = x2 - x1;
-    // float pointX = rangeX * input; 
-    // pointX += x1;
-    // pointX -= 1;
-
-    // float rangeY = max - min; 
-
-    // float value = rangeY * pointX;
-    // value += min;
     return value;
 }
 
