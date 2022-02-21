@@ -15,19 +15,16 @@
 int main(int argc,char **argv){
     JackModule jack;
     jack.init(argv[0]);
-
-    // Tremolo trem("sine",2);
-    // // dry wet is modDeptht bij mij
-    // trem.setDrywet(1);
     
     Sine sine(400,SAMPLERATE);
 
     Chorus chorus(SAMPLERATE,50, 1);
     Delay delay(44100,20000,0.9);
+    Tremolo tremolo(Tremolo::Waveformtype::sine,100,1);
 
-    Tremolo tremolo(Tremolo::Waveformtype::sine,20);
+    delay.setDrywet(1);
+    tremolo.setDrywet(1);
 
-    delay.setDrywet(0.5,0,1);
 
 #if WRITE_TO_FILE
     WriteToFile fileWriter("output.csv", true);
@@ -40,14 +37,14 @@ int main(int argc,char **argv){
     // ---------------------------
     // FOR JACK AUDIO
     // ---------------------------
-    jack.onProcess = [&chorus](jack_default_audio_sample_t* inBuf,
+    jack.onProcess = [&chorus, &tremolo, &delay](jack_default_audio_sample_t* inBuf,
       jack_default_audio_sample_t* outBuf, jack_nframes_t nframes) {
 
   #endif
       for(unsigned int i = 0; i < nframes; i++) {
-        // outBuf[i] = sine.genNextSample() * trem.process();
-        chorus.process(inBuf[i],outBuf[i]);
-        // outBuf[i] = inBuf[i] * 1;
+        float outBuf1;
+        tremolo.process(inBuf[i],outBuf1);
+        delay.process(outBuf1,outBuf[i]);
 
 
   #if WRITE_TO_FILE

@@ -40,7 +40,6 @@ float Delay::getDistance(){
     return writePoint - readPoint;
 }
 
-
 float Delay::wrap(int point){
     if (point >= size){
         point -= size; 

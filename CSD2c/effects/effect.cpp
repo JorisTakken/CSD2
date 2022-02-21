@@ -14,7 +14,9 @@ void Effect::process(float &input, float &output){
 
 
 
-void Effect::setDrywet(float newDryWet,float min ,float max){  
+void Effect::setDrywet(float newDryWet){  
+    float max = 1;
+    float min = 0;
     while(newDryWet < 0 ||  newDryWet > 1.0){
         std::cout << "MAG NIET, choose dry wet form 0 - 1!" << std::endl;
         std::cout << "kies maar : " << std::endl;

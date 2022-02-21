@@ -13,7 +13,7 @@ class Effect{
         // to apply dry wet function
         void process(float &input, float &output);
         
-        void setDrywet(float newDryWet,float min ,float max);
+        void setDrywet(float newDryWet);
         float getDrywet();
     protected: 
         // to apply effect

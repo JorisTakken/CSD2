@@ -1,7 +1,8 @@
 #include "tremolo.h"
 
 
-Tremolo::Tremolo(Waveformtype waveform, float modFreq) : Effect(samplerate){
+Tremolo::Tremolo(Waveformtype waveform, float modFreq,float modDepht) : Effect(samplerate),
+    modDepht(modDepht){
     switch (waveform) {
     case Waveformtype::sine:
     {
@@ -28,7 +29,14 @@ void Tremolo::setModFreq(float freq){
     oscillator->setFrequency(freq);
 }
 
+void Tremolo::setModDepht(float newModDepht){
+    modDepht = newModDepht;
+}
+
 void Tremolo::processEffect(float &input, float &output){
     // modSignal = range 0 - 1 ==== oscillator in range van -1 tot 1 
-    output = input * (oscillator->genNextSample() + 1.0) * 0.5;
+    float tremolo = (oscillator->genNextSample() + 1.0) * 0.5;
+    tremolo *= modDepht;
+    tremolo += 1.0 - modDepht;
+    output = input * tremolo;
 }
