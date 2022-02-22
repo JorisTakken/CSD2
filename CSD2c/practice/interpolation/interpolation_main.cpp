@@ -9,7 +9,6 @@ float nearestNabour(float input, float min, float max){
     }else {
         value = max;
     }
-    
     return value;
 }   
 
