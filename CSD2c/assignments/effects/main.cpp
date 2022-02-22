@@ -10,8 +10,6 @@
 #define WRITE_NUM_SAMPLES 44100
 #define SAMPLERATE 44100 
 
-
-
 int main(int argc,char **argv){
     JackModule jack;
     jack.init(argv[0]);
@@ -19,11 +17,12 @@ int main(int argc,char **argv){
     Sine sine(400,SAMPLERATE);
 
     Chorus chorus(SAMPLERATE,50, 1);
-    Delay delay(44100,20000,0.9);
-    Tremolo tremolo(Tremolo::Waveformtype::sine,100,1);
+    Delay delay(44100,20000,0.5);
+    Tremolo tremolo(Tremolo::Waveformtype::sine,5,1);
 
     delay.setDrywet(1);
-    tremolo.setDrywet(1);
+    tremolo.setDrywet(0);
+
 
 
 #if WRITE_TO_FILE
@@ -43,9 +42,11 @@ int main(int argc,char **argv){
   #endif
       for(unsigned int i = 0; i < nframes; i++) {
         float outBuf1;
-        tremolo.process(inBuf[i],outBuf1);
-        delay.process(outBuf1,outBuf[i]);
+        chorus.process(inBuf[i],outBuf[i]);
+        // delay.process(outBuf1,outBuf[i]);
+        // tremolo.process(outBuf1,outBuf[i]);
 
+        
 
   #if WRITE_TO_FILE
         static int count = 0;
