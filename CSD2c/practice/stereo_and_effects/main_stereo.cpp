@@ -65,6 +65,10 @@ bool running=true;
  */
 static void filter()
 {
+
+Sine sine(200, samplerate);
+Saw sine2(130, samplerate);
+
 float *inbuffer = new float[chunksize];
 float *outbuffer = new float[chunksize*2];
 float fader=0; // panning fader with range [-1,1]
@@ -73,13 +77,14 @@ float fader=0; // panning fader with range [-1,1]
     jack.readSamples(inbuffer,chunksize);
     for(unsigned int x=0; x<chunksize; x++)
     {
-      fader = sin(panPhase);
-      amp_left=0.5 * (fader + 1);
-      amp_right=0.5 *(-fader + 1);
-      outbuffer[2*x]= amp_left * inbuffer[x];
-      outbuffer[2*x+1]= amp_right * inbuffer[x];
+      amp_left=0.5;
+      amp_right=0.5;
+
+      outbuffer[2*x]= amp_left * sine.genNextSample();
+      outbuffer[2*x+1]= amp_right * sine2.genNextSample();
       panPhase += 2*M_PI*panFreq/samplerate;
     }
+
     jack.writeSamples(outbuffer,chunksize*2);
   } while(running);
 

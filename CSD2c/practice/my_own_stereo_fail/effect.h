@@ -1,5 +1,5 @@
 #pragma once 
-#include "sine.h"
+#include "../../../../CSD_voorbelden/CSD_21-22/csd2c/sharedCode/sine.h"
 #include "../../../../CSD_voorbelden/CSD_21-22/csd2c/sharedCode/square.h"
 #include "../../../../CSD_voorbelden/CSD_21-22/csd2c/sharedCode/saw.h"
 

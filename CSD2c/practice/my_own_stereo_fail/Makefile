@@ -4,7 +4,6 @@ CPP = g++ --std=c++11
 CFLAGS = -Wall
 LDFLAGS= -lpthread -ljack
 
-
 JACKOBJ = ringbuffer.o jack_module.o jack_test.o
 FXOBJ = ringbuffer.o jack_module.o keypress.o
 RINGBUFOBJ = ringbuffer.o ringbuffer_test.o
