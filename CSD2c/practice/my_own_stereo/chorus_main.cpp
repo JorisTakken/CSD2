@@ -18,10 +18,11 @@
 *  If not, see <http://www.gnu.org/licenses/>.
 ***********************************************************************
 *
-*  File name     : flanger.cpp
+*  File name     : panning.cpp
 *  System name   : jack_module
 *
-*  Description   : Flanger effect using JACK module
+*  Description   : example of stereo panning where a mono input signal is
+*                    amplitude-panned between left and right outputs
 *
 *
 *  Author        : Marc_G
@@ -33,28 +34,26 @@
 #include <string>
 #include <math.h>
 #include <thread>
+#include <unistd.h> // sleep
 #include "jack_module.h"
+#include "keypress.h"
+
+#include "chorus.h"
+#include "delay.h"
+#include "tremolo.h"
+#include "effect.h"
 
 
-/*
- * With this abstraction module we don't need to know JACK's buffer size
- *   but we can independently determine our own block sizes
- */
-unsigned long chunksize=2048;
 
+float panFreq=1.0; // LFO frequency
+double panPhase=0; // start in the center
+float amp_left=0.5 * (sin(panPhase) + 1);
+float amp_right=0.5 *(-sin(panPhase) + 1);
+
+unsigned long chunksize=256;
 
 JackModule jack;
 unsigned long samplerate=44100; // default
-
-
-/*
- * Delay line settings
- */
-#define MAXDELAY 20000
-
-jack_default_audio_sample_t delayline[MAXDELAY+1]; // one extra location!
-unsigned long delay=MAXDELAY;
-unsigned long delay_index=0;
 
 bool running=true;
 
@@ -62,23 +61,28 @@ bool running=true;
 /*
  * filter function reads audio samples from JACK and writes a processed
  *   version back to JACK
+ * Output is handed to JACK as interleaved sample frames
  */
 static void filter()
 {
 float *inbuffer = new float[chunksize];
-float *outbuffer = new float[chunksize];
+float *outbuffer = new float[chunksize*2];
+float fader=0; // panning fader with range [-1,1]
+
 
 
   do {
     jack.readSamples(inbuffer,chunksize);
     for(unsigned int x=0; x<chunksize; x++)
     {
-      outbuffer[x]=inbuffer[x]+delayline[delay_index];
-      delayline[delay_index]=inbuffer[x];
-      delay_index++;
-      delay_index%=delay;
+      fader = sin(panPhase);
+      amp_left=0.5 * (fader + 1);
+      amp_right=0.5 *(-fader + 1);
+      outbuffer[2*x]= amp_left * inbuffer[x];
+      outbuffer[2*x+1]= amp_right * inbuffer[x];
+      panPhase += 2*M_PI*panFreq/samplerate;
     }
-    jack.writeSamples(outbuffer,chunksize);
+    jack.writeSamples(outbuffer,chunksize*2);
   } while(running);
 
 } // filter()
@@ -87,30 +91,39 @@ float *outbuffer = new float[chunksize];
 
 int main(int argc,char **argv)
 {
-
+char command='@';
+  jack.setNumberOfInputChannels(1);
+  jack.setNumberOfOutputChannels(2);
   jack.init(argv[0]); // use program name as JACK client name
   jack.autoConnect();
-
   samplerate=jack.getSamplerate();
   std::cerr << "Samplerate: " << samplerate << std::endl;
 
-  std::thread filterThread(filter);
-  std::cerr << "Delay set to " << delay << std::endl;
 
-  while(running)
+
+
+  std::thread filterThread(filter);
+
+
+  while(command != 'q')
   {
-    std::string delayLengthString;
-    std::cin >> delayLengthString;
-    if(delayLengthString == "quit"){
-      running=false;
+    if(keypressed()) {
+      command = getchar();
+      /*
+       * '+' increases the panning rate with 10%
+       *     for convenience the '=' key does the same as it's the
+       *     same key without shift
+       *
+       * '-' decreases the panning rate with 10%
+       */
+      if(command == '+' || command == '=') panFreq *= 1.1;
+      if(command == '-') panFreq *= 0.9;
+      std::cout << "Panning frequency: " << panFreq << std::endl;
     }
-    unsigned long delayLength = atoi(delayLengthString.c_str());
-    if(delayLength <= MAXDELAY && delayLength >= 1){
-      delay=delayLength;
-      std::cerr << "Delay set to " << delay << std::endl;
-    }
+    usleep(100000);
   }
 
+  running=false;
   filterThread.join();
 
   jack.end();

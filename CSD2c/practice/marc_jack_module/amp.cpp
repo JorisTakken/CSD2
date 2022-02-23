@@ -18,10 +18,10 @@
 *  If not, see <http://www.gnu.org/licenses/>.
 ***********************************************************************
 *
-*  File name     : fuzz.cpp
+*  File name     : amp.cpp
 *  System name   : jack_module
 *
-*  Description   : Distortion effect using JACK module
+*  Description   : In->out copy with Volume control using JACK module
 *
 *
 *  Author        : Marc_G
@@ -33,23 +33,22 @@
 #include <string>
 #include <math.h>
 #include <thread>
+#include <unistd.h> // sleep
 #include "jack_module.h"
+#include "keypress.h"
+
+float amp=0.5; // NB: may produce high volume!
 
 
 /*
  * With this abstraction module we don't need to know JACK's buffer size
  *   but we can independently determine our own block sizes
  */
-unsigned long chunksize=2048;
+unsigned long chunksize=2;
 
 
 JackModule jack;
 unsigned long samplerate=44100; // default
-
-
-#define MINTHRESHOLD 0.1
-#define MAXTHRESHOLD 1.0
-jack_default_audio_sample_t threshold=0.2;
 
 
 
@@ -67,7 +66,7 @@ float *outbuffer = new float[chunksize];
     jack.readSamples(inbuffer,chunksize);
     for(unsigned int x=0; x<chunksize; x++)
     {
-      outbuffer[x] = inbuffer[x]<threshold ? inbuffer[x] : threshold;
+      outbuffer[x]= amp * inbuffer[x];
     }
     jack.writeSamples(outbuffer,chunksize);
   } while(true);
@@ -78,6 +77,7 @@ float *outbuffer = new float[chunksize];
 
 int main(int argc,char **argv)
 {
+char command='@';
 
   jack.init(argv[0]); // use program name as JACK client name
   jack.autoConnect();
@@ -87,15 +87,18 @@ int main(int argc,char **argv)
 
   std::thread filterThread(filter);
 
-  while(true)
+  // init_keypress();
+
+  while(command != 'q')
   {
-    std::string thresholdString;
-    std::cin >> thresholdString;
-    jack_default_audio_sample_t rawThreshold = 0.1 * atoi(thresholdString.c_str());
-    if(rawThreshold >= MINTHRESHOLD && rawThreshold <= MAXTHRESHOLD){
-      threshold=rawThreshold;
-      std::cerr << "Threshold is set to " << threshold << std::endl;
+  if(keypressed())
+    {
+      command = getchar();
+      if(command == '+') amp *= 1.1;
+      if(command == '-') amp *= 0.9;
+      std::cout << "amp " << amp << std::endl;
     }
+    usleep(100000);
   }
 
   filterThread.join();

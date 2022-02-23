@@ -12,7 +12,7 @@ HOPOBJ = hopbuffer.o hopbuffer_test.o
 ATOMICOBJ = atomic_test.o
 
 all: ringbuffer_test jack_test amp panning \
-     atomic_test flanger fuzz echo delay wavetable
+     atomic_test flanger fuzz delay 
 
 
 jack_test: $(JACKOBJ)

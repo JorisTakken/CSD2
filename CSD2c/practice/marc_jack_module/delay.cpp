@@ -128,7 +128,7 @@ char command='@';
   std::thread filterThread(filter);
   std::cout << "Delay " << (float)delay/samplerate << " sec" << std::endl;
 
-  init_keypress();
+  // init_keypress();
 
   while(running)
   {

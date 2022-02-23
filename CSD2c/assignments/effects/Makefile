@@ -2,7 +2,7 @@ CXX= g++
 CXXFLAGS = -I/usr/local/include -Wall -std=c++1z
 LDFLAGS=-ljack
 # the cpp files from the current project to include
-SRC_PROJECT = tremolo.cpp delay.cpp effect.cpp chorus.cpp main.cpp
+SRC_PROJECT = tremolo.cpp delay.cpp effect.cpp chorus.cpp chorus_main.cpp
 # the directory to the folder with the shared modules
 SHAREDCODE_PATH = ../../../../CSD_voorbelden/CSD_21-22/csd2c/sharedCode/
 # the modules to include
