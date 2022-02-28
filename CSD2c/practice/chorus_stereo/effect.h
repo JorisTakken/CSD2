@@ -7,21 +7,20 @@
 
 class Effect{
     public: 
-        Effect(unsigned int samplerate);
+        Effect(unsigned int samplerate = 44100);
         virtual ~Effect();
 
         // to apply dry wet function
-        void process(float &input, float &output);
+        float process(float input);
         
         void setDrywet(float newDryWet);
         float getDrywet();
     protected: 
-        int samplerate = 44100;
-
         // to apply effect
-        virtual void processEffect(float &input, float &output) = 0;
+        virtual float processEffect(float input) = 0;
 
         Oscillator* oscillator;
+        int samplerate = 44100;
     
     private:
         

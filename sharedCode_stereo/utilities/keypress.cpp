@@ -28,5 +28,22 @@ int retval;
   return 0;
 } /* keypressed */
 
+// int main()
+// {
+// char nextchar='@';
+
+//   while(nextchar != 'q')
+//   {
+//     printf(".\n");
+//     if(keypressed())
+//     {
+//       nextchar = getchar(); // clear input buffer
+//       printf("KEY '%c'\n",nextchar);
+//     }
+//     usleep(100000);
+//   }
+
+//   return 0;
+// }
 
 

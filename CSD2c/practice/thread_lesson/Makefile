@@ -2,9 +2,9 @@ CXX= g++
 CXXFLAGS = -I/usr/local/include -Wall -std=c++1z
 LDFLAGS=-ljack
 # the cpp files from the current project to include
-SRC_PROJECT = tremolo.cpp delay.cpp effect.cpp chorus.cpp main.cpp
+SRC_PROJECT = main_thread.cpp
 # the directory to the folder with the shared modules
-SHAREDCODE_PATH = ../../../../CSD_voorbelden/CSD_21-22/csd2c/sharedCode/
+SHAREDCODE_PATH = ../../../sharedCode_stereo/
 # the modules to include
 MODULES = oscillators utilities
 
@@ -27,7 +27,7 @@ OBJ := $(patsubst %.cpp,%.o, $(filter %.cpp,$(SRC)))
 # log OBJ
 $(info $$OBJ is [${OBJ}])
 
-TARGET=example
+TARGET=thread
 # link the program
 $(TARGET):$(OBJ)
 	$(CXX) -o $@ $(OBJ) $(LDFLAGS)

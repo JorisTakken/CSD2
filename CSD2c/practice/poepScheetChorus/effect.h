@@ -16,12 +16,11 @@ class Effect{
         void setDrywet(float newDryWet);
         float getDrywet();
     protected: 
-        int samplerate = 44100;
-
         // to apply effect
         virtual void processEffect(float &input, float &output) = 0;
 
         Oscillator* oscillator;
+        int samplerate = 44100;
     
     private:
         

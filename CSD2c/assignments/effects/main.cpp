@@ -18,10 +18,11 @@ int main(int argc,char **argv){
 
     Chorus chorus(SAMPLERATE,50, 1);
     Delay delay(44100,20000,0.5);
+
     Tremolo tremolo(Tremolo::Waveformtype::sine,5,1);
 
     delay.setDrywet(1);
-    tremolo.setDrywet(0);
+    tremolo.setDrywet(1);
 
 
 
@@ -42,7 +43,7 @@ int main(int argc,char **argv){
   #endif
       for(unsigned int i = 0; i < nframes; i++) {
         float outBuf1;
-        chorus.process(inBuf[i],outBuf[i]);
+        tremolo.process(inBuf[i],outBuf[i]);
         // delay.process(outBuf1,outBuf[i]);
         // tremolo.process(outBuf1,outBuf[i]);
 
