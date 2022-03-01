@@ -55,8 +55,8 @@ static void filter()
 // Sine sine(200, samplerate);
 // Saw sine2(130, samplerate);
 
-Chorus chorus(44100,2646,0.2);
-Chorus chorus2(44100,3500,0.1);
+Chorus chorus(44100/2,2646/2,2);
+Chorus chorus2(44100/2,3500/2,0.1);
 
 float *inbuffer = new float[chunksize];
 float *outbuffer = new float[chunksize*2];
@@ -103,7 +103,7 @@ char command='@';
   {
     if(keypressed()) {
       command = getchar();
-      
+
       if(command == '+' || command == '=') {
         std::cout << "je hebt geklikt baas" << std::endl;
       };
