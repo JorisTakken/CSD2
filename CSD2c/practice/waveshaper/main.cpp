@@ -1,75 +1,136 @@
-#include "writeToFile.h"
-#include "jack_module.h"
-#include "sine.h"
+/**********************************************************************
+*          Copyright (c) 2022, Hogeschool voor de Kunsten Utrecht
+*                      Hilversum, the Netherlands
+*                          All rights reserved
+***********************************************************************
+*  This program is free software: you can redistribute it and/or modify
+*  it under the terms of the GNU General Public License as published by
+*  the Free Software Foundation, either version 3 of the License, or
+*  (at your option) any later version.
+*
+*  This program is distributed in the hope that it will be useful,
+*  but WITHOUT ANY WARRANTY; without even the implied warranty of
+*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*  GNU General Public License for more details.
+*
+*  You should have received a copy of the GNU General Public License
+*  along with this program.
+*  If not, see <http://www.gnu.org/licenses/>.
+***********************************************************************
+*
+*  File name     : panning.cpp
+*  System name   : jack_module
+*
+*  Description   : example of stereo panning where a mono input signal is
+*                    amplitude-panned between left and right outputs
+*
+*
+*  Author        : Marc_G
+*  E-mail        : marc.groenewegen@hku.nl
+*
+**********************************************************************/
 
-#define WRITE_TO_FILE 0
-#define WRITE_NUM_SAMPLES 44100
-#define SAMPLERATE 44100 
+#include <iostream>
+#include <string>
+#include <math.h>
+#include <thread>
+#include <unistd.h> // sleep
+#include "jack_module.h"
+#include "keypress.h"
+#include "bufferDebugger.h"
+
+#include "waveshaper.h"
+
+
+unsigned long chunksize=256;
+
+JackModule jack;
+unsigned long samplerate=44100; // default
+
+bool running=true;
+
+#define BUFFERSIZE 1000
+
+
+
+
+
+static void filter(){
+
+float *inbuffer = new float[chunksize];
+float *outbuffer = new float[chunksize*2];
+// float wavetableBuffer[BUFFERSIZE];
+
+Waveshaper wave(BUFFERSIZE);
+wave.genWaveshape(100.0);
+wave.plot_waveshaper();
+
+    std::cout << "\n***** DONE ***** "
+    << "\nOutput is written to file output.csv" << std::endl;
+
+  do {
+    jack.readSamples(inbuffer,chunksize);
+
+    for(unsigned int x=0; x<chunksize; x++)
+    {
+      
+      // float amp_left=0.5;
+      // float amp_right=0.5;
+
+
+      // interpolatedOutput(inbuffer[x]);
+      // std::cout << wave.interpolatedOutput(inbuffer[x],1) << std::endl;
+      // float output = wave.interpolatedOutput(inbuffer[x],1);
+      outbuffer[2*x] = wave.interpolation(inbuffer[x]);
+      // outbuffer[2*x+1] = amp_right * output;
+    }
+    // BufferDebugger::writeToFile(wavetableBuffer, BUFFERSIZE, "output.csv");
+
+    jack.writeSamples(outbuffer,chunksize*2);
+    
+  } while(running);
+
+} // filter()
+
+
 
 int main(int argc,char **argv){
-    JackModule jack;
-    jack.init(argv[0]);
+
+
+    
 
 
 
-#if WRITE_TO_FILE
-    WriteToFile fileWriter("output.csv", true);
-    // ---------------------------
-    // FOR WRITING TO PYTHON
-    // ---------------------------
-    jack.onProcess = [&delay, &fileWriter, &sine](jack_default_audio_sample_t* inBuf,
-      jack_default_audio_sample_t* outBuf, jack_nframes_t nframes) {
-  #else
-    // ---------------------------
-    // FOR JACK AUDIO
-    // ---------------------------
-    jack.onProcess = [&chorus](jack_default_audio_sample_t* inBuf,
-      jack_default_audio_sample_t* outBuf, jack_nframes_t nframes) {
+char command='@';
+  jack.setNumberOfInputChannels(1);
+  // jack.setNumberOfOutputChannels(2);
+  jack.init(argv[0]); // use program name as JACK client name
+  jack.autoConnect();
+  samplerate=jack.getSamplerate();
+  std::cerr << "Samplerate: " << samplerate << std::endl;
 
-  #endif
-      for(unsigned int i = 0; i < nframes; i++) {
+  std::thread filterThread(filter);
 
+  while(command != 'q')
+  {
+    if(keypressed()) {
+      command = getchar();
 
-  #if WRITE_TO_FILE
-        static int count = 0;
-        if(count < WRITE_NUM_SAMPLES) {
-          fileWriter.write(std::to_string(outBuf[i]) + "\n");
-        } else {
-
-          // log 'Done' message to console, only once
-          static bool loggedDone = false;
-          if(!loggedDone) {
-            std::cout << "\n**** DONE **** \n"
-              << "Output is written to file.\n"
-              << "Please enter 'q' to quit the program." << std::endl;
-            loggedDone = true;
-          }
-        }
-        count++;
-        // set output to 0 to prevent issues with output
-        outBuf[i] = 0;
-  #endif
-      }
-      return 0;
-    };
-    jack.autoConnect();
-    //keep the program running and listen for user input, q = quit
-    std::cout << "\n\nPress 'q' when you want to quit the program.\n";
-    // boolean is used to keep program running / turn it off
-    bool running = true;
-    while (running)
-    {
-      switch (std::cin.get())
-      {
-        case 'q':
-          running = false;
-          jack.end();
-          break;
-        }
+      if(command == '+' || command == '=') {
+        std::cout << "je hebt geklikt baas" << std::endl;
+      };
+      if(command == '-'){
+        std::cout << "je hebt geklikt baas" << std::endl;
+      };
     }
-    //end the program
-    return 0;
+    usleep(100000);
   }
 
+  running=false;
+  filterThread.join();
 
+  jack.end();
+
+  return 0;
+} // main()
 

@@ -1,8 +1,20 @@
-#include "waveshaper.h"
+#include <iostream>
+#pragma once 
 
-Waveshaper::Waveshaper(){
-}
+class Waveshaper{
+    public:
+        Waveshaper(int buffersize);
+        ~Waveshaper();
 
-Waveshaper::~Waveshaper(){
-}
+        void genWaveshape(float sharpness);
+        float interpolation(float input);
+        void plot_waveshaper();
+
+
+        float map(float input, int x1, int x2 , float min, float max);
+
+    protected:
+        int buffersize;
+        float* wavetableBuffer;
+};
 
