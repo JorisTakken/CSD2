@@ -2,6 +2,8 @@
 #include "math.h"
 #include "bufferDebugger.h"
 
+#include <windows.h>
+
 
 Waveshaper::Waveshaper(int buffersize) : buffersize(buffersize){
     wavetableBuffer = new float[buffersize];
@@ -19,6 +21,25 @@ void Waveshaper::genWaveshape(float sharpness){
         wavetableBuffer[i] = normalizeFactor * atan(sharpness * mappedVal);
   }
 }
+
+void  Waveshaper::bufferWaveshaper(float input){
+    sleep(1000);
+    std::cout << "Speak into your mic to make the waveshaper" << std::endl;
+    sleep(1000);
+    std::cout << "3!" << std::endl;
+    time.sleep(1000);
+    std::cout << "2!" << std::endl;
+    time.sleep(1000);
+    std::cout << "1!" << std::endl;
+    time.sleep(1000);
+    std::cout << "RECORDING" << std::endl;
+    for(int i = 0; i < buffersize; i++) {
+        // float mappedVal = map((float)i, 0, buffersize, -1.0f, 1.0f);
+        wavetableBuffer[i] = input;
+    }
+}
+
+
 
 float Waveshaper::interpolation(float input){
     float index = (input + 1) * (buffersize/2);

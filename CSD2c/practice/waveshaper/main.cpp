@@ -62,7 +62,9 @@ float *outbuffer = new float[chunksize*2];
 // float wavetableBuffer[BUFFERSIZE];
 
 Waveshaper wave(BUFFERSIZE);
-wave.genWaveshape(100.0);
+// wave.genWaveshape(10.0);
+wave.bufferWaveshaper(float input);
+
 wave.plot_waveshaper();
 
     std::cout << "\n***** DONE ***** "
@@ -73,6 +75,7 @@ wave.plot_waveshaper();
 
     for(unsigned int x=0; x<chunksize; x++)
     {
+      wave.bufferWaveshaper(inbuffer);
       
       // float amp_left=0.5;
       // float amp_right=0.5;

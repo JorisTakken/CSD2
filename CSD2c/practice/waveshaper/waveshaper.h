@@ -7,6 +7,10 @@ class Waveshaper{
         ~Waveshaper();
 
         void genWaveshape(float sharpness);
+        void bufferWaveshaper(float input);
+
+
+
         float interpolation(float input);
         void plot_waveshaper();
 
