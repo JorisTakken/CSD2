@@ -1,8 +1,5 @@
 #include "waveshaper.h"
-#include "math.h"
-#include "bufferDebugger.h"
 
-#include <windows.h>
 
 
 Waveshaper::Waveshaper(int buffersize) : buffersize(buffersize){
@@ -11,6 +8,44 @@ Waveshaper::Waveshaper(int buffersize) : buffersize(buffersize){
 
 Waveshaper::~Waveshaper(){
     delete wavetableBuffer;
+}
+
+void Waveshaper::genWaveshapeOscillator(WaveChoise wave, float freq){
+    switch(wave){
+        case WaveChoise::SINE:{
+            oscillator = new Sine(freq, buffersize);
+            break;
+        }
+        case WaveChoise::SAW:{
+            oscillator = new Saw(freq, buffersize);
+            break;
+        }
+        case WaveChoise::SQUARE:{
+            oscillator = new Square(freq, buffersize);
+            break;
+        }
+    }
+        
+        for (int i = 0; i < buffersize; i++){
+            wavetableBuffer[i] = oscillator->genNextSample();
+        }
+
+        delete oscillator;
+        oscillator = nullptr;
+}
+
+void Waveshaper::genWaveshapeNoise(float noiseVal, int i){
+    float noise = (float)(noiseVal / 1000);
+    noise = (noise / 10) * 5;
+    if (noise > 1){
+        noise = 1;
+    } 
+    else if (noise < -1){
+        noise = -1;
+    }
+    // noise = map(noise, i, i+1, -1, 1);
+    // float noise = map(noiseVal, i, i+1, -1.0f, 1.0f);
+    wavetableBuffer[i] = noise;
 }
 
 void Waveshaper::genWaveshape(float sharpness){
@@ -22,29 +57,18 @@ void Waveshaper::genWaveshape(float sharpness){
   }
 }
 
-void  Waveshaper::bufferWaveshaper(float input){
-    sleep(1000);
-    std::cout << "Speak into your mic to make the waveshaper" << std::endl;
-    sleep(1000);
-    std::cout << "3!" << std::endl;
-    time.sleep(1000);
-    std::cout << "2!" << std::endl;
-    time.sleep(1000);
-    std::cout << "1!" << std::endl;
-    time.sleep(1000);
-    std::cout << "RECORDING" << std::endl;
-    for(int i = 0; i < buffersize; i++) {
-        // float mappedVal = map((float)i, 0, buffersize, -1.0f, 1.0f);
-        wavetableBuffer[i] = input;
-    }
+void  Waveshaper::bufferWaveshaper(float input,int x){
+    wavetableBuffer[x] = input;
 }
 
 
 
 float Waveshaper::interpolation(float input){
+    // van CISKA
     float index = (input + 1) * (buffersize/2);
     int i = (int) index;
     float indexDecimal = index - float(i);
+    // ;
     return map(indexDecimal,0,1, wavetableBuffer[i], wavetableBuffer[i + 1]);
 }
 

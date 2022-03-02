@@ -51,11 +51,25 @@ bool running=true;
 
 #define BUFFERSIZE 1000
 
+float totaal;
+int number_ints = 1000; //3000 - -3000
 
+void job_1(){
+    for (int i = 0; i< number_ints; i++){
+        totaal++;
+    }
+}
 
-
+void job_2(){
+    for (int i = 0; i< number_ints; i++){
+        totaal--;
+    }
+}
 
 static void filter(){
+
+
+
 
 float *inbuffer = new float[chunksize];
 float *outbuffer = new float[chunksize*2];
@@ -63,8 +77,16 @@ float *outbuffer = new float[chunksize*2];
 
 Waveshaper wave(BUFFERSIZE);
 // wave.genWaveshape(10.0);
-wave.bufferWaveshaper(float input);
+// wave.genWaveshapeOscillator(Waveshaper::WaveChoise::SAW, 10);
+for(int i = 0; i < BUFFERSIZE; i++){
+  std::thread thread_1(job_1);
+  std::thread thread_2(job_2);
 
+  thread_1.join();
+  thread_2.join();
+
+  wave.genWaveshapeNoise(totaal,i);
+}
 wave.plot_waveshaper();
 
     std::cout << "\n***** DONE ***** "
@@ -75,19 +97,13 @@ wave.plot_waveshaper();
 
     for(unsigned int x=0; x<chunksize; x++)
     {
-      wave.bufferWaveshaper(inbuffer);
       
-      // float amp_left=0.5;
-      // float amp_right=0.5;
+      float amp_left=0.8;
+      float amp_right=0.8;
 
-
-      // interpolatedOutput(inbuffer[x]);
-      // std::cout << wave.interpolatedOutput(inbuffer[x],1) << std::endl;
-      // float output = wave.interpolatedOutput(inbuffer[x],1);
-      outbuffer[2*x] = wave.interpolation(inbuffer[x]);
-      // outbuffer[2*x+1] = amp_right * output;
+      outbuffer[2*x] = amp_left * wave.interpolation(inbuffer[x]);
+      outbuffer[2*x+1] = amp_right * wave.interpolation(inbuffer[x]);
     }
-    // BufferDebugger::writeToFile(wavetableBuffer, BUFFERSIZE, "output.csv");
 
     jack.writeSamples(outbuffer,chunksize*2);
     
