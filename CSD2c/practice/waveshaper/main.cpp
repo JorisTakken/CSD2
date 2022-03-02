@@ -67,17 +67,13 @@ void job_2(){
 }
 
 static void filter(){
-
-
-
-
 float *inbuffer = new float[chunksize];
 float *outbuffer = new float[chunksize*2];
-// float wavetableBuffer[BUFFERSIZE];
 
 Waveshaper wave(BUFFERSIZE);
 // wave.genWaveshape(10.0);
-// wave.genWaveshapeOscillator(Waveshaper::WaveChoise::SAW, 10);
+// wave.genWaveshapeOscillator(Waveshaper::WaveChoise::SINE, 5);
+
 for(int i = 0; i < BUFFERSIZE; i++){
   std::thread thread_1(job_1);
   std::thread thread_2(job_2);
@@ -87,6 +83,7 @@ for(int i = 0; i < BUFFERSIZE; i++){
 
   wave.genWaveshapeNoise(totaal,i);
 }
+
 wave.plot_waveshaper();
 
     std::cout << "\n***** DONE ***** "
