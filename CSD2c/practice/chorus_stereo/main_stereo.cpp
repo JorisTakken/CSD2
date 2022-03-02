@@ -55,8 +55,8 @@ static void filter()
 // Sine sine(200, samplerate);
 // Saw sine2(130, samplerate);
 
-Chorus chorus(44100/2,2646/2,2);
-Chorus chorus2(44100/2,3500/2,0.1);
+Chorus chorus(60,0.2,0.2);
+Chorus chorus2(60,0.4,0.2);
 
 float *inbuffer = new float[chunksize];
 float *outbuffer = new float[chunksize*2];
@@ -67,11 +67,11 @@ float *outbuffer = new float[chunksize*2];
     for(unsigned int x=0; x<chunksize; x++)
     {
       float amp_left=0.5;
-      float amp_right=0.5;
+      float amp_right=0.5; 
       // float out;
 
-      outbuffer[2*x] = chorus.process(inbuffer[x]);
-      outbuffer[2*x+1] = chorus2.process(inbuffer[x]);
+      outbuffer[2*x] = amp_left * chorus.process(inbuffer[x]);
+      outbuffer[2*x+1] = amp_right * chorus2.process(inbuffer[x]);
 
 
       //  = out * 0.5;
