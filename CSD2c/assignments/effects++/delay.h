@@ -4,7 +4,7 @@
 
 class Delay : public Effect{
     public:
-        Delay(int size, int numSamplesDelay, float feedback);
+        Delay(int size, int delayTime, float feedback);
         ~Delay() override;
 
         void processEffect(float &input, float &output) override;

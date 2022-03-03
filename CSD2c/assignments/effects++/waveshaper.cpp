@@ -58,7 +58,6 @@ void Waveshaper::genWaveshape(float sharpness){
   }
 }
 
-
 void Waveshaper::processEffect(float &input, float &output){
     // van CISKA
     float index = (input + 1) * (buffersize/2);

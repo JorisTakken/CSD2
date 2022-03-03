@@ -77,71 +77,44 @@ static void filter(){
 float *inbuffer = new float[chunksize];
 float *outbuffer = new float[chunksize*2];
 
-Waveshaper wave(BUFFERSIZE);
-Waveshaper wave2(BUFFERSIZE);
-wave2.genWaveshape(10.0);
-wave2.setDrywet(0.5);
+// Effect* effect = new Waveshaper(BUFFERSIZE);
+// ((Waveshaper*)effect)->genWaveshape(10.0);
+// ((Waveshaper*)effect)->plot_waveshaper();
 
-wave.genWaveshape(100.0);
-wave.setDrywet(0.5);
-
-wave.plot_waveshaper();
-
-
+// Effect* effect = new Tremolo(Tremolo::Waveformtype::sine,5,1);
+Effect* effect = new Delay(44100,22050,0.5);
+effect->setDrywet(1);
 
 // for(int i = 0; i < BUFFERSIZE; i++){
 //   std::thread thread_1(job_1);
 //   std::thread thread_2(job_2);
+
 //   thread_1.join();
 //   thread_2.join();
-//   wave.genWaveshapeNoise(totaal,i);
+//   ((Waveshaper*)effect_waveshaper)->genWaveshapeNoise(totaal,i);
 // }
-// wave.genWaveshapeOscillator(Waveshaper::WaveChoise::SINE, 100);
-
-Delay delay(44100,20000,0.5);
-Delay delay2(44100,12000,0.4);
-delay.setDrywet(1.0);
-
-Tremolo tremolo(Tremolo::Waveformtype::sine,5,1);
-tremolo.setDrywet(1);
-
-// tremolo.applyDryWet(inBuf[i],outBuf[i]);
-// delay.applyDryWet(outBuf1,outBuf[i]);
-// tremolo.applyDryWet(outBuf1,outBuf[i]);
-
-
-
-    std::cout << "\n***** DONE ***** "
-    << "\nOutput is written to file output.csv" << std::endl;
 
   do {
     jack.readSamples(inbuffer,chunksize);
-
-    for(unsigned int x=0; x<chunksize; x++)
-    {
+      for(unsigned int x=0; x<chunksize; x++)
+      {
       
-      float amp_left=0.8;
-      float amp_right=0.8;
       float input = inbuffer[x];
-      wave.applyDryWet(input,outbuffer[2*x]);
-      wave.applyDryWet(input,outbuffer[2*x+1]);
-    }
+      effect->applyDryWet(input,outbuffer[2*x]);
+      // effect->applyDryWet(input,outbuffer[2*x+1]);
+      }
 
     jack.writeSamples(outbuffer,chunksize*2);
     
-  } while(running);
+  }while(running);
+    
+    
 
 } // filter()
 
 
 
 int main(int argc,char **argv){
-
-
-    
-
-
-
 char command='@';
   jack.setNumberOfInputChannels(1);
   // jack.setNumberOfOutputChannels(2);

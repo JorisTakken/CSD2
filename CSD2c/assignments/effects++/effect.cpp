@@ -10,9 +10,8 @@ void Effect::applyDryWet(float &input, float &output){
     // dry wet
     processEffect(input,output);
     output = output * (dryWet) + input * (1.0 - dryWet);
+
 }
-
-
 
 void Effect::setDrywet(float newDryWet){  
     float max = 1;
@@ -33,4 +32,8 @@ void Effect::setDrywet(float newDryWet){
 
 float Effect::getDrywet(){
     return dryWet;
+}
+
+int Effect::msToSamps(float miliseconds){
+    return int((miliseconds * (samplerate / 1000.0)) + 0.5);
 }

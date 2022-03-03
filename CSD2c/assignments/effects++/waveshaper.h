@@ -34,6 +34,5 @@ class Waveshaper : public Effect{
     protected:
         int buffersize;
         float* wavetableBuffer;
-        Oscillator* oscillator;
 };
 
