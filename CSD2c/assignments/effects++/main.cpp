@@ -40,6 +40,13 @@
 #include "bufferDebugger.h"
 
 #include "waveshaper.h"
+#include "tremolo.h"
+#include "chorus.h"
+#include "delay.h"
+
+#define WRITE_TO_FILE 0
+#define WRITE_NUM_SAMPLES 44100
+#define SAMPLERATE 44100 
 
 
 unsigned long chunksize=256;
@@ -71,20 +78,38 @@ float *inbuffer = new float[chunksize];
 float *outbuffer = new float[chunksize*2];
 
 Waveshaper wave(BUFFERSIZE);
-// wave.genWaveshape(10.0);
-// wave.genWaveshapeOscillator(Waveshaper::WaveChoise::SINE, 100);
+Waveshaper wave2(BUFFERSIZE);
+wave2.genWaveshape(10.0);
+wave2.setDrywet(0.5);
 
-for(int i = 0; i < BUFFERSIZE; i++){
-  std::thread thread_1(job_1);
-  std::thread thread_2(job_2);
-
-  thread_1.join();
-  thread_2.join();
-
-  wave.genWaveshapeNoise(totaal,i);
-}
+wave.genWaveshape(100.0);
+wave.setDrywet(0.5);
 
 wave.plot_waveshaper();
+
+
+
+// for(int i = 0; i < BUFFERSIZE; i++){
+//   std::thread thread_1(job_1);
+//   std::thread thread_2(job_2);
+//   thread_1.join();
+//   thread_2.join();
+//   wave.genWaveshapeNoise(totaal,i);
+// }
+// wave.genWaveshapeOscillator(Waveshaper::WaveChoise::SINE, 100);
+
+Delay delay(44100,20000,0.5);
+Delay delay2(44100,12000,0.4);
+delay.setDrywet(1.0);
+
+Tremolo tremolo(Tremolo::Waveformtype::sine,5,1);
+tremolo.setDrywet(1);
+
+// tremolo.applyDryWet(inBuf[i],outBuf[i]);
+// delay.applyDryWet(outBuf1,outBuf[i]);
+// tremolo.applyDryWet(outBuf1,outBuf[i]);
+
+
 
     std::cout << "\n***** DONE ***** "
     << "\nOutput is written to file output.csv" << std::endl;
@@ -97,9 +122,9 @@ wave.plot_waveshaper();
       
       float amp_left=0.8;
       float amp_right=0.8;
-
-      outbuffer[2*x] = amp_left * wave.interpolation(inbuffer[x]);
-      outbuffer[2*x+1] = amp_right * wave.interpolation(inbuffer[x]);
+      float input = inbuffer[x];
+      wave.applyDryWet(input,outbuffer[2*x]);
+      wave.applyDryWet(input,outbuffer[2*x+1]);
     }
 
     jack.writeSamples(outbuffer,chunksize*2);
@@ -149,4 +174,16 @@ char command='@';
 
   return 0;
 } // main()
+
+
+
+
+
+
+
+
+
+
+
+
 

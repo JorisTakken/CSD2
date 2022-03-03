@@ -6,14 +6,14 @@
 #include "saw.h"
 #include "square.h"
 #include "oscillator.h"
-
+#include "effect.h"
 
 //random function
 #include <cstdlib>
 #include <ctime>
 
 
-class Waveshaper{
+class Waveshaper : public Effect{
     public:
         Waveshaper(int buffersize);
         ~Waveshaper();
@@ -21,11 +21,11 @@ class Waveshaper{
         enum WaveChoise {SINE = 0, SAW, SQUARE};
 
         void genWaveshape(float sharpness);
-        void bufferWaveshaper(float input,int x);
         void genWaveshapeOscillator(WaveChoise wave, float freq);   
         void genWaveshapeNoise(float noiseVal,int i );
 
-        float interpolation(float input);
+        void processEffect(float &input, float &output) override;
+
         void plot_waveshaper();
 
 

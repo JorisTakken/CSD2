@@ -52,15 +52,12 @@ bool running=true;
 
 static void filter()
 {
-// Sine sine(200, samplerate);
-// Saw sine2(130, samplerate);
 
-Chorus chorus(60,0.2,0.2);
-Chorus chorus2(60,0.4,0.2);
+Effect* Effect1 = new Chorus(60,0.2,0.2);
+Effect* Effect2 = new Chorus(60,0.4,0.2);
 
 float *inbuffer = new float[chunksize];
 float *outbuffer = new float[chunksize*2];
-// float fader=0; // panning fader with range [-1,1]
 
   do {
     jack.readSamples(inbuffer,chunksize);
@@ -68,15 +65,9 @@ float *outbuffer = new float[chunksize*2];
     {
       float amp_left=0.5;
       float amp_right=0.5; 
-      // float out;
 
-      outbuffer[2*x] = amp_left * chorus.process(inbuffer[x]);
-      outbuffer[2*x+1] = amp_right * chorus2.process(inbuffer[x]);
-
-
-      //  = out * 0.5;
-      //  = inbuffer[x] * amp_right; 
-      // panPhase += 2*M_PI*panFreq/samplerate;
+      outbuffer[2*x] = amp_left * Effect1->process(inbuffer[x]);
+      outbuffer[2*x+1] = amp_right * Effect2->process(inbuffer[x]);   
     }
 
     jack.writeSamples(outbuffer,chunksize*2);

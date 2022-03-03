@@ -37,10 +37,9 @@
 #include <unistd.h> // sleep
 #include "jack_module.h"
 #include "keypress.h"
-#include "bufferDebugger.h"
 
-#include "waveshaper.h"
-
+#include "chorus.h"
+#include "effect.h"
 
 unsigned long chunksize=256;
 
@@ -49,83 +48,56 @@ unsigned long samplerate=44100; // default
 
 bool running=true;
 
-#define BUFFERSIZE 1000
 
-float totaal;
-int number_ints = 1000; //3000 - -3000
 
-void job_1(){
-    for (int i = 0; i< number_ints; i++){
-        totaal++;
-    }
-}
+static void filter()
+{
+// Sine sine(200, samplerate);
+// Saw sine2(130, samplerate);
 
-void job_2(){
-    for (int i = 0; i< number_ints; i++){
-        totaal--;
-    }
-}
+Chorus chorus(100,50,2);
+Chorus chorus2(200,50,0.1);
 
-static void filter(){
 float *inbuffer = new float[chunksize];
 float *outbuffer = new float[chunksize*2];
-
-Waveshaper wave(BUFFERSIZE);
-// wave.genWaveshape(10.0);
-// wave.genWaveshapeOscillator(Waveshaper::WaveChoise::SINE, 100);
-
-for(int i = 0; i < BUFFERSIZE; i++){
-  std::thread thread_1(job_1);
-  std::thread thread_2(job_2);
-
-  thread_1.join();
-  thread_2.join();
-
-  wave.genWaveshapeNoise(totaal,i);
-}
-
-wave.plot_waveshaper();
-
-    std::cout << "\n***** DONE ***** "
-    << "\nOutput is written to file output.csv" << std::endl;
+// float fader=0; // panning fader with range [-1,1]
 
   do {
     jack.readSamples(inbuffer,chunksize);
-
     for(unsigned int x=0; x<chunksize; x++)
     {
-      
-      float amp_left=0.8;
-      float amp_right=0.8;
+      float amp_left=0.5;
+      float amp_right=0.5;
+      // float out;
 
-      outbuffer[2*x] = amp_left * wave.interpolation(inbuffer[x]);
-      outbuffer[2*x+1] = amp_right * wave.interpolation(inbuffer[x]);
+      outbuffer[2*x] = amp_left * chorus.process(inbuffer[x]);
+      outbuffer[2*x+1] = amp_right * chorus2.process(inbuffer[x]);
+
+
+      //  = out * 0.5;
+      //  = inbuffer[x] * amp_right; 
+      // panPhase += 2*M_PI*panFreq/samplerate;
     }
 
     jack.writeSamples(outbuffer,chunksize*2);
-    
   } while(running);
 
 } // filter()
 
 
 
-int main(int argc,char **argv){
-
-
-    
-
-
-
+int main(int argc,char **argv)
+{
 char command='@';
   jack.setNumberOfInputChannels(1);
-  // jack.setNumberOfOutputChannels(2);
+  jack.setNumberOfOutputChannels(2);
   jack.init(argv[0]); // use program name as JACK client name
   jack.autoConnect();
   samplerate=jack.getSamplerate();
   std::cerr << "Samplerate: " << samplerate << std::endl;
 
   std::thread filterThread(filter);
+
 
   while(command != 'q')
   {

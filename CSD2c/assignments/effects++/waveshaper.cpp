@@ -2,7 +2,8 @@
 
 
 
-Waveshaper::Waveshaper(int buffersize) : buffersize(buffersize){
+Waveshaper::Waveshaper(int buffersize) : Effect(44100), 
+    buffersize(buffersize){
     wavetableBuffer = new float[buffersize];
 }
 
@@ -57,17 +58,14 @@ void Waveshaper::genWaveshape(float sharpness){
   }
 }
 
-void  Waveshaper::bufferWaveshaper(float input,int x){
-    wavetableBuffer[x] = input;
-}
 
-float Waveshaper::interpolation(float input){
+void Waveshaper::processEffect(float &input, float &output){
     // van CISKA
     float index = (input + 1) * (buffersize/2);
     int i = (int) index;
     float indexDecimal = index - float(i);
     // ;
-    return map(indexDecimal,0,1, wavetableBuffer[i], wavetableBuffer[i + 1]);
+    output = (indexDecimal,0,1, wavetableBuffer[i], wavetableBuffer[i + 1]);
 }
 
 float Waveshaper::map(float input, int x1, int x2 , float min, float max){

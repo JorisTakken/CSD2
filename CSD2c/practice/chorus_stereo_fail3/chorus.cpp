@@ -28,8 +28,7 @@ float Chorus::processEffect(float input){
     chorusBuffer[writePoint++] = input;
     writePoint = wrap(writePoint);
     
-    // readPoint =  msToSamps(delayMS) + (int)modulation;
-    std::cout << msToSamps(delayMS) + (int)modulation<< "mod" << std::endl;
+    // std::cout << msToSamps(delayMS) + (int)modulation<< "mod" << std::endl;
 
     float output = chorusBuffer[msToSamps(delayMS) + (int)modulation];
     readPoint = wrap(readPoint);
