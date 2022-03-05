@@ -1,33 +1,18 @@
-#pragma once 
-#include "effect.h"
-#include <iostream>
+#include "delay.h"
 
-class modDelay : public Effect{
-    public:
-        modDelay(int size,int samplesDelay,float modDelayRate);
-        ~modDelay() override;
+class modDelay : public Delay{
+    public: 
+        modDelay(float chorusRate, float modDepth, float baseDelay);
+        ~modDelay();
 
-        float processEffect(float input) override;
+        void applyEffect(float& input, float& output) override;
 
-        int msToSamps(float miliseconds);
+        float map(float input, int x1, int x2 , float min, float max);
 
+    protected:
+        float modDepth;
+        float delayTime;
 
-    protected: 
-        float* modDelayBuffer;
-
-        int size = samplerate;
-        
-        float modDelayRate;
-        int samplesDelay;
-
-        int writePoint;
-        int readPoint;
-
-        
-    private:
-        inline float wrap(int point);
-        int inRange(float input, float x1, float x2 , int min, int max);
-
+        float* buffer;
 
 };
-

@@ -37,9 +37,16 @@
 #include <unistd.h> // sleep
 #include "jack_module.h"
 #include "keypress.h"
+#include "bufferDebugger.h"
 
-#include "chorus.h"
-#include "effect.h"
+
+#include "modDelay.h" 
+#include "delay.h"
+
+#define WRITE_TO_FILE 0
+#define WRITE_NUM_SAMPLES 44100
+#define SAMPLERATE 44100 
+
 
 unsigned long chunksize=256;
 
@@ -48,56 +55,45 @@ unsigned long samplerate=44100; // default
 
 bool running=true;
 
+#define BUFFERSIZE 1000
 
-
-static void filter()
-{
-// Sine sine(200, samplerate);
-// Saw sine2(130, samplerate);
-
-Chorus chorus(100,50,2);
-Chorus chorus2(200,50,0.1);
-
+static void filter(){
 float *inbuffer = new float[chunksize];
 float *outbuffer = new float[chunksize*2];
-// float fader=0; // panning fader with range [-1,1]
+
+modDelay chorus(1, 1, 100);
+chorus.setDrywet(0.4);
 
   do {
     jack.readSamples(inbuffer,chunksize);
-    for(unsigned int x=0; x<chunksize; x++)
-    {
-      float amp_left=0.5;
-      float amp_right=0.5;
-      // float out;
-
-      outbuffer[2*x] = amp_left * chorus.process(inbuffer[x]);
-      outbuffer[2*x+1] = amp_right * chorus2.process(inbuffer[x]);
-
-
-      //  = out * 0.5;
-      //  = inbuffer[x] * amp_right; 
-      // panPhase += 2*M_PI*panFreq/samplerate;
-    }
+      for(unsigned int x=0; x<chunksize; x++)
+      {
+      
+      float input = inbuffer[x];
+      chorus.applyDryWet(input,outbuffer[2*x]);
+      // effect->applyDryWet(input,outbuffer[2*x+1]);
+      }
 
     jack.writeSamples(outbuffer,chunksize*2);
-  } while(running);
+    
+  }while(running);
+    
+    
 
 } // filter()
 
 
 
-int main(int argc,char **argv)
-{
+int main(int argc,char **argv){
 char command='@';
   jack.setNumberOfInputChannels(1);
-  jack.setNumberOfOutputChannels(2);
+  // jack.setNumberOfOutputChannels(2);
   jack.init(argv[0]); // use program name as JACK client name
   jack.autoConnect();
   samplerate=jack.getSamplerate();
   std::cerr << "Samplerate: " << samplerate << std::endl;
 
   std::thread filterThread(filter);
-
 
   while(command != 'q')
   {
@@ -121,4 +117,16 @@ char command='@';
 
   return 0;
 } // main()
+
+
+
+
+
+
+
+
+
+
+
+
 

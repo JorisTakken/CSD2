@@ -1,95 +1,49 @@
 #include "modDelay.h"
 
+// chorusrate = frequencie
+// moddepth = from 0 - 1
+modDelay::modDelay(float chorusRate, float modDepth, float baseDelay) : Delay(44100, baseDelay, feedback),
+    delayTime(baseDelay),modDepth(modDepth){
 
-ModDelay::ModDelay(int size,int delayMS, float modDelayRate) : Effect(44100), 
-    size(size), modDelayRate(modDelayRate),samplesDelay(samplesDelay),
-    writePoint(0), readPoint(readPoint){
+    buffer = new float[44100];
+    oscillator = new Sine(chorusRate, samplerate);
 
-    msToSamps(size);
-    samplesDelay = msToSamps(delayMS);
-    readPoint = size - samplesDelay;
-
-    while (samplesDelay > size) {
-        std::cout << "creash program" << std::endl;
-        std::cout << "HELAAS  numSamplesDelay is groter dan size MAG NIET " << std::endl;
-    }
-
-    modDelayBuffer = new float[size];
-    for(int i = 0; i < size; i++) {
-        modDelayBuffer[i] = 0;
-    }
-
-    oscillator = new Sine(modDelayRate, samplerate);
 }
+modDelay::~modDelay(){
 
-ModDelay::~ModDelay(){
-    delete [] modDelayBuffer;
-    modDelayBuffer = nullptr;
-
-    delete oscillator;
-    oscillator = nullptr;
-
-}   
-
-void ModDelay::applyEffect(float& input, float& output)
-{ 
-  float modSignal = oscillator->getNextSample();  // float
-  samplesDelay = modSignal + offset; // float
-  float read_H_fp = (float) writeH - samplesDelay; // float
-  readPoint = (int) read_H_fp; // int
-
-  int readHNext = readHNext + 1; 
-  // get decimal value
-  float read_h_dec = read_H_fp - read_H; // float
-  // wrap heads
-  wrapH(readH); 
-  wrapH(readHNext);
-  
-  output = inRange(read_h_dec, 0,1, modDelayBuffer[readH], modDelayBuffer[readHNext]);
-
-  // write value to circular buffer
-  modDelayBuffer[writeH++] = output * feedback + input;
-
-  wrapH(m_writeH);
-}
-
-
-// float ModDelay::processEffect(float input){
-//     float output;
-//     modDelayBuffer[writePoint++] = input;
-//     writePoint = wrap(writePoint);
-
-//     output = modDelayBuffer[readPoint++];
-//     readPoint = samplesDelay + inRange(oscillator->genNextSample(), -1, 1,samplesDelay, (samplesDelay + 2000));
-//     // samplesDelay += (oscillator->genNextSample() * 1000);
-//     // readPoint = wrap(readPoint);
-//     return output;
-// }
-
-
-float ModDelay::wrap(int point){
-    if (point >= size){
-        point -= size; 
-    }
-    return point;
-}
-
-int ModDelay::inRange(float input, float x1, float x2 , int min, int max){
-    // STARTING AT A X VALUE
-    // std::cout << "input" << input << std::endl;
-
-    int value = (min * (x2 - input) + max * (input - x1)) / (x2 - x1);  
-    // std::cout << "modulated delay val:" << value << std::endl;
-    return value;
-}
-
-int ModDelay::msToSamps(float miliseconds){
-    return int((miliseconds * (samplerate / 1000.0)) + 0.5);
 }
 
 
 
 // ModDelay is a derived class from Delay 
 // Effect <-- Delay <-- ModDelay
+void modDelay::applyEffect(float& input, float& output){ 
+  int readPoint = 0;
+  int writePoint = 0;
 
+  float modSignal = oscillator->genNextSample() * modDepth;  // float
+  numSamplesDelay = modSignal + 0.5; // float
+  std::cout << numSamplesDelay << " num samps delay" << std::endl;
+  float read_H_fp = (float) writePoint - numSamplesDelay; // float
+  readPoint = (int) read_H_fp; // int
+  int readHNextpoint =+ 1; 
 
+  // get decimal value
+  int read_h_dec = read_H_fp - readPoint; // float
+  // wrap heads
+  wrap(readPoint); 
+  wrap(readHNextpoint);
+  
+  output = map(read_h_dec, 0,1, buffer[readPoint], buffer[readHNextpoint]);
+
+  // write value to circular buffer
+  buffer[writePoint++] = output + input;
+
+  wrap(writePoint);
+}
+
+float modDelay::map(float input, int x1, int x2 , float min, float max){
+    // STARTING AT A X VALUE
+    float value = (min * (x2 - input) + max * (input - x1)) / (x2 - x1);    
+    return value;
+}

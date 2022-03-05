@@ -11,13 +11,15 @@ class Effect{
         virtual ~Effect();
 
         // to apply dry wet function
-        float process(float input);
+        virtual void processEffect(float &input, float &output) = 0;
+        void applyDryWet(float &input, float &output);
+        
+        float msToSamps(float miliseconds);
         
         void setDrywet(float newDryWet);
         float getDrywet();
     protected: 
         // to apply effect
-        virtual float processEffect(float input) = 0;
 
         Oscillator* oscillator;
         int samplerate = 44100;
