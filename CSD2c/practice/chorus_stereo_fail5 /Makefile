@@ -2,7 +2,7 @@ CXX= g++
 CXXFLAGS = -I/usr/local/include -Wall -std=c++1z
 LDFLAGS=-ljack
 # the cpp files from the current project to include
-SRC_PROJECT = main.cpp modDelay.cpp effect.cpp delay.h
+SRC_PROJECT = main.cpp modDelay.cpp delay.cpp
 # the directory to the folder with the shared modules
 SHAREDCODE_PATH = ../../../sharedCode_stereo/
 # the modules to include

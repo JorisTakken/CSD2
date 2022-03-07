@@ -37,16 +37,16 @@
 #include <unistd.h> // sleep
 #include "jack_module.h"
 #include "keypress.h"
+#include "bufferDebugger.h"
 
-#include "chorus.h"
-#include "effect.h"
+#include "delay.h"
+#include "modDelay.h"
 
 
+#define WRITE_TO_FILE 0
+#define WRITE_NUM_SAMPLES 44100
+#define SAMPLERATE 44100 
 
-float panFreq=1.0; // LFO frequency
-double panPhase=0; // start in the center
-float amp_left=0.5 * (sin(panPhase) + 1);
-float amp_right=0.5 *(-sin(panPhase) + 1);
 
 unsigned long chunksize=256;
 
@@ -55,50 +55,36 @@ unsigned long samplerate=44100; // default
 
 bool running=true;
 
+#define BUFFERSIZE 1000
 
-/*
- * filter function reads audio samples from JACK and writes a processed
- *   version back to JACK
- * Output is handed to JACK as interleaved sample frames
- */
-static void filter()
-{
-
-// Sine sine(200, samplerate);
-// Saw sine2(130, samplerate);
-
-Chorus chorus(1000,200,2);
-Chorus chorus2(1000,100,20);
-
-
+static void filter(){
 float *inbuffer = new float[chunksize];
 float *outbuffer = new float[chunksize*2];
-float fader=0; // panning fader with range [-1,1]
 
+modDelay ModDelay(0.1,1,2, 44100);
   do {
     jack.readSamples(inbuffer,chunksize);
-    for(unsigned int x=0; x<chunksize; x++)
-    {
-      amp_left=0.5;
-      amp_right=0.5;
-
-      chorus.process(inbuffer[x],outbuffer[2*x]);
-      chorus2.process(inbuffer[x],outbuffer[2*x+1]);
-      panPhase += 2*M_PI*panFreq/samplerate;
-    }
+      for(unsigned int x=0; x<chunksize; x++)
+      {
+      
+      // float input = inbuffer[x];
+      outbuffer[2*x] = ModDelay.applyEffect(inbuffer[x]);
+      }
 
     jack.writeSamples(outbuffer,chunksize*2);
-  } while(running);
+    
+  }while(running);
+    
+    
 
 } // filter()
 
 
 
-int main(int argc,char **argv)
-{
+int main(int argc,char **argv){
 char command='@';
   jack.setNumberOfInputChannels(1);
-  jack.setNumberOfOutputChannels(2);
+  // jack.setNumberOfOutputChannels(2);
   jack.init(argv[0]); // use program name as JACK client name
   jack.autoConnect();
   samplerate=jack.getSamplerate();
@@ -106,21 +92,17 @@ char command='@';
 
   std::thread filterThread(filter);
 
-
   while(command != 'q')
   {
     if(keypressed()) {
       command = getchar();
-      /*
-       * '+' increases the panning rate with 10%
-       *     for convenience the '=' key does the same as it's the
-       *     same key without shift
-       *
-       * '-' decreases the panning rate with 10%
-       */
-      if(command == '+' || command == '=') panFreq *= 1.1;
-      if(command == '-') panFreq *= 0.9;
-      std::cout << "Panning frequency: " << panFreq << std::endl;
+
+      if(command == '+' || command == '=') {
+        std::cout << "je hebt geklikt baas" << std::endl;
+      };
+      if(command == '-'){
+        std::cout << "je hebt geklikt baas" << std::endl;
+      };
     }
     usleep(100000);
   }
@@ -132,4 +114,16 @@ char command='@';
 
   return 0;
 } // main()
+
+
+
+
+
+
+
+
+
+
+
+
 
