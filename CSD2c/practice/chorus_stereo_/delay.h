@@ -7,18 +7,23 @@ class Delay : public Effect{
         Delay(int size, int delayTime, float feedback);
         ~Delay() override;
 
-        virtual void processEffect(float &input, float &output) = 0;
+        // void processEffect(float &input, float &output) override;
         float getDistance();
+        void setDelaytime(int newDelayTime);
+        float genNextSample(float inputSample);
 
+        
+
+    protected: 
+        float feedback;
         int size;
         int numSamplesDelay;
         float* buffer;
         int writePoint;
         int readPoint;
-
-    protected: 
-        float feedback;
         inline float wrap(int point);
+
+        float outputSample;
 
 
     private:

@@ -41,7 +41,6 @@
 
 
 #include "modDelay.h" 
-#include "delay.h"
 
 #define WRITE_TO_FILE 0
 #define WRITE_NUM_SAMPLES 44100
@@ -61,16 +60,15 @@ static void filter(){
 float *inbuffer = new float[chunksize];
 float *outbuffer = new float[chunksize*2];
 
-modDelay chorus(1, 1, 100);
-chorus.setDrywet(0.4);
+modDelay chorus(1, 1, 2);
+// chorus.setDrywet(1);
 
   do {
     jack.readSamples(inbuffer,chunksize);
       for(unsigned int x=0; x<chunksize; x++)
       {
       
-      float input = inbuffer[x];
-      chorus.applyDryWet(input,outbuffer[2*x]);
+      outbuffer[2*x] = chorus.applyEffect(inbuffer[x]);
       // effect->applyDryWet(input,outbuffer[2*x+1]);
       }
 

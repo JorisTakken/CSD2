@@ -64,6 +64,8 @@
         "vector": "cpp",
         "deque": "cpp",
         "queue": "cpp",
-        "random": "cpp"
+        "random": "cpp",
+        "*.tcc": "cpp",
+        "compare": "cpp"
     }
 }

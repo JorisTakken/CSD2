@@ -6,6 +6,7 @@ Delay::Delay(int size, int delayTime, float feedback) : Effect(samplerate),
     
     numSamplesDelay = msToSamps(delayTime);
     this->readPoint = size - numSamplesDelay;
+
     std::cout << numSamplesDelay << "delaySamples" << std::endl;
 
     while (numSamplesDelay > size) {
@@ -26,13 +27,30 @@ Delay::~Delay(){
     buffer = nullptr;
 }
 
-void Delay::processEffect(float &input, float &output){
-    buffer[writePoint++] = input + (output * feedback);
+// void Delay::processEffect(float &input, float &output){
+//     buffer[writePoint++] = input + (output * feedback);
+//     writePoint = wrap(writePoint);
+    
+//     output = buffer[readPoint++];
+//     readPoint = wrap(readPoint);
+// }
+
+void Delay::setDelaytime(int newDelayTime){
+    readPoint = size - msToSamps(newDelayTime);
+}
+
+
+float Delay::genNextSample(float inputSample){
+    buffer[writePoint++] = inputSample + (outputSample * feedback);
     writePoint = wrap(writePoint);
     
-    output = buffer[readPoint++];
+    outputSample = buffer[readPoint++];
     readPoint = wrap(readPoint);
+    return outputSample;
 }
+
+
+
 
 float Delay::getDistance(){   
     if(writePoint < readPoint) {
