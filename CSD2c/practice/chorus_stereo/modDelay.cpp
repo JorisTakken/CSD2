@@ -13,24 +13,23 @@ modDelay::~modDelay(){
 }
 
 void modDelay::applyEffect(float& input, float& output) {
+    // writeBuffer(input);    
+
     buffer[writePoint++] = input;
     writePoint = wrap(writePoint);
-    
+
+
     float modSig = (1 + oscillator->genNextSample()) * 0.5;   
-    float readPointFloat = (modSig * delayTimeSamps) * modDepth;
+    float readPointFloat = (modSig + delayTimeSamps) * modDepth;
     int readPointInt = (int)readPointFloat;
     readNext = readPoint + 1;
 
-    setDelaytime(writePoint - readPointInt);
+    setDelaytime(writePoint - readPointInt);    
 
-
+    output = map(readPointFloat - readPointInt,0,1,buffer[readPoint],buffer[readNext]);
     readNext = wrap(readNext);
     readPoint = wrap(readPoint);  
 
-    output = map(readPointFloat - readPointInt,0,1,buffer[readPoint],buffer[readNext]);
-    
-    
-    // readPoint = wrap(readPoint);
 
 }  
 

@@ -10,6 +10,7 @@ class Delay : public Effect{
 
 
         void setDelaytime(float newDelaytime);
+        // void writeBuffer(float inputSamp);
 
         float map(float input, int x1, int x2 , float min, float max);
 
