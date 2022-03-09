@@ -20,4 +20,6 @@ class modDelay : public Delay{
         int size;
         int readNext;
 
+        int baseDelay;
+
 };

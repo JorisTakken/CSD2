@@ -16,15 +16,22 @@ void modDelay::applyEffect(float& input, float& output) {
     buffer[writePoint++] = input;
     writePoint = wrap(writePoint);
     
-    float modSig = (1 + oscillator->genNextSample());   
-    float modulatedSamps = modSig * delayTimeSamps;
-    float readPointFloat = writePoint - modulatedSamps;
-    // float readPointFloat = ;
+    float modSig = (1 + oscillator->genNextSample()) * 0.5;   
+    float readPointFloat = (modSig * delayTimeSamps) * modDepth;
+    int readPointInt = (int)readPointFloat;
+    readNext = readPoint + 1;
 
-    setDelaytime(readPointFloat);
-    readPoint = wrap(readPoint);
+    setDelaytime(writePoint - readPointInt);
 
-    output = map(0.5,0,1,buffer[readPoint],buffer[readNext]);
+
+    readNext = wrap(readNext);
+    readPoint = wrap(readPoint);  
+
+    output = map(readPointFloat - readPointInt,0,1,buffer[readPoint],buffer[readNext]);
+    
+    
+    // readPoint = wrap(readPoint);
+
 }  
 
 int modDelay::msToSamps(float miliseconds){

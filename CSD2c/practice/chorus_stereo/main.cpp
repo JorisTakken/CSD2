@@ -62,12 +62,12 @@ float *inbuffer = new float[chunksize];
 float *outbuffer = new float[chunksize*2];
 
 Sine sine(50,44100);
-modDelay ModDelayR(0.2, 1, 20, samplerate);
+modDelay ModDelayR(0.1, 1, 40, samplerate);
 modDelay ModDelayL(0.5, 1, 50, samplerate);
 
 
-ModDelayR.setDrywet(0.5);
-ModDelayL.setDrywet(0.5);
+ModDelayR.setDrywet(1);
+ModDelayL.setDrywet(1);
 
   do {
     jack.readSamples(inbuffer,chunksize);
