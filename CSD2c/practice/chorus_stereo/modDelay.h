@@ -18,5 +18,6 @@ class modDelay : public Delay{
         int delayTimeSamps;
         float modDepth;
         int size;
+        int readNext;
 
 };

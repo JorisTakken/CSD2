@@ -41,6 +41,7 @@
 
 #include "delay.h"
 #include "modDelay.h"
+#include "sine.h"
 
 #define WRITE_TO_FILE 0
 #define WRITE_NUM_SAMPLES 44100
@@ -60,22 +61,28 @@ static void filter(){
 float *inbuffer = new float[chunksize];
 float *outbuffer = new float[chunksize*2];
 
-modDelay ModDelay(0.2, 1, 50, samplerate);
-ModDelay.setDrywet(0.5);
+Sine sine(50,44100);
+modDelay ModDelayR(0.2, 1, 20, samplerate);
+modDelay ModDelayL(0.5, 1, 50, samplerate);
+
+
+ModDelayR.setDrywet(0.5);
+ModDelayL.setDrywet(0.5);
+
   do {
     jack.readSamples(inbuffer,chunksize);
       for(unsigned int x=0; x<chunksize; x++)
       {
-      // ModDelay.setDelaytime((1 + mod.genNextSample()) * 1000 * 0.5);
-      ModDelay.applyDryWet(inbuffer[x],outbuffer[2*x]);
+        // float in = inbuffer[x];
+
+
+      ModDelayL.applyDryWet(inbuffer[x],outbuffer[2*x+1]);
+      ModDelayR.applyDryWet(inbuffer[x],outbuffer[2*x]);
       }
 
     jack.writeSamples(outbuffer,chunksize*2);
     
   }while(running);
-    
-    
-
 } // filter()
 
 
@@ -83,7 +90,7 @@ ModDelay.setDrywet(0.5);
 int main(int argc,char **argv){
 char command='@';
   jack.setNumberOfInputChannels(1);
-  // jack.setNumberOfOutputChannels(2);
+  jack.setNumberOfOutputChannels(2);
   jack.init(argv[0]); // use program name as JACK client name
   jack.autoConnect();
   samplerate=jack.getSamplerate();

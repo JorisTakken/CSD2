@@ -1,6 +1,6 @@
 #include "modDelay.h"
  
-modDelay::modDelay(float chorusRate, float modDepth, int baseDelay, int samplerate) : Delay(size, numSamplesDelay, feedback),
+modDelay::modDelay(float chorusRate, float modDepth, int baseDelay, int samplerate) : Delay(44100, 0, 0),
     modDepth(modDepth), size(samplerate){
     int delayTimeSamps = msToSamps(baseDelay);
     this->delayTimeSamps = delayTimeSamps;
@@ -15,12 +15,16 @@ modDelay::~modDelay(){
 void modDelay::applyEffect(float& input, float& output) {
     buffer[writePoint++] = input;
     writePoint = wrap(writePoint);
+    
+    float modSig = (1 + oscillator->genNextSample());   
+    float modulatedSamps = modSig * delayTimeSamps;
+    float readPointFloat = writePoint - modulatedSamps;
+    // float readPointFloat = ;
 
-    setDelaytime(0.5 * ( modDepth * ((1 + oscillator->genNextSample()) * delayTimeSamps) ) );
-    int readNext = readPoint + 1;
-    output = map(input,0,1,buffer[readPoint],buffer[readNext]);
+    setDelaytime(readPointFloat);
     readPoint = wrap(readPoint);
-    // return output;
+
+    output = map(0.5,0,1,buffer[readPoint],buffer[readNext]);
 }  
 
 int modDelay::msToSamps(float miliseconds){

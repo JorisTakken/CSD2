@@ -9,7 +9,7 @@ class Delay : public Effect{
 
 
 
-        float setDelaytime(float newDelaytime);
+        void setDelaytime(float newDelaytime);
 
         float map(float input, int x1, int x2 , float min, float max);
 

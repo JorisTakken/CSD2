@@ -30,7 +30,7 @@ void Delay::applyEffect(float& input, float& output){
     readPoint = wrap(readPoint);
 }
 
-float Delay::setDelaytime(float newDelaytime){
+void Delay::setDelaytime(float newDelaytime){
     readPoint = writePoint - (int)newDelaytime;
 }       
 

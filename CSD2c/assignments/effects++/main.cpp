@@ -77,13 +77,18 @@ static void filter(){
 float *inbuffer = new float[chunksize];
 float *outbuffer = new float[chunksize*2];
 
-// Effect* effect = new Waveshaper(BUFFERSIZE);
-// ((Waveshaper*)effect)->genWaveshape(10.0);
-// ((Waveshaper*)effect)->plot_waveshaper();
+Effect* effect = new Waveshaper(BUFFERSIZE);
+((Waveshaper*)effect)->genWaveshape(10.0);
+((Waveshaper*)effect)->plot_waveshaper();
 
 // Effect* effect = new Tremolo(Tremolo::Waveformtype::sine,5,1);
-Effect* effect = new Delay(44100,22050,0.5);
+// Effect* effectR = new Delay(44100,22050,0.5);
+// Effect* effectL = new Delay(44100,10000,0.5);
+
+// effectL->setDrywet(1);
+// effectR->setDrywet(1);
 effect->setDrywet(1);
+
 
 // for(int i = 0; i < BUFFERSIZE; i++){
 //   std::thread thread_1(job_1);
@@ -101,7 +106,7 @@ effect->setDrywet(1);
       
       float input = inbuffer[x];
       effect->applyDryWet(input,outbuffer[2*x]);
-      // effect->applyDryWet(input,outbuffer[2*x+1]);
+      effect->applyDryWet(input,outbuffer[2*x+1]);
       }
 
     jack.writeSamples(outbuffer,chunksize*2);
