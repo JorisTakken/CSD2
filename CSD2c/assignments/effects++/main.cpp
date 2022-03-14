@@ -1,35 +1,3 @@
-/**********************************************************************
-*          Copyright (c) 2022, Hogeschool voor de Kunsten Utrecht
-*                      Hilversum, the Netherlands
-*                          All rights reserved
-***********************************************************************
-*  This program is free software: you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation, either version 3 of the License, or
-*  (at your option) any later version.
-*
-*  This program is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  You should have received a copy of the GNU General Public License
-*  along with this program.
-*  If not, see <http://www.gnu.org/licenses/>.
-***********************************************************************
-*
-*  File name     : panning.cpp
-*  System name   : jack_module
-*
-*  Description   : example of stereo panning where a mono input signal is
-*                    amplitude-panned between left and right outputs
-*
-*
-*  Author        : Marc_G
-*  E-mail        : marc.groenewegen@hku.nl
-*
-**********************************************************************/
-
 #include <iostream>
 #include <string>
 #include <math.h>
@@ -77,8 +45,8 @@ static void filter(){
   float *inbuffer = new float[chunksize];
   float *outbuffer = new float[chunksize*2];
 
-  Effect* effectL = new Chorus(1,1,1000,0,samplerate);
-  Effect* effectR = new Chorus(20,1,100,0,samplerate);
+  Effect* effectL = new Chorus(1,1,10,0,samplerate);
+  Effect* effectR = new Chorus(0.5,1,150,0,samplerate);
 
   // ((Waveshaper*)effectL)->genWaveshape(10.0);
   // ((Waveshaper*)effectR)->plot_waveshaper();

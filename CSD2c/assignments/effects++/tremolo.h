@@ -10,10 +10,10 @@ class Tremolo : public Effect{
         Tremolo(Waveformtype waveform, float modFreq, float modDepht);
         ~Tremolo() override;
 
-        void processEffect(float &input, float &output) override;
         void setModFreq(float freq);
         void setModDepht(float modDepht);
  
-    private: 
+    protected: 
+        void processEffect(float &input, float &output) override;
         float modDepht;
 };

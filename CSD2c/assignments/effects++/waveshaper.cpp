@@ -66,11 +66,6 @@ void Waveshaper::processEffect(float &input, float &output){
     output = (indexDecimal,0,1, wavetableBuffer[i], wavetableBuffer[i + 1]);
 }
 
-float Waveshaper::map(float input, int x1, int x2 , float min, float max){
-    // STARTING AT A X VALUE
-    float value = (min * (x2 - input) + max * (input - x1)) / (x2 - x1);    
-    return value;
-}
 
 void Waveshaper::plot_waveshaper(){
     BufferDebugger::writeToFile(wavetableBuffer, buffersize, "output.csv");
