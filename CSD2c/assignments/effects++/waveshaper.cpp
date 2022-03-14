@@ -63,7 +63,6 @@ void Waveshaper::processEffect(float &input, float &output){
     float index = (input + 1) * (buffersize/2);
     int i = (int) index;
     float indexDecimal = index - float(i);
-    // ;
     output = (indexDecimal,0,1, wavetableBuffer[i], wavetableBuffer[i + 1]);
 }
 

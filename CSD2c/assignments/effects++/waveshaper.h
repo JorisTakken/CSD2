@@ -22,7 +22,7 @@ class Waveshaper : public Effect{
 
         void genWaveshape(float sharpness);
         void genWaveshapeOscillator(WaveChoise wave, float freq);   
-        void genWaveshapeNoise(float noiseVal,int i );
+        void genWaveshapeNoise(float noiseVal,int i);
 
         void processEffect(float &input, float &output) override;
 

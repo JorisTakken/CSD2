@@ -1,30 +1,28 @@
-#pragma once 
-#include "effect.h"
+#pragma once
 #include <iostream>
+#include "circBuffer.h"
+#include "sine.h"
+#include "effect.h"
 
 class Chorus : public Effect{
-    public:
-        Chorus(int size,int samplesDelay,float chorusRate);
-        ~Chorus() override;
+  public:
+    Chorus(float modFreq, float modDepth, int delayMS,float feedback, float samplerate);
+    ~Chorus();
 
-        void processEffect(float &input, float &output) override;
+    void processEffect(float &input, float &output) override;
+    void setDelayMS(float delayMilsec);
 
-    protected: 
-        float* chorusBuffer;
+  protected:
+    float map(float input, int x1, int x2 , float min, float max);
 
-        int size = samplerate;
-        
-        float chorusRate;
-        int samplesDelay;
-
-        int writePoint;
-        int readPoint;
-
-        
-    private:
-        inline float wrap(int point);
-        float inRange(float input, int x1, int x2 , float min, float max);
-
+    int size;
+    int delaySamps;
+    float modulation;
+    float feedback;
+    int delayMS;
+    float modDepth;
+    CircBuffer* circBuffer;
+    Oscillator* oscillator;
+  private:
 
 };
-

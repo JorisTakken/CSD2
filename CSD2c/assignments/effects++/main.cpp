@@ -42,76 +42,63 @@
 #include "waveshaper.h"
 #include "tremolo.h"
 #include "chorus.h"
+// #include "circBuffer.h"
+
 #include "delay.h"
 
 #define WRITE_TO_FILE 0
 #define WRITE_NUM_SAMPLES 44100
 #define SAMPLERATE 44100 
 
-
-unsigned long chunksize=256;
-
-JackModule jack;
-unsigned long samplerate=44100; // default
-
-bool running=true;
-
+// functions to make random waveshaper
+// =========================================
 #define BUFFERSIZE 1000
-
 float totaal;
 int number_ints = 1000; //3000 - -3000
-
 void job_1(){
     for (int i = 0; i< number_ints; i++){
         totaal++;
     }
 }
-
 void job_2(){
     for (int i = 0; i< number_ints; i++){
         totaal--;
     }
 }
+// =========================================
+
+unsigned long chunksize=256;
+JackModule jack;
+unsigned long samplerate=44100; // default
+
+bool running=true;
 
 static void filter(){
-float *inbuffer = new float[chunksize];
-float *outbuffer = new float[chunksize*2];
+  float *inbuffer = new float[chunksize];
+  float *outbuffer = new float[chunksize*2];
 
-Effect* effect = new Waveshaper(BUFFERSIZE);
-((Waveshaper*)effect)->genWaveshape(10.0);
-((Waveshaper*)effect)->plot_waveshaper();
+  Effect* effectL = new Chorus(1,1,1000,0,samplerate);
+  Effect* effectR = new Chorus(20,1,100,0,samplerate);
 
-// Effect* effect = new Tremolo(Tremolo::Waveformtype::sine,5,1);
-// Effect* effectR = new Delay(44100,22050,0.5);
-// Effect* effectL = new Delay(44100,10000,0.5);
+  // ((Waveshaper*)effectL)->genWaveshape(10.0);
+  // ((Waveshaper*)effectR)->plot_waveshaper();
+  effectL->setDrywet(0.8);
+  effectR->setDrywet(0.8);
+  
 
-// effectL->setDrywet(1);
-// effectR->setDrywet(1);
-effect->setDrywet(1);
+      do {
+        jack.readSamples(inbuffer,chunksize);
+          for(unsigned int x=0; x<chunksize; x++)
+          {
+          
+          float input = inbuffer[x];
+          effectR->applyDryWet(input,outbuffer[2*x]);
+          effectL->applyDryWet(input,outbuffer[2*x+1]);
+          }
 
-
-// for(int i = 0; i < BUFFERSIZE; i++){
-//   std::thread thread_1(job_1);
-//   std::thread thread_2(job_2);
-
-//   thread_1.join();
-//   thread_2.join();
-//   ((Waveshaper*)effect_waveshaper)->genWaveshapeNoise(totaal,i);
-// }
-
-  do {
-    jack.readSamples(inbuffer,chunksize);
-      for(unsigned int x=0; x<chunksize; x++)
-      {
-      
-      float input = inbuffer[x];
-      effect->applyDryWet(input,outbuffer[2*x]);
-      effect->applyDryWet(input,outbuffer[2*x+1]);
-      }
-
-    jack.writeSamples(outbuffer,chunksize*2);
-    
-  }while(running);
+        jack.writeSamples(outbuffer,chunksize*2);
+        
+      }while(running);
     
     
 

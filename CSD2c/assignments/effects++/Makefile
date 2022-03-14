@@ -2,7 +2,7 @@ CXX= g++
 CXXFLAGS = -I/usr/local/include -Wall -std=c++1z
 LDFLAGS=-ljack
 # the cpp files from the current project to include
-SRC_PROJECT = waveshaper.cpp main.cpp delay.cpp chorus.cpp tremolo.cpp effect.cpp
+SRC_PROJECT = waveshaper.cpp main.cpp delay.cpp chorus.cpp tremolo.cpp effect.cpp circBuffer.cpp
 # the directory to the folder with the shared modules
 SHAREDCODE_PATH = ../../../sharedCode_stereo/
 # the modules to include
