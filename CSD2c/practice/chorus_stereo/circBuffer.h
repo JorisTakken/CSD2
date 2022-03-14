@@ -9,11 +9,12 @@ class CircBuffer{
 		void setDelaySamps(float numSamplesDelay);
 		void write(float sample);
 		float read();
+		float readNext();
 
 		
 
 	private:
-		int warp(int head);
+		int wrap(int head);
 		unsigned int readIndex;
 		unsigned int writeIndex;
 		unsigned int size;

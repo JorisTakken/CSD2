@@ -15,25 +15,32 @@ CircBuffer::~CircBuffer(){
 void CircBuffer::setDelaySamps(float numSamplesDelay){
   // std::cout << "CircularBuffer - setReadIndex - numSamplesDelay = " << numSamplesDelay << std::endl;
   readIndex = writeIndex - numSamplesDelay + size;
-  readIndex = warp(readIndex);
-  std::cout << "CircularBuffer - setReadIndex - readIndex = " << readIndex << std::endl;
+  readIndex = wrap(readIndex);
+  // std::cout << "CircularBuffer - setReadIndex - readIndex = " << readIndex << std::endl;
   // std::cout << "CircularBuffer - setReadIndex - writeIndex = " << writeIndex << std::endl;
   // readIndex = writeIndex - numSamplesDelay
 }
 
 void CircBuffer::write(float sample){
   buffer[writeIndex++] = sample;
-  writeIndex = warp(writeIndex);
+  writeIndex = wrap(writeIndex);
 }
 
 float CircBuffer::read(){
   float sample = buffer[readIndex++];
-  readIndex = warp(readIndex);
+  readIndex = wrap(readIndex);
   return sample;
-
 }
 
-int CircBuffer::warp(int head){
+float CircBuffer::readNext(){
+  int readNext = readIndex + 1;
+  float sample = buffer[readNext++];
+  readIndex = wrap(readIndex);
+  return sample;
+}
+
+int CircBuffer::wrap(int head){
   if(head>=size) head -=size;
   return head;
 }
+

@@ -13,6 +13,8 @@ class Chorus : public Effect{
     void setDelayMS(float delayMilsec);
 
   protected:
+    float map(float input, int x1, int x2 , float min, float max);
+
     int size;
     int delaySamps;
     float modulation;

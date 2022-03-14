@@ -28,8 +28,8 @@ float *inbuffer = new float[chunksize];
 float *outbuffer = new float[chunksize*2];
 
     // Sine sine(1,samplerate);
-  //  float modFreq, float modDepth, int delayMS, float feedback, float samplerate
-    Chorus chorusL(0.5,1,40,0,samplerate); 
+    //  float modFreq, float modDepth, int delayMS, float feedback, float samplerate
+    Chorus chorusL(0.5,1,100,0,samplerate); 
     Chorus chorusR(0.25,1,20,0,samplerate); 
     chorusL.setDrywet(1);
     chorusR.setDrywet(1);
