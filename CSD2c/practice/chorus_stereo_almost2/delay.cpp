@@ -1,6 +1,5 @@
 #include "delay.h"
 
-
 Delay::Delay(int size, int numSamplesDelay, float feedback) : Effect(),
     size(size), numSamplesDelay(numSamplesDelay),
     writePoint(0), feedback(feedback){ 
@@ -23,16 +22,16 @@ Delay::~Delay(){
 }
 
 void Delay::applyEffect(float& input, float& output){
-    buffer[writePoint++] = input;
-    writePoint = wrap(writePoint);
+    writeBuffer(input);
 
     output = buffer[readPoint++];
     readPoint = wrap(readPoint);
 }
 
-// void Delay::writeBuffer(float inputSamp){
-    
-// }
+void Delay::writeBuffer(float inputSamp){
+    buffer[writePoint++] = inputSamp;
+    writePoint = wrap(writePoint);
+}
 
 void Delay::setDelaytime(float newDelaytime){
     readPoint = (int) newDelaytime;
