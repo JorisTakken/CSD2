@@ -7,10 +7,11 @@ class Delay : public Effect{
         Delay(int size, int delayTime, float feedback);
         ~Delay() override;
 
-        void processEffect(float &input, float &output) override;
         float getDistance();
 
     protected: 
+        void processEffect(float &input, float &output) override;
+
         int size;
         int numSamplesDelay;
         float feedback;

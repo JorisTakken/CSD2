@@ -8,7 +8,6 @@
 #include "oscillator.h"
 #include "effect.h"
 
-//random function
 #include <cstdlib>
 #include <ctime>
 
@@ -24,14 +23,11 @@ class Waveshaper : public Effect{
         void genWaveshapeOscillator(WaveChoise wave, float freq);   
         void genWaveshapeNoise(float noiseVal,int i);
 
-        void processEffect(float &input, float &output) override;
-
-        void plot_waveshaper();
-
-
-        float map(float input, int x1, int x2 , float min, float max);
+                void plot_waveshaper();
 
     protected:
+        void processEffect(float &input, float &output) override;
+
         int buffersize;
         float* wavetableBuffer;
 };

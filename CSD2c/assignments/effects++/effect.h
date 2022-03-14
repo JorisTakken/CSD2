@@ -10,18 +10,19 @@ class Effect{
         Effect(unsigned int samplerate);
         virtual ~Effect();
 
-
+        // this is the function we will call in the Main!
+        void applyDryWet(float &input, float &output);
         void setDrywet(float newDryWet);
         float getDrywet();
 
-        void applyDryWet(float &input, float &output);
-        int msToSamps(float miliseconds);
         
-
     protected: 
-        int samplerate = 44100;
         virtual void processEffect(float &input, float &output) = 0;
+        float map(float input, int x1, int x2 , float min, float max);
+        int msToSamps(float miliseconds);
+
         Oscillator* oscillator;
+        int samplerate = 44100;
     
     private:
         float dryWet = 1;
