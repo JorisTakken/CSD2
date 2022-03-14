@@ -5,12 +5,11 @@ Effect::Effect(unsigned int samplerate){
 
 Effect::~Effect(){
 }
-    // pointer to jack audio's in and output buffer
+
 void Effect::applyDryWet(float &input, float &output){
     // dry wet
-    processEffect(input,output);
+    applyEffect(input,output);
     output = output * (dryWet) + input * (1.0 - dryWet);
-
 }
 
 void Effect::setDrywet(float newDryWet){  

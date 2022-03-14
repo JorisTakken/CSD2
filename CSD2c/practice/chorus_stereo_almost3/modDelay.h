@@ -1,7 +1,8 @@
-#include "delay.h"
+#include "circBuffer.h"
+#include "effect.h"
 #include "sine.h"
 
-class modDelay : public Delay{
+class modDelay : public Effect{
     public:
         modDelay(float chorusRate, float modDepth, int delayTimeMS, int samplerate);
         ~modDelay();
@@ -13,10 +14,13 @@ class modDelay : public Delay{
         void applyEffect(float& input, float& output) override;
 
         Oscillator* oscillator;
-        Delay* delay;
+        CircBuffer* circBuffer;
 
         int delayTimeSamps;
         float modDepth;
         int size;
+        int readNext;
+
+        int baseDelay;
 
 };

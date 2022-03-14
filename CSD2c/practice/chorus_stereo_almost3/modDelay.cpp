@@ -1,27 +1,45 @@
 #include "modDelay.h"
  
-modDelay::modDelay(float chorusRate, float modDepth, int baseDelay, int samplerate) : Delay(size, numSamplesDelay, feedback),
+modDelay::modDelay(float chorusRate, float modDepth, int baseDelay, int samplerate) : Effect(44100),
     modDepth(modDepth), size(samplerate){
     int delayTimeSamps = msToSamps(baseDelay);
     this->delayTimeSamps = delayTimeSamps;
 
     oscillator = new Sine(chorusRate,samplerate);
-    delay = new Delay(samplerate, 0, 0);
+    circBuffer = new CircBuffer(samplerate,0);
 }
 
 modDelay::~modDelay(){
+    delete oscillator;
+    oscillator = nullptr;
+
+    delete circBuffer;
+    circBuffer = nullptr;
 }
 
 void modDelay::applyEffect(float& input, float& output) {
-    buffer[writePoint++] = input;
-    writePoint = wrap(writePoint);
+    float modSig = input + (oscillator->genNextSample() * 0.5);   
 
-    setDelaytime(0.5 * ( modDepth * ((1 + oscillator->genNextSample()) * delayTimeSamps) ) );
-    int readNext = readPoint + 1;
-    output = map(input,0,1,buffer[readPoint],buffer[readNext]);
-    readPoint = wrap(readPoint);
-    // return output;
+    circBuffer->write(modSig);
+    // circBuffer->setDistanceRW(modSig);
+    output = circBuffer->read();
+    circBuffer->tick();
+
+    // float readPointFloat = (modSig * delayTimeSamps) * modDepth;
+    // int readPointInt = (int)readPointFloat;
+    // readNext = readNext + 1;
+
+    
+    // setDelaytime(writePoint - readPointInt);    
+
+    // // std::cout << writePoint - readPointInt << std::endl;
+
+    // output = map(readPointFloat - readPointInt,0,1,circBuffer.read(readPoint),circBuffer.read(readNext));
+    // readNext = wrap(readNext);
+    // readPoint = wrap(readPoint); 
 }  
+
+
 
 int modDelay::msToSamps(float miliseconds){
     return int((miliseconds * (44100 / 1000.0)) + 0.5);

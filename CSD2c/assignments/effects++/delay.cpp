@@ -5,6 +5,8 @@ Delay::Delay(int size, int numSamplesDelay, float feedback) : Effect(samplerate)
     size(size), numSamplesDelay(numSamplesDelay),
     writePoint(0), readPoint(size - numSamplesDelay), feedback(feedback){ 
     
+    // numSamplesDelay = msToSamps(numSamplesDelay);
+
     while (numSamplesDelay > size) {
         std::cout << "MAG NIET, kies andere sampledelay!" << std::endl;
         std::cout << "kies maar : " << std::endl;

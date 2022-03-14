@@ -39,15 +39,13 @@
 #include "keypress.h"
 #include "bufferDebugger.h"
 
-#include "waveshaper.h"
-#include "tremolo.h"
-#include "chorus.h"
 #include "delay.h"
+#include "modDelay.h"
+#include "sine.h"
 
 #define WRITE_TO_FILE 0
 #define WRITE_NUM_SAMPLES 44100
 #define SAMPLERATE 44100 
-
 
 unsigned long chunksize=256;
 
@@ -58,63 +56,32 @@ bool running=true;
 
 #define BUFFERSIZE 1000
 
-float totaal;
-int number_ints = 1000; //3000 - -3000
-
-void job_1(){
-    for (int i = 0; i< number_ints; i++){
-        totaal++;
-    }
-}
-
-void job_2(){
-    for (int i = 0; i< number_ints; i++){
-        totaal--;
-    }
-}
 
 static void filter(){
 float *inbuffer = new float[chunksize];
 float *outbuffer = new float[chunksize*2];
 
-Effect* effect = new Waveshaper(BUFFERSIZE);
-((Waveshaper*)effect)->genWaveshape(10.0);
-((Waveshaper*)effect)->plot_waveshaper();
-
-// Effect* effect = new Tremolo(Tremolo::Waveformtype::sine,5,1);
-// Effect* effectR = new Delay(44100,22050,0.5);
-// Effect* effectL = new Delay(44100,10000,0.5);
-
-// effectL->setDrywet(1);
-// effectR->setDrywet(1);
-effect->setDrywet(1);
+Sine sine(50,44100);
+modDelay ModDelayR(1, 1, 40, samplerate);
+modDelay ModDelayL(0.5, 1, 20, samplerate);
 
 
-// for(int i = 0; i < BUFFERSIZE; i++){
-//   std::thread thread_1(job_1);
-//   std::thread thread_2(job_2);
-
-//   thread_1.join();
-//   thread_2.join();
-//   ((Waveshaper*)effect_waveshaper)->genWaveshapeNoise(totaal,i);
-// }
+ModDelayR.setDrywet(0.5);
+ModDelayL.setDrywet(0.5);
 
   do {
     jack.readSamples(inbuffer,chunksize);
       for(unsigned int x=0; x<chunksize; x++)
       {
-      
-      float input = inbuffer[x];
-      effect->applyDryWet(input,outbuffer[2*x]);
-      effect->applyDryWet(input,outbuffer[2*x+1]);
+        // float in = inbuffer[x];
+
+      ModDelayR.applyDryWet(inbuffer[x],outbuffer[2*x]);
+      ModDelayL.applyDryWet(inbuffer[x],outbuffer[2*x+1]);
       }
 
     jack.writeSamples(outbuffer,chunksize*2);
     
   }while(running);
-    
-    
-
 } // filter()
 
 
@@ -122,7 +89,7 @@ effect->setDrywet(1);
 int main(int argc,char **argv){
 char command='@';
   jack.setNumberOfInputChannels(1);
-  // jack.setNumberOfOutputChannels(2);
+  jack.setNumberOfOutputChannels(2);
   jack.init(argv[0]); // use program name as JACK client name
   jack.autoConnect();
   samplerate=jack.getSamplerate();

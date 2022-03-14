@@ -1,9 +1,8 @@
 #include "delay.h"
 
-
 Delay::Delay(int size, int numSamplesDelay, float feedback) : Effect(),
     size(size), numSamplesDelay(numSamplesDelay),
-    writePoint(0), readPoint(0), feedback(feedback){ 
+    writePoint(0), feedback(feedback){ 
     while (numSamplesDelay > size) {
         std::cout << "MAG NIET, kies andere sampledelay!" << std::endl;
         std::cout << "kies maar : " << std::endl;
@@ -23,15 +22,19 @@ Delay::~Delay(){
 }
 
 void Delay::applyEffect(float& input, float& output){
-    buffer[writePoint++] = input;
-    writePoint = wrap(writePoint);
+    writeBuffer(input);
 
     output = buffer[readPoint++];
     readPoint = wrap(readPoint);
 }
 
-float Delay::setDelaytime(float newDelaytime){
-    readPoint = writePoint - (int)newDelaytime;
+void Delay::writeBuffer(float inputSamp){
+    buffer[writePoint++] = inputSamp;
+    writePoint = wrap(writePoint);
+}
+
+void Delay::setDelaytime(float newDelaytime){
+    readPoint = (int) newDelaytime;
 }       
 
 float Delay::map(float input, int x1, int x2 , float min, float max){

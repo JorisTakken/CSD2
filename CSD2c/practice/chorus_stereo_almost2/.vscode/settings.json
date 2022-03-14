@@ -1,7 +1,5 @@
 {
     "files.associations": {
-        "istream": "cpp",
-        "*.tcc": "cpp",
         "__bit_reference": "cpp",
         "__config": "cpp",
         "__debug": "cpp",
@@ -45,6 +43,7 @@
         "ios": "cpp",
         "iosfwd": "cpp",
         "iostream": "cpp",
+        "istream": "cpp",
         "iterator": "cpp",
         "limits": "cpp",
         "locale": "cpp",
@@ -72,6 +71,7 @@
         "unordered_map": "cpp",
         "utility": "cpp",
         "vector": "cpp",
+        "*.tcc": "cpp",
         "memory_resource": "cpp",
         "stop_token": "cpp"
     }

@@ -7,7 +7,7 @@
 
 class Effect{
     public: 
-        Effect(unsigned int samplerate);
+        Effect(unsigned int samplerate = 44100);
         virtual ~Effect();
 
 
@@ -19,10 +19,10 @@ class Effect{
         
 
     protected: 
-        int samplerate = 44100;
-        virtual void processEffect(float &input, float &output) = 0;
+        virtual void applyEffect(float& input, float& output) = 0;
         Oscillator* oscillator;
-    
+
+        int samplerate;
     private:
         float dryWet = 1;
 
