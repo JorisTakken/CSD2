@@ -13,7 +13,7 @@ int main(int argc,char **argv){
     JackModule jack;
     jack.init(argv[0]);
      
-    Delay delay(44100, 22050);
+    Delay delay(44100, 1);
     // dry = 0 
     // wet = 1 
     Sine sine(200,44100);

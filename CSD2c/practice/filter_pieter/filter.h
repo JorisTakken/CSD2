@@ -1,4 +1,6 @@
-
+#include "sine.h"
+#include "bufferDebugger.h"
+#include <iostream>
 class Filter{
     public:
         Filter();
@@ -11,4 +13,5 @@ class Filter{
     protected:
         float* buffer;
         float* writeBuf;
+        Sine* sine;
 };
