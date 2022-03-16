@@ -30,6 +30,3 @@ void Filter::processEffect(float& input, float &output){
 void Filter::setCutoff(float newCutoff){
     this->cutoff = newCutoff * 0.5;
 }
-
-
-

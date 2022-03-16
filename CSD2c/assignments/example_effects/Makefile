@@ -2,11 +2,11 @@ CXX= g++
 CXXFLAGS = -I/usr/local/include -Wall -std=c++1z
 LDFLAGS=-ljack
 # the cpp files from the current project to include
-SRC_PROJECT = waveshaper.cpp main.cpp delay.cpp chorus/chorus.cpp tremolo.cpp effect.cpp circBuffer.cpp filter.cpp
+SRC_PROJECT = waveshaper.cpp main.cpp delay.cpp chorus.cpp tremolo.cpp effect.cpp circBuffer.cpp filter.cpp
 # the directory to the folder with the shared modules
-SHAREDCODE_PATH = ../../../sharedCode_stereo/
+SHAREDCODE_PATH = ../../../CSD2c/
 # the modules to include
-MODULES = oscillators utilities 
+MODULES = sharedCode_stereo/oscillators sharedCode_stereo/utilities effects/chorus effects/filter effects/circBuffer effects/delay effects/tremolo effects/waveshaper effects/chorus effects/effect
 
 
 # append shared code path prefix to modules
