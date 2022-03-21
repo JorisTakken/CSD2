@@ -1,13 +1,13 @@
 #include "chorus.h"
 
 Chorus::Chorus(float modFreq, float modDepth, int delayMS, float feedback, float samplerate) : Effect(samplerate),
-                                                                              modDepth(modDepth),feedback(feedback),delayMS(delayMS){
-
+                                                                                                modDepth(modDepth),feedback(feedback),
+                                                                                                delayMS(delayMS)
+{
     int delaySamps = msToSamps(delayMS);
     this->delaySamps = delaySamps;
     circBuffer = new CircBuffer(samplerate,delaySamps+4000);
     oscillator = new Sine(modFreq,samplerate);
-
 }
 
 Chorus::~Chorus(){
@@ -25,7 +25,7 @@ void Chorus::processEffect(float &input, float &output){
     circBuffer->write(input + (output * feedback));
 
     float interpolation = circBuffer->read() - circBuffer->readNext();
-    // std::cout <<   circBuffer->read() - circBuffer->readNext() << std::endl;
+
     modulation = map(interpolation,0,1,circBuffer->read(),circBuffer->readNext());
     modulation *= modDepth;
     modulation += 1.0 - modDepth;

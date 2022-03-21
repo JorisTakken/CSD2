@@ -45,11 +45,19 @@ static void filter(){
   float *inbuffer = new float[chunksize];
   float *outbuffer = new float[chunksize*2];
 
-  Effect* effectL = new Filter(Filter::filterType::highpass, 1, 2);
-  Effect* effectR = new Filter(Filter::filterType::highpass, 1, 2);
+  // float modFreq, float modDepth, int delayMS, float feedback, float samplerate
+  Effect* effectL = new Chorus(1,1,100,0.0,samplerate);
+  Effect* effectR = new Chorus(1,1,50,0.0,samplerate);
+
+  // Effect* effectR = new Filter(Filter::filterType::highpass, 1, 2);
+  // Effect* effectL = new Filter(Filter::filterType::highpass, 1, 2);
 
   // ((Waveshaper*)effectL)->genWaveshape(10.0);
   // ((Waveshaper*)effectR)->plot_waveshaper();
+
+  chooseEffect(chorus);
+
+
   effectL->setDrywet(1);
   effectR->setDrywet(1);
   

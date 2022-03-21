@@ -1,7 +1,6 @@
 #include "filter.h"
 
-Filter::Filter(filterType type, float cutoff, float LFOrate) : Effect(samplerate)
-                                                {
+Filter::Filter(filterType type, float cutoff, float LFOrate) : Effect(samplerate){
     setCutoff(cutoff);
     oscillator = new Sine(LFOrate,samplerate);
     switch (type) {
@@ -14,7 +13,6 @@ Filter::Filter(filterType type, float cutoff, float LFOrate) : Effect(samplerate
             break;
         }
     } 
-    
 }
 
 Filter::~Filter(){
