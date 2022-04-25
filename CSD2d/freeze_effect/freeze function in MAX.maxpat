@@ -182,7 +182,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 1356.916726529598236, 163.392855584621429, 32.0, 22.0 ],
-					"presentation_linecount" : 2,
 					"text" : "0.91"
 				}
 
@@ -614,7 +613,7 @@
 					"numoutlets" : 2,
 					"outlettype" : [ "signal", "" ],
 					"parameter_enable" : 0,
-					"patching_rect" : [ 362.701150298118591, 378.620702862739563, 22.0, 140.0 ]
+					"patching_rect" : [ 358.701150298118591, 361.563207983970642, 22.0, 140.0 ]
 				}
 
 			}
@@ -647,7 +646,7 @@
 						"loopend" : [ 0.0, "ms" ],
 						"loopstart" : [ 0.0, "ms" ],
 						"mode" : "basic",
-						"originallength" : [ 0.0, "ticks" ],
+						"originallength" : [ 2730.97137845819816, "ticks" ],
 						"originaltempo" : 120.0,
 						"phase" : [ 0.0, "ticks" ],
 						"pitchcorrection" : 0,
