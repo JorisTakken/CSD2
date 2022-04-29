@@ -1,13 +1,13 @@
 #pragma once
 #include <iostream>
 
-class Circ{
+class Rec{
 	public:
-		Circ(int size, int numSamplesDelay);
-		~Circ();
+		Rec(int size, int numSamplesDelay);
+		~Rec();
 
 		void setDelaySamps(float numSamplesDelay);
-		void write(float sample);
+		void write(float sample, bool recordNow);
 		float read();
 
 	private:

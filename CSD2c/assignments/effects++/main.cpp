@@ -55,7 +55,7 @@ static void filter(){
   // ((Waveshaper*)effectL)->genWaveshape(10.0);
   // ((Waveshaper*)effectR)->plot_waveshaper();
 
-  chooseEffect(chorus);
+  // chooseEffect(chorus);
 
 
   effectL->setDrywet(1);

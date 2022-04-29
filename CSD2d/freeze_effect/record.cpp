@@ -1,34 +1,38 @@
-#include "circBuf.h"
+#include "record.h"
 
-Circ::Circ(int size, int numSamplesDelay) : readIndex(0), writeIndex(0){
+Rec::Rec(int size, int numSamplesDelay) : readIndex(0), writeIndex(0){
   this -> size = size;
   this -> numSamplesDelay = numSamplesDelay;
   buffer = new float [size];
   setDelaySamps(numSamplesDelay);
 }
 
-Circ::~Circ(){
+Rec::~Rec(){
   delete [] buffer;
   buffer = nullptr;
 }
 
-void Circ::setDelaySamps(float numSamplesDelay){
+void Rec::setDelaySamps(float numSamplesDelay){
   readIndex = writeIndex - numSamplesDelay + size;
   readIndex = wrap(readIndex);
 }
 
-void Circ::write(float sample){
-  buffer[writeIndex++] = sample;
-  writeIndex = wrap(writeIndex);
+void Rec::write(float sample, bool recordNow){
+  if (recordNow == true){
+    if (writeIndex <= size){
+    buffer[writeIndex++] = sample;
+  }
+  }
+ 
 }
 
-float Circ::read(){
+float Rec::read(){
   float sample = buffer[readIndex++];
   readIndex = wrap(readIndex);
   return sample;
 }
 
-int Circ::wrap(int head){
+int Rec::wrap(int head){
   if(head>=size) head -=size;
   return head;
 }

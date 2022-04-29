@@ -7,8 +7,10 @@
 #include "keypress.h"
 #include "bufferDebugger.h"
 
+#include "record.h"
 
-
+using namespace std;
+typedef unsigned int uint;
 
 // for audio
 unsigned long chunksize = 256;
@@ -16,6 +18,8 @@ JackModule jack;
 float samplerate = 44100;
 bool running = true;
 
+Rec record(44100,11025);
+bool recording = false;
 
 static void audio(){
   float inbuffer[chunksize];
@@ -24,38 +28,68 @@ static void audio(){
   do{
     jack.readSamples(inbuffer,chunksize);
     for(unsigned int x=0; x<chunksize; x++){
-      float input = inbuffer[x];
+      
+      
+      record.write(inbuffer[x],recording);
+      cout << record.read() << endl;
 
-      outbuffer[2*x+1] = input;
-      outbuffer[2*x] = input;
+      outbuffer[2*x] = record.read();
+      outbuffer[2*x+1] = record.read();
     }
 
     jack.writeSamples(outbuffer,chunksize*2);
-  } while(running);
+  } 
+  while(running);
 }
-
-
-
 
 int main(int argc, char **argv){
   char command='@';
   jack.init(argv[0]);
   jack.autoConnect();
-  jack.setNumberOfInputChannels(2);
+  jack.setNumberOfInputChannels(1);
   jack.setNumberOfOutputChannels(2);
 
-  std::thread audioThread(audio);
 
-  while(command != 'q')
+  thread filterThread(audio);
+
+  while (running)
   {
-    if(keypressed()) {
-      command = getchar();
+    switch (std::cin.get())
+    {
+      case 'q':
+        running = false;
+        jack.end();
+        break;
+
+      case 'd':
+        cout << "DDDDDDD" << endl;
+        recording = true;
+        break;
+
+      case 'w':
+        cout << "WWWWWWW" << endl;
+        break;
+
+
+      case 'b':
+        cout << "BBBBBBB" << endl;
+        break;
     }
-    usleep(100000);
   }
 
+
+
+
+  // while(command != 'q')
+  // {
+  //   if(keypressed()) {
+  //     command = getchar();
+  //   }
+  //   usleep(100000);
+  // }
+
   running=false;
-  audioThread.join();
+  filterThread.join();
 
   jack.end();
 }
