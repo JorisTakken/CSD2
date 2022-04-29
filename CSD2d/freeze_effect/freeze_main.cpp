@@ -8,6 +8,8 @@
 #include "bufferDebugger.h"
 
 #include "record.h"
+#include "freeze.h"
+
 
 using namespace std;
 typedef unsigned int uint;
@@ -21,6 +23,9 @@ bool running = true;
 Rec record(44100,11025);
 bool recording = false;
 
+Freeze freeze;
+
+
 static void audio(){
   float inbuffer[chunksize];
   float outbuffer[chunksize * 2];
@@ -30,13 +35,15 @@ static void audio(){
     for(unsigned int x=0; x<chunksize; x++){
       
       
-      record.write(inbuffer[x],recording);
-      cout << record.read() << endl;
+      // record.write(inbuffer[x],recording);
+      // cout << record.read() << endl;
+      // outbuffer[2*x] = record.read();
+      // outbuffer[2*x+1] = record.read();
 
-      outbuffer[2*x] = record.read();
-      outbuffer[2*x+1] = record.read();
+      freeze.processEffect(inbuffer[x],outbuffer[2*x]);
+      freeze.processEffect(inbuffer[x],outbuffer[2*x+1]);
     }
-
+    
     jack.writeSamples(outbuffer,chunksize*2);
   } 
   while(running);

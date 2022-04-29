@@ -21,9 +21,8 @@ void Rec::write(float sample, bool recordNow){
   if (recordNow == true){
     if (writeIndex <= size){
     buffer[writeIndex++] = sample;
+    } 
   }
-  }
- 
 }
 
 float Rec::read(){
