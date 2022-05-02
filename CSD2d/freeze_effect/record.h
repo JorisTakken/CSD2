@@ -9,6 +9,7 @@ class Rec{
 		void setDelaySamps(float numSamplesDelay);
 		void write(float sample, bool recordNow);
 		float read();
+		float linMap(float input, float x1, float x2, float min, float max);
 
 	private:
 		int wrap(int head);

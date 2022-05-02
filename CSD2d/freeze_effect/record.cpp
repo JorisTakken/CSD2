@@ -21,18 +21,31 @@ void Rec::write(float sample, bool recordNow){
   if (recordNow == true){
     if (writeIndex <= size){
     buffer[writeIndex++] = sample;
-    } 
+    }else{
+      recordNow = false;
+    }
   }
 }
 
 float Rec::read(){
+  float envelope;
   float sample = buffer[readIndex++];
   readIndex = wrap(readIndex);
-  return sample;
+
+  // envelope
+  if (readIndex < size / 2){envelope = linMap(readIndex,0,size,0,1);} 
+  else {envelope = linMap(readIndex,0,size,1,0);}
+  return sample * envelope;
 }
 
 int Rec::wrap(int head){
   if(head>=size) head -=size;
   return head;
 }
+
+float Rec::linMap(float input, float x1, float x2, float min, float max){
+    float value = (min * (x2 - input) + max * (input - x1)) / (x2 - x1);
+    return value;
+}
+
 

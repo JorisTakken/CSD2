@@ -11,6 +11,9 @@ class Freeze{
 		
 	protected:
         // Delay(int size, int MSDelay, float feedback)
-		// Delay delay1(1000,73,0.9);
-		delay1 = new Delay(1000,73,0.9);
+		Delay* delay1(44100,1000,0.9);
+
+
+   		
+
 };
