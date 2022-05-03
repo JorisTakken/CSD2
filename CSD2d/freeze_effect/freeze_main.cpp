@@ -9,6 +9,8 @@
 
 #include "record.h"
 #include "freeze.h"
+#include "delay.h"
+
 
 using namespace std;
 typedef unsigned int uint;
@@ -22,26 +24,25 @@ bool running = true;
 Rec record(22100,500);
 bool recording = false;
 
-Freeze freeze;
-Freeze freeze1;
-
-
 static void audio(){
   float inbuffer[chunksize];
   float outbuffer[chunksize * 2];
 
+  Freeze freeze;
+  Freeze freeze1;
+
   do{
     jack.readSamples(inbuffer,chunksize);
     for(unsigned int x=0; x<chunksize; x++){
-      
+
       float input = inbuffer[x];
-      // record.write(inbuffer[x],recording);
+      record.write(inbuffer[x],recording);
       // cout << record.read() << endl;
       // outbuffer[2*x] = record.read();
       // outbuffer[2*x+1] = record.read();
 
-      freeze.processEffect(input,outbuffer[2*x]);
-      freeze1.processEffect(input,outbuffer[2*x+1]);
+      freeze.applyEffect(record.read(),outbuffer[2*x]);
+      freeze1.applyEffect(record.read(),outbuffer[2*x+1]);
     }
     
     jack.writeSamples(outbuffer,chunksize*2);

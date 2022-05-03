@@ -7,13 +7,22 @@ class Freeze{
 		Freeze();
 		~Freeze();
 
-        void processEffect(float &input, float &output);
+        void applyEffect(float &input, float &output);
 		
 	protected:
-        // Delay(int size, int MSDelay, float feedback)
-		Delay* delay1(44100,1000,0.9);
+			// delay1 = 73ms - 3219 samps
+			// delay2 = 100ms = 4410 samps
+			// delay3 = 121ms = 5336 ssamps
+		Effect* delay1 = new Delay(44100,3219,0.9);
+		Effect* delay2 = new Delay(44100,4410,0.9);
+		Effect* delay3 = new Delay(44100,5336,0.9);
+		Effect* delay4 = new Delay(44100,6736,0.9);
 
 
-   		
+		float passTrough1;
+		float passTrough2;
+
+
+
 
 };
