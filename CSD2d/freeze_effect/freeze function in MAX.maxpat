@@ -40,6 +40,18 @@
 		"assistshowspatchername" : 0,
 		"boxes" : [ 			{
 				"box" : 				{
+					"id" : "obj-7",
+					"linecount" : 3,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 669.0, 83.0, 304.0, 47.0 ],
+					"text" : "delay1 = 73ms - 3219 samps\ndelay2 = 100ms = 4410 samps\ndelay3 = 121ms = 5336 ssamps"
+				}
+
+			}
+, 			{
+				"box" : 				{
 					"id" : "obj-67",
 					"maxclass" : "toggle",
 					"numinlets" : 1,
