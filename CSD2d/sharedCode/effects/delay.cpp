@@ -1,20 +1,17 @@
 #include "delay.h"
 
 
-Delay::Delay(int size, int MSDelay, float feedback) : Effect(samplerate),
-    size(size), MSDelay(MSDelay),
-    writePoint(0), feedback(feedback){ 
-    
+Delay::Delay(int size, int numSamplesDelay, float feedback) : Effect(samplerate),
+                                                                size(size), numSamplesDelay(numSamplesDelay),
+                                                                writePoint(0), readPoint(size - numSamplesDelay), 
+                                                                feedback(feedback){ 
     while (numSamplesDelay > size) {
-        std::cout << "MAG NIET, kies andere sampledelay!" << std::endl;
+        std::cout << "MAG NIET, choose other delay!" << std::endl;
         std::cout << "kies maar : " << std::endl;
         int input;
         std::cin >> input;
         numSamplesDelay = input;
     }
-    this->numSamplesDelay = msToSamps(numSamplesDelay);
-    this->readPoint = (size - numSamplesDelay);
-    
     buffer = new float[size];
     for(int i = 0; i < size; i++) {
         buffer[i] = 0;
