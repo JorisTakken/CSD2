@@ -11,6 +11,8 @@
 #include "freeze.h"
 #include "delay.h"
 
+#include "osc.h"
+
 
 using namespace std;
 typedef unsigned int uint;
@@ -23,6 +25,24 @@ bool running = true;
 
 Rec record(22100,500);
 bool recording = false;
+
+
+// subclass OSC into a local class so we can provide our own callback
+class localOSC : public OSC{
+  int realcallback(const char *path,const char *types,lo_arg **argv,int argc){
+  string msgpath=path;
+    cout << "path: " << msgpath << endl;
+    if(!msgpath.compare("/tactile")){
+      int int1 = argv[0]->i;
+      int int2 = argv[1]->i;
+      cout << "Message: " <<
+        int1 << " " <<
+        int2 << " " << endl;
+    }
+    return 0;
+  } // realcallback()
+};
+
 
 static void audio(){
   float inbuffer[chunksize];
@@ -63,9 +83,16 @@ int main(int argc, char **argv){
   jack.autoConnect();
   jack.setNumberOfInputChannels(1);
   jack.setNumberOfOutputChannels(2);
-
-
   thread filterThread(audio);
+
+  int done = 0;
+  localOSC osc;
+  string serverport="7777";
+    osc.init(serverport);
+    osc.set_callback("/tactile","ii");
+    cout << "Listening on port " << serverport << endl;
+    osc.start();
+
 
   while (running)
   {
