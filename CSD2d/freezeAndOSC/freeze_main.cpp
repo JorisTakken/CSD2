@@ -1,3 +1,4 @@
+// THANK YOU MARC GROENEWEGEN FOR THE OSC SCRIPT I USED TO RECEIVE OSC
 #include <string>
 #include <iostream>
 #include <math.h>
@@ -31,16 +32,19 @@ bool recording = false;
 class localOSC : public OSC{
   int realcallback(const char *path,const char *types,lo_arg **argv,int argc){
   string msgpath=path;
-    cout << "path: " << msgpath << endl;
-    if(!msgpath.compare("/tactile")){
+    // cout << "path: " << msgpath << endl;
+    if(!msgpath.compare("/compass")){
       int int1 = argv[0]->i;
-      int int2 = argv[1]->i;
       cout << "Message: " <<
-        int1 << " " <<
-        int2 << " " << endl;
+        int1 << " " << endl;
     }
+    this->int1 = int1;
     return 0;
   } // realcallback()
+
+  int getValue(){
+    return int1;
+  }
 };
 
 
@@ -65,17 +69,16 @@ static void audio(){
       freeze1.applyEffect(freezer,freezerOutR);
       outbuffer[2*x] = (freezerOutL + inbuffer[x]) / 4;
       outbuffer[2*x+1] = (freezerOutR + inbuffer[x]) / 4;
-
-      // cout << inbuffer[x] << endl;
-
-      // outbuffer[2*x] = inbuffer[x];
-      // outbuffer[2*x+1] = inbuffer[x];
     }
-    
     jack.writeSamples(outbuffer,chunksize*2);
   } 
   while(running);
 }
+
+
+// static float OSCMessage(){
+ 
+// }
 
 int main(int argc, char **argv){
   // char command='@';
@@ -83,15 +86,19 @@ int main(int argc, char **argv){
   jack.autoConnect();
   jack.setNumberOfInputChannels(1);
   jack.setNumberOfOutputChannels(2);
-  thread filterThread(audio);
 
-  int done = 0;
+  thread filterThread(audio);
+  // thread OSCThread(OSCMessage);
+
   localOSC osc;
   string serverport="7777";
     osc.init(serverport);
-    osc.set_callback("/tactile","ii");
+    osc.set_callback("/compass","i");
     cout << "Listening on port " << serverport << endl;
     osc.start();
+
+    cout << osc.getValue() << endl;
+
 
 
   while (running)
@@ -118,6 +125,7 @@ int main(int argc, char **argv){
 
   running=false;
   filterThread.join();
+  // OSCThread.join();
 
   jack.end();
 }
