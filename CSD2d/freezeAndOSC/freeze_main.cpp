@@ -28,6 +28,7 @@ Rec record(22100,500);
 bool recording = false;
 
 
+  int val;
 // subclass OSC into a local class so we can provide our own callback
 class localOSC : public OSC{
   int realcallback(const char *path,const char *types,lo_arg **argv,int argc){
@@ -35,16 +36,11 @@ class localOSC : public OSC{
     // cout << "path: " << msgpath << endl;
     if(!msgpath.compare("/compass")){
       int int1 = argv[0]->i;
-      cout << "Message: " <<
-        int1 << " " << endl;
+      // cout << "Message: " << int1 << " " << endl;
+        val = int1;
     }
-    this->int1 = int1;
     return 0;
   } // realcallback()
-
-  int getValue(){
-    return int1;
-  }
 };
 
 
@@ -96,13 +92,22 @@ int main(int argc, char **argv){
     osc.set_callback("/compass","i");
     cout << "Listening on port " << serverport << endl;
     osc.start();
+    while(true){
+      if (val > 80 || val < 120){
+        cout << "rec " << endl;
+        recording = true;
 
-    cout << osc.getValue() << endl;
-
-
+      }else {
+        
+        
+      }
+    }
+  
+    
 
   while (running)
   {
+    
     switch (std::cin.get())
     {
       case 'q':
