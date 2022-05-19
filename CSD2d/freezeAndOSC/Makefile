@@ -1,8 +1,9 @@
 CXX= g++
 CXXFLAGS = -I/usr/local/include -Wall -std=c++1z
-LDFLAGS=-ljack
+LDFLAGS=-ljack -llo
 # the cpp files from the current project to include
-SRC_PROJECT = freeze_main.cpp record.cpp freeze.cpp
+SRC_PROJECT = freeze_main.cpp record.cpp freeze.cpp osc.cpp
+
 # the directory to the folder with the shared modules
 SHAREDCODE_PATH = ../sharedCode/
 # the modules to include

@@ -1,3 +1,4 @@
+// THANK YOU MARC GROENEWEGEN FOR THE OSC SCRIPT I USED TO RECEIVE OSC
 #include <string>
 #include <iostream>
 #include <math.h>
@@ -10,6 +11,8 @@
 #include "record.h"
 #include "freeze.h"
 #include "delay.h"
+
+#include "osc.h"
 
 
 using namespace std;
@@ -24,6 +27,23 @@ bool running = true;
 Rec record(22100,500);
 bool recording = false;
 
+
+int compass;
+// subclass OSC into a local class so we can provide our own callback
+class localOSC : public OSC{
+  int realcallback(const char *path,const char *types,lo_arg **argv,int argc){
+  string msgpath=path;
+    // cout << "path: " << msgpath << endl;
+    if(!msgpath.compare("/compass")){
+      int int1 = argv[0]->i;
+      // cout << "Message: " << int1 << " " << endl;
+        compass = int1;
+    }
+    return 0;
+  } // realcallback()
+};
+
+
 static void audio(){
   float inbuffer[chunksize];
   float outbuffer[chunksize * 2];
@@ -32,7 +52,6 @@ static void audio(){
   Freeze freeze1;
   float freezerOutL;
   float freezerOutR;
-
 
   do{
     jack.readSamples(inbuffer,chunksize);
@@ -45,16 +64,19 @@ static void audio(){
       freeze1.applyEffect(freezer,freezerOutR);
       outbuffer[2*x] = (freezerOutL + inbuffer[x]) / 4;
       outbuffer[2*x+1] = (freezerOutR + inbuffer[x]) / 4;
-
-      // cout << inbuffer[x] << endl;
-
-      // outbuffer[2*x] = inbuffer[x];
-      // outbuffer[2*x+1] = inbuffer[x];
     }
-    
     jack.writeSamples(outbuffer,chunksize*2);
   } 
   while(running);
+}
+
+static void compassThead(){
+   while (true){
+      if (compass > 80 && compass < 120){
+        cout << "rec " << endl;
+        recording = true;
+      }
+    } 
 }
 
 int main(int argc, char **argv){
@@ -64,33 +86,38 @@ int main(int argc, char **argv){
   jack.setNumberOfInputChannels(1);
   jack.setNumberOfOutputChannels(2);
 
-
   thread filterThread(audio);
+  thread compassthread(compassThead);
+
+  localOSC osc;
+  string serverport="7777";
+    osc.init(serverport);
+    osc.set_callback("/compass","i");
+    cout << "Listening on port " << serverport << endl;
+    osc.start();
+
 
   while (running)
   {
     switch (std::cin.get())
     {
+    cout << "ja" << endl;
+
       case 'q':
         running = false;
         jack.end();
         break;
-
+      
       case 'd':
-        cout << "DDDDDDD" << endl;
-        recording = true;
+        record.clear();
         break;
-
-      case 'f':
-        cout << "WWWWWWW" << endl;
-        recording = false;
-        break;
-
     }
+     
   }
 
   running=false;
   filterThread.join();
+  compassthread.join();
 
   jack.end();
 }

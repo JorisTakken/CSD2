@@ -43,7 +43,7 @@ int main(int argc,char **argv){
   #endif
       for(unsigned int i = 0; i < nframes; i++) {
         float outBuf1;
-        tremolo.process(inBuf[i],outBuf[i]);
+        delay.process(inBuf[i],outBuf[i]);
         // delay.process(outBuf1,outBuf[i]);
         // tremolo.process(outBuf1,outBuf[i]);
 
