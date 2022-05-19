@@ -28,7 +28,7 @@ Rec record(22100,500);
 bool recording = false;
 
 
-  int val;
+int compass;
 // subclass OSC into a local class so we can provide our own callback
 class localOSC : public OSC{
   int realcallback(const char *path,const char *types,lo_arg **argv,int argc){
@@ -37,7 +37,7 @@ class localOSC : public OSC{
     if(!msgpath.compare("/compass")){
       int int1 = argv[0]->i;
       // cout << "Message: " << int1 << " " << endl;
-        val = int1;
+        compass = int1;
     }
     return 0;
   } // realcallback()
@@ -52,7 +52,6 @@ static void audio(){
   Freeze freeze1;
   float freezerOutL;
   float freezerOutR;
-
 
   do{
     jack.readSamples(inbuffer,chunksize);
@@ -71,10 +70,14 @@ static void audio(){
   while(running);
 }
 
-
-// static float OSCMessage(){
- 
-// }
+static void compassThead(){
+   while (true){
+      if (compass > 80 && compass < 120){
+        cout << "rec " << endl;
+        recording = true;
+      }
+    } 
+}
 
 int main(int argc, char **argv){
   // char command='@';
@@ -84,7 +87,7 @@ int main(int argc, char **argv){
   jack.setNumberOfOutputChannels(2);
 
   thread filterThread(audio);
-  // thread OSCThread(OSCMessage);
+  thread compassthread(compassThead);
 
   localOSC osc;
   string serverport="7777";
@@ -92,45 +95,29 @@ int main(int argc, char **argv){
     osc.set_callback("/compass","i");
     cout << "Listening on port " << serverport << endl;
     osc.start();
-    while(true){
-      if (val > 80 || val < 120){
-        cout << "rec " << endl;
-        recording = true;
 
-      }else {
-        
-        
-      }
-    }
-  
-    
 
   while (running)
   {
-    
     switch (std::cin.get())
     {
+    cout << "ja" << endl;
+
       case 'q':
         running = false;
         jack.end();
         break;
-
+      
       case 'd':
-        cout << "DDDDDDD" << endl;
-        recording = true;
+        record.clear();
         break;
-
-      case 'f':
-        cout << "WWWWWWW" << endl;
-        recording = false;
-        break;
-
     }
+     
   }
 
   running=false;
   filterThread.join();
-  // OSCThread.join();
+  compassthread.join();
 
   jack.end();
 }

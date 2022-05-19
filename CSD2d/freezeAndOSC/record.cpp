@@ -17,13 +17,19 @@ void Rec::setDelaySamps(float numSamplesDelay){
   readIndex = wrap(readIndex);
 }
 
-void Rec::write(float sample, bool recordNow){
-  if (recordNow == true){
+void Rec::write(float sample, bool &recording){
+  if (recording == true){
     if (writeIndex <= size){
     buffer[writeIndex++] = sample;
     }else{
-      recordNow = false;
+      recording = false;
     }
+  }
+}
+
+void Rec::clear(){
+  for (int i = 0; i < size; i++){
+    buffer[i] = 0;
   }
 }
 
