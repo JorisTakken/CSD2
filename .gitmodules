@@ -1,0 +1,3 @@
+[submodule "CSD2d/CSD2d/iPhoneController"]
+	path = CSD2d/CSD2d/iPhoneController
+	url = https://github.com/JorisTakken/audioot.git
