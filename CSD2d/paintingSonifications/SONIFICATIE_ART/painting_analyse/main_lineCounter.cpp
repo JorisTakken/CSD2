@@ -42,6 +42,7 @@ void Brightness(Mat img){
         for(int x=0;x<blackWhite.cols;x++){
             Vec3b & color = blackWhite.at<Vec3b>(y,x);
             if(color[0] > 128 && color[1] > 128 && color[2] > 128){
+                // add value of brightness if the pixle is more bright
                 bright += 1;
             } else {
                 dark += 1;
@@ -87,6 +88,7 @@ void color(Mat img){
 }
 
 void sendOSCData(lo_address target){
+    // send all OSC messages to max
     lo_send(target,"/numberOfLines","i",NumberOfLines);
 
     lo_send(target,"/bright","f",bright);
@@ -98,6 +100,7 @@ void sendOSCData(lo_address target){
 }
 
 void preformFunctions(Mat img){
+    // function to do all the analyeses at ones
     numberOfLines(img);
     Brightness(img);
     color(img);

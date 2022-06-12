@@ -2,6 +2,9 @@
 
 Freeze::Freeze(){
     delay1->setDrywet(1);
+    delay2->setDrywet(1);
+    delay3->setDrywet(1);
+    delay4->setDrywet(1);
 }
 
 Freeze::~Freeze(){
@@ -22,13 +25,4 @@ void Freeze::applyEffect(float &input, float &output){
     delay3->applyEffect(in,output3);
     delay4->applyEffect(in,output4);
     output = (output1 + output2 + output3 + output4) / 4;
-    // std::cout << output << std::endl;
-
-
-
-
-    
-    
-    // REVERSED BUFFER
-    // buffer[size - i - 1]
 }

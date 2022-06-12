@@ -23,6 +23,7 @@ JackModule jack;
 float samplerate = 44100;
 bool running = true;
 
+// make recoring object
 Rec record(22100,500);
 bool recording = false;
 
@@ -32,10 +33,8 @@ int compass;
 class localOSC : public OSC{
   int realcallback(const char *path,const char *types,lo_arg **argv,int argc){
   string msgpath=path;
-    // cout << "path: " << msgpath << endl;
     if(!msgpath.compare("/compass")){
       int int1 = argv[0]->i;
-      // cout << "Message: " << int1 << " " << endl;
         compass = int1;
     }
     return 0;
@@ -70,6 +69,7 @@ static void audio(){
 }
 
 static void compassThead(){
+  // osc compass to see when recording starts
    while (true){
       if (compass > 0 && compass < 80){
         cout << "rec " << endl;
@@ -79,7 +79,6 @@ static void compassThead(){
 }
 
 int main(int argc, char **argv){
-  // char command='@';
   jack.init(argv[0]);
   jack.autoConnect();
   jack.setNumberOfInputChannels(1);
@@ -87,7 +86,9 @@ int main(int argc, char **argv){
 
   thread filterThread(audio);
   thread compassthread(compassThead);
+  
 
+  // osc retreival 
   localOSC osc;
   string serverport="7777";
     osc.init(serverport);
